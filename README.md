@@ -1,6 +1,6 @@
 # SysBioEng Lab — PUC Chile
 
-Website of the **Systems Bioengineering Laboratory** at the Pontificia Universidad Católica de Chile, led by [Prof. Pedro A. Saa](https://www.ing.uc.cl/academicos-e-investigadores/pedro-saa-higuera/).
+Website of the **Systems Bioengineering Lab** at the Pontificia Universidad Católica de Chile, led by [Prof. Pedro A. Saa](https://www.ing.uc.cl/academicos-e-investigadores/pedro-saa-higuera/).
 
 🌐 **Live site:** [sysbioenglab.github.io](https://sysbioenglab.github.io)
 
@@ -27,11 +27,11 @@ Tools and frameworks developed by the lab:
 
 | Tool | Language | Description | Reference |
 |------|----------|-------------|-----------|
-| [METACONE](https://doi.org/10.1016/j.compbiolchem.2025.108607) | Julia | Scalable framework for exploring the conversions cone of metabolic networks | Altamirano et al., 2026 |
-| [LooplessFluxSampler](https://doi.org/10.1186/s12859-023-05616-2) | MATLAB | Efficient sampling of the loopless flux solution space of metabolic models | Saa et al., 2024 |
-| [GRASP](https://doi.org/10.1093/bioadv/vbac066) | MATLAB | Platform for building thermodynamically consistent kinetic models of metabolism | Matos et al., 2022 |
-| [Fast-SNP](http://dx.doi.org/10.1093/bioinformatics/btw555) | MATLAB | Matrix pre-processing for efficient loopless flux optimization | Saa & Nielsen, 2016 |
-| [ll-ACHRB](http://dx.doi.org/10.1093/bioinformatics/btw132) | MATLAB | Scalable algorithm for sampling the feasible solution space of metabolic networks | Saa & Nielsen, 2016 |
+| [METACONE](https://github.com/SysBioengLab/METACONE) | MATLAB | Scalable framework for exploring the conversions cone of metabolic networks | [Altamirano et al., 2026](https://doi.org/10.1016/j.compbiolchem.2025.108607) |
+| [LooplessFluxSampler](https://github.com/SysBioengLab/looplessfluxsampler) | MATLAB | Efficient sampling of the loopless flux solution space of metabolic models | [Saa et al., 2024](https://doi.org/10.1186/s12859-023-05616-2) |
+| [GRASP](https://github.com/biosustain/grasp) | MATLAB | Platform for building thermodynamically consistent kinetic models of metabolism | [Matos et al., 2022](https://doi.org/10.1093/bioadv/vbac066) |
+| [DFVB](https://github.com/SysBioengLab/DFVB) | MATLAB | Dynamic balance of sparse flux vectors for efficient simulation of culture dynamics and network reduction | Tapia et al., 2026 |
+| [BcarGRASP](https://github.com/SysBioengLab/BcarGRASP) | MATLAB | BcarGRASP is set of kinetic models of beta-carotene production in recombinant Saccharomyces cerevisiae strains | [Elizondo & Saa, 2025](https://doi.org/10.1021/acssynbio.5c00256) |
 
 Browse all repositories at [github.com/sysbioenglab](https://github.com/sysbioenglab/).
 
