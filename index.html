@@ -1,776 +1,1050 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SysBioEng Lab</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><circle cx='60' cy='60' r='52' fill='none' stroke='%23666666' stroke-width='3' opacity='0.4'/><circle cx='50' cy='30' r='8' fill='%23444444'/><circle cx='80' cy='30' r='8' fill='%23666666'/><circle cx='40' cy='56' r='8' fill='%23666666'/><circle cx='64' cy='60' r='8' fill='%23444444'/><circle cx='88' cy='64' r='8' fill='%23444444'/><circle cx='30' cy='78' r='7' fill='%23888888'/><line x1='50' y1='30' x2='40' y2='56' stroke='%23666666' stroke-width='2'/><line x1='40' y1='56' x2='64' y2='60' stroke='%23666666' stroke-width='2'/><line x1='64' y1='60' x2='88' y2='64' stroke='%23666666' stroke-width='2'/><line x1='30' y1='78' x2='40' y2='56' stroke='%23666666' stroke-width='2'/></svg>" />
+  <title>SysBioEng Lab | Systems Bioengineering — PUC Chile</title>
+  <meta name="description" content="SysBioEng Lab builds computational tools grounded in optimization and machine learning to redesign and understand biological systems. Led by Prof. Pedro Saa at Pontificia Universidad Católica de Chile." />
+  <meta name="keywords" content="Pedro Saa, metabolic modeling, kinetic models, systems biotechnology, bioprocess optimization, machine learning, GRASP, flux sampling, PUC Chile" />
+  <meta property="og:title" content="SysBioEng Lab — PUC Chile" />
+  <meta property="og:description" content="Computational systems bioengineering research at PUC Chile." />
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #f0f0f0;
-      --fg: #1a1a1a;
-      --fg-muted: #5c5c5c;
-      --fg-subtle: #999999;
-      --accent: #444444;
-      --accent-light: #e2e2e2;
-      --border: #d4d4d4;
-      --card-bg: #fafafa;
-      --font-sans: 'DM Sans', system-ui, sans-serif;
-      --font-mono: 'DM Mono', monospace;
-    }
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
-    ::selection { background: var(--accent-light); }
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .font-head { font-family: 'Montserrat', sans-serif; }
+    h1,h2,h3,h4 { font-family: 'Montserrat', sans-serif; }
 
-    /* NAV */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: transparent;
-      border-bottom: 1px solid transparent;
-      transition: all 0.3s ease;
-      padding: 0 clamp(24px, 5vw, 80px);
+    .dot-bg { background-image: radial-gradient(#94a3b822 1.5px, transparent 1.5px); background-size: 26px 26px; }
+    .dot-bg-dark { background-image: radial-gradient(#ffffff0f 1.5px, transparent 1.5px); background-size: 26px 26px; }
+
+    .glass-nav {
+      background: rgba(255,255,255,0.84);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(30,58,138,0.08);
     }
-    nav.scrolled {
-      background: rgba(240,240,240,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 64px; }
-    .nav-logo { text-decoration: none; color: var(--fg); display: flex; align-items: center; gap: 10px; }
-    .nav-links { display: flex; gap: 32px; align-items: center; }
-    .nav-links a {
-      text-decoration: none; font-size: 14px; font-weight: 400;
-      color: var(--fg-muted); transition: color 0.2s;
-      position: relative; padding-bottom: 2px;
-    }
-    .nav-links a.active { color: var(--fg); font-weight: 500; }
-    .nav-links a.active::after {
-      content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
-      height: 1.5px; background: var(--accent); border-radius: 2px;
+    .glass-nav.scrolled { box-shadow: 0 2px 20px rgba(30,58,138,0.08); }
+
+    .nav-link { position: relative; transition: color 0.18s; }
+    .nav-link::after { content:''; position:absolute; bottom:-4px; left:0; right:0; height:2px; background:#F59E0B; border-radius:1px; transform:scaleX(0); transition:transform 0.2s; }
+    .nav-link:hover::after, .nav-link.active::after { transform:scaleX(1); }
+    .nav-link.active { color:#1E3A8A; font-weight:600; }
+
+    /* bento grid */
+    .bento { display:grid; grid-template-columns:repeat(12,1fr); gap:14px; }
+    .b1 { grid-column:span 7; min-height:220px; }
+    .b2 { grid-column:span 5; min-height:104px; }
+    .b3 { grid-column:span 5; min-height:104px; }
+    .b4 { grid-column:span 4; min-height:200px; }
+    .b5 { grid-column:span 4; min-height:200px; }
+    .b6 { grid-column:span 4; min-height:200px; }
+    @media(max-width:900px){
+      .b1,.b2,.b3,.b4,.b5,.b6 { grid-column:span 12; min-height:auto; }
     }
 
-    /* LOGO WORDMARK */
-    .wordmark { font-size: 16px; font-weight: 600; letter-spacing: -0.015em; line-height: 1; font-family: var(--font-sans); }
-    .wordmark .bio { color: #555555; }
-    .wordmark .eng { color: #333333; }
-    .wordmark .lab { font-weight: 300; color: var(--fg-muted); margin-left: 4px; }
+    /* member card hover overlay */
+    .mc-overlay { opacity:0; transition:opacity 0.2s; }
+    .mc:hover .mc-overlay { opacity:1; }
+    .mc { transition:transform 0.2s, box-shadow 0.2s; }
+    .mc:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(30,58,138,0.14); }
 
-    /* SECTIONS */
-    .section-label {
-      font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em;
-      color: var(--fg-subtle); text-transform: uppercase; margin-bottom: 48px;
-      display: flex; align-items: center; gap: 12px;
+    /* timeline */
+    .tl-dot { width:10px; height:10px; background:#F59E0B; border:2px solid white; border-radius:50%; flex-shrink:0; margin-top:5px; box-shadow:0 0 0 3px #F59E0B33; }
+
+    /* publication hover */
+    .pub-row { transition:background 0.15s; }
+    .pub-row:hover { background:#EFF6FF; }
+
+    @media print {
+      nav,#hero,#pillars,#people,#resources,#news,#join,footer { display:none !important; }
+      #publications { display:block !important; padding:0 !important; }
+      .pub-row { break-inside:avoid; border-bottom:1px solid #e2e8f0; }
+      .no-print { display:none !important; }
     }
-    .section-label::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--fg-subtle); }
 
-    hr.divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+    [id] { scroll-margin-top:76px; }
 
-    /* HERO */
-    #home {
-      padding: 140px clamp(24px, 5vw, 80px) 100px;
-      position: relative; overflow: hidden;
-    }
-    .hero-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-    .hero-kicker { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 20px; text-transform: uppercase; }
-    .hero-h1 { font-size: clamp(36px,5vw,58px); font-weight: 300; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 24px; }
-    .hero-h1 strong { font-weight: 600; }
-    .hero-desc { font-size: 17px; color: var(--fg-muted); line-height: 1.7; max-width: 480px; margin-bottom: 36px; font-weight: 300; }
-    .tag-row { display: flex; gap: 8px; flex-wrap: wrap; }
-    .tag { padding: 5px 12px; font-size: 12px; font-family: var(--font-mono); background: var(--accent-light); color: var(--accent); border-radius: 3px; letter-spacing: 0.04em; border: 1px solid var(--border); }
+    .tag-pill { display:inline-flex; align-items:center; padding:2px 10px; border-radius:999px; font-size:11px; font-family:'Inter',sans-serif; font-weight:500; letter-spacing:0.03em; }
 
-    /* ABOUT */
-    #research { padding: clamp(80px,10vw,120px) clamp(24px,5vw,80px); }
-    .two-col { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-bottom: 96px; }
-    .about-h2 { font-size: clamp(28px,3vw,40px); font-weight: 300; line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 24px; }
-    .about-h2 a { color: var(--accent); text-decoration: none; font-weight: 500; }
-    .about-p { color: var(--fg-muted); line-height: 1.75; font-size: 16px; font-weight: 300; }
-    .about-p + .about-p { margin-top: 16px; }
-    .link-btn-row { margin-top: 28px; display: flex; gap: 12px; }
-    .link-btn {
-      display: inline-flex; align-items: center;
-      padding: 6px 14px; font-size: 12px;
-      border: 1px solid var(--border); border-radius: 4px;
-      color: var(--fg-muted); text-decoration: none;
-      font-family: var(--font-mono); letter-spacing: 0.04em;
-      transition: all 0.2s;
-    }
-    .link-btn:hover { border-color: var(--accent); color: var(--accent); }
-    .edu-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 32px; }
-    .edu-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--fg-subtle); margin-bottom: 20px; text-transform: uppercase; }
-    .edu-item { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
-    .edu-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-    .edu-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
-    .edu-degree { font-weight: 500; font-size: 14px; }
-    .edu-where { font-family: var(--font-mono); font-size: 11px; color: var(--fg-subtle); }
-    .edu-thesis { font-size: 13px; color: var(--fg-muted); font-style: italic; line-height: 1.5; }
+    /* avatar ring */
+    .pi-avatar { width:88px; height:88px; border-radius:50%; background:linear-gradient(135deg,#1E3A8A,#3b82f6); display:flex; align-items:center; justify-content:center; font-family:'Montserrat',sans-serif; font-size:28px; font-weight:700; color:white; flex-shrink:0; }
+    .mem-avatar { width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Montserrat',sans-serif; font-size:18px; font-weight:700; color:white; }
 
-    /* RESEARCH AREAS */
-    .research-areas { padding-top: 80px; max-width: 1200px; margin: 0 auto; }
-    .area-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border); border-radius: 8px; overflow: hidden; }
-    .area-card { background: var(--card-bg); padding: 32px 28px; }
-    .area-num { font-family: var(--font-mono); font-size: 11px; color: var(--accent); margin-bottom: 12px; letter-spacing: 0.1em; }
-    .area-title { font-size: 15px; font-weight: 500; margin-bottom: 12px; line-height: 1.3; }
-    .area-desc { font-size: 13px; color: var(--fg-muted); line-height: 1.65; font-weight: 300; }
-
-    /* PROJECTS */
-    #projects { padding: 0 clamp(24px,5vw,80px) clamp(80px,10vw,120px); }
-    .projects-inner { max-width: 1200px; margin: 0 auto; }
-    .sub-heading { font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-muted); margin-bottom: 24px; }
-    .proj-table { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 56px; }
-    .proj-row { display: grid; grid-template-columns: 120px 1fr 160px; gap: 24px; padding: 20px 28px; align-items: start; border-bottom: 1px solid var(--border); background: var(--card-bg); }
-    .proj-row:last-child { border-bottom: none; }
-    .proj-row.past { padding: 16px 28px; }
-    .proj-years { font-family: var(--font-mono); font-size: 12px; color: var(--fg-subtle); padding-top: 2px; }
-    .proj-title { font-size: 14px; line-height: 1.55; }
-    .proj-title.muted { font-size: 13px; color: var(--fg-muted); }
-    .proj-role { font-size: 11px; font-family: var(--font-mono); color: var(--accent); background: var(--accent-light); padding: 3px 8px; border-radius: 3px; align-self: start; letter-spacing: 0.04em; text-align: center; border: 1px solid var(--border); }
-    .proj-role.muted { color: var(--fg-subtle); background: var(--bg); border: 1px solid var(--border); }
-    .past-toggle-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-    .toggle-btn { background: none; border: 1px solid var(--border); border-radius: 4px; padding: 6px 14px; font-size: 12px; color: var(--fg-muted); cursor: pointer; font-family: var(--font-mono); letter-spacing: 0.04em; transition: all 0.2s; }
-    .toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
-    #past-projects { display: none; }
-    #past-projects.visible { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-
-    /* PEOPLE */
-    #people { padding: clamp(80px,10vw,120px) clamp(24px,5vw,80px); background: #e8e8e8; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .people-inner { max-width: 1200px; margin: 0 auto; }
-    .pi-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 32px 36px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 72px; }
-    .pi-name { font-size: 24px; font-weight: 500; margin-bottom: 6px; }
-    .pi-email { font-family: var(--font-mono); font-size: 13px; color: var(--accent); text-decoration: none; }
-    .pi-affil { margin-top: 16px; font-size: 14px; color: var(--fg-muted); line-height: 1.65; }
-    .pi-interests-label { font-family: var(--font-mono); font-size: 11px; color: var(--fg-subtle); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
-    .pi-interests { font-size: 14px; color: var(--fg-muted); line-height: 1.7; }
-    .student-grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 56px; }
-    .student-grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 56px; }
-    .student-card { background: var(--card-bg); padding: 22px 24px; }
-    .student-name { font-weight: 500; font-size: 14px; margin-bottom: 4px; }
-    .student-years { font-family: var(--font-mono); font-size: 11px; color: var(--accent); margin-bottom: 8px; }
-    .student-prog { font-size: 12px; color: var(--fg-subtle); line-height: 1.5; }
-    .alumni-table { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-    .alumni-row { display: grid; grid-template-columns: 200px 1fr; gap: 24px; padding: 16px 24px; background: var(--card-bg); border-bottom: 1px solid var(--border); }
-    .alumni-row:last-child { border-bottom: none; }
-    .alumni-name { font-weight: 500; font-size: 14px; }
-    .alumni-years { font-family: var(--font-mono); font-size: 11px; color: var(--fg-subtle); }
-    .alumni-current { font-size: 13px; color: var(--fg-muted); align-self: center; }
-
-    /* RESOURCES */
-    #resources { padding: clamp(80px,10vw,120px) clamp(24px,5vw,80px); }
-    .resources-inner { max-width: 1200px; margin: 0 auto; }
-    .resources-header { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-bottom: 56px; align-items: end; }
-    .resources-h2 { font-size: clamp(28px,3vw,40px); font-weight: 300; line-height: 1.2; letter-spacing: -0.02em; }
-    .resources-h2 strong { font-weight: 500; }
-    .resources-desc { color: var(--fg-muted); font-size: 15px; line-height: 1.7; font-weight: 300; }
-    .resource-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); border-radius: 8px; overflow: hidden; }
-    .resource-card {
-      background: var(--card-bg); padding: 32px 28px; text-decoration: none;
-      color: var(--fg); display: flex; flex-direction: column;
-      min-height: 220px; transition: background 0.2s;
-    }
-    .resource-card:hover { background: var(--accent-light); }
-    .resource-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-    .resource-tag { font-family: var(--font-mono); font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 3px 8px; border-radius: 3px; letter-spacing: 0.04em; border: 1px solid var(--border); }
-    .resource-name { font-size: 18px; font-weight: 500; margin-bottom: 12px; letter-spacing: -0.01em; }
-    .resource-desc { font-size: 13px; color: var(--fg-muted); line-height: 1.6; font-weight: 300; margin-bottom: auto; }
-    .resource-paper { font-size: 11px; color: var(--fg-subtle); font-family: var(--font-mono); margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
-
-    /* PUBLICATIONS */
-    #publications { padding: clamp(80px,10vw,120px) clamp(24px,5vw,80px); }
-    .pub-inner { max-width: 1200px; margin: 0 auto; }
-    .tab-row { display: flex; gap: 0; margin-bottom: 40px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; width: fit-content; }
-    .tab-btn { padding: 9px 20px; font-size: 13px; border: none; cursor: pointer; background: var(--card-bg); color: var(--fg-muted); font-family: var(--font-sans); font-weight: 400; transition: all 0.2s; border-right: 1px solid var(--border); }
-    .tab-btn:last-child { border-right: none; }
-    .tab-btn.active { background: var(--fg); color: var(--card-bg); font-weight: 500; }
-    .year-filters { display: flex; gap: 8px; margin-bottom: 32px; flex-wrap: wrap; }
-    .year-btn { padding: 5px 12px; font-size: 12px; font-family: var(--font-mono); border: 1px solid var(--border); border-radius: 4px; background: transparent; color: var(--fg-muted); cursor: pointer; letter-spacing: 0.04em; transition: all 0.2s; }
-    .year-btn.active { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
-    .pub-list { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-    .pub-item { display: grid; grid-template-columns: 56px 1fr; border-bottom: 1px solid var(--border); background: var(--card-bg); }
-    .pub-item:last-child { border-bottom: none; }
-    .pub-year { padding: 22px 0 20px 20px; font-family: var(--font-mono); font-size: 12px; color: var(--fg-subtle); }
-    .pub-body { padding: 20px 24px 20px 0; }
-    .pub-authors { font-size: 12px; color: var(--fg-subtle); margin-bottom: 5px; font-family: var(--font-mono); }
-    .pub-title { font-size: 14px; color: var(--fg); text-decoration: none; line-height: 1.5; display: block; margin-bottom: 6px; }
-    .pub-title:hover { color: var(--accent); }
-    .pub-journal { font-size: 12px; color: var(--fg-muted); font-style: italic; }
-    .pipeline-section { margin-bottom: 24px; }
-    .pipeline-label { font-size: 12px; font-family: var(--font-mono); color: var(--fg-subtle); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
-    .pipeline-list { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-    .pipeline-item { padding: 16px 24px; font-size: 14px; line-height: 1.65; background: var(--card-bg); border-bottom: 1px solid var(--border); color: var(--fg-muted); }
-    .pipeline-item:last-child { border-bottom: none; }
-
-    /* FOOTER */
-    footer { background: #1e1e1e; color: #cccccc; padding: clamp(60px,8vw,80px) clamp(24px,5vw,80px); }
-    .footer-inner { max-width: 1200px; margin: 0 auto; }
-    .footer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 60px; margin-bottom: 60px; }
-    .footer-logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-    .footer-tagline { font-size: 13px; opacity: 0.6; line-height: 1.65; font-weight: 300; }
-    .footer-col-label { font-family: var(--font-mono); font-size: 11px; opacity: 0.4; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
-    .footer-col-text { font-size: 14px; font-weight: 300; opacity: 0.8; line-height: 1.65; }
-    .footer-col-text a { color: #aaaaaa; text-decoration: none; }
-    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 28px; display: flex; justify-content: space-between; align-items: center; }
-    .footer-copy { font-size: 12px; opacity: 0.35; font-family: var(--font-mono); }
-    .footer-links { display: flex; gap: 20px; }
-    .footer-links a { font-size: 12px; opacity: 0.45; color: inherit; text-decoration: none; font-family: var(--font-mono); transition: opacity 0.2s; }
-    .footer-links a:hover { opacity: 1; }
-
-    .wordmark-footer .bio { color: #aaaaaa; }
-    .wordmark-footer .eng { color: #cccccc; }
-    .wordmark-footer .lab { color: rgba(255,255,255,0.5); }
-
-    /* TAB PANELS */
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
+    .featured-badge { background:linear-gradient(135deg,#F59E0B,#f97316); color:white; font-size:10px; font-weight:700; padding:1px 8px; border-radius:3px; letter-spacing:0.06em; text-transform:uppercase; }
   </style>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-900 antialiased">
 
-<!-- NAV -->
-<nav id="main-nav">
-  <div class="nav-inner">
-    <a href="#home" class="nav-logo">
-      <svg width="32" height="32" viewBox="0 0 120 120" fill="none" aria-label="SysBioEng logo">
-        <circle cx="60" cy="60" r="50" fill="none" stroke="#888888" stroke-width="0.6" opacity="0.35"/>
-        <line x1="60" y1="12" x2="50" y2="30" stroke="#666666" stroke-width="1.1" opacity="0.75"/>
-        <line x1="60" y1="12" x2="80" y2="30" stroke="#666666" stroke-width="1.1" opacity="0.75"/>
-        <line x1="28" y1="24" x2="50" y2="30" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
-        <line x1="50" y1="30" x2="80" y2="30" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
-        <line x1="80" y1="30" x2="100" y2="38" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
-        <line x1="28" y1="24" x2="18" y2="50" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
-        <line x1="50" y1="30" x2="40" y2="56" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
-        <line x1="18" y1="50" x2="40" y2="56" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
-        <line x1="40" y1="56" x2="64" y2="60" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
-        <line x1="80" y1="30" x2="64" y2="60" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
-        <line x1="100" y1="38" x2="88" y2="64" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
-        <line x1="64" y1="60" x2="88" y2="64" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
-        <line x1="40" y1="56" x2="30" y2="78" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
-        <line x1="30" y1="78" x2="56" y2="88" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
-        <line x1="56" y1="88" x2="80" y2="88" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
-        <line x1="64" y1="60" x2="80" y2="88" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
-        <line x1="88" y1="64" x2="80" y2="88" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
-        <line x1="88" y1="64" x2="102" y2="76" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
-        <line x1="18" y1="50" x2="30" y2="78" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
-        <line x1="30" y1="78" x2="64" y2="60" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
-        <circle cx="60" cy="12" r="4" fill="#aaaaaa"/>
-        <circle cx="28" cy="24" r="4.5" fill="#888888"/>
-        <circle cx="50" cy="30" r="5" fill="#555555"/>
-        <circle cx="80" cy="30" r="5" fill="#777777" stroke="#f0f0f0" stroke-width="1.2"/>
-        <circle cx="100" cy="38" r="4" fill="#555555"/>
-        <circle cx="18" cy="50" r="4" fill="#aaaaaa"/>
-        <circle cx="40" cy="56" r="5" fill="#888888"/>
-        <circle cx="64" cy="60" r="5" fill="#555555"/>
-        <circle cx="88" cy="64" r="5" fill="#555555"/>
-        <circle cx="30" cy="78" r="4.5" fill="#bbbbbb" stroke="#f0f0f0" stroke-width="1.2"/>
-        <circle cx="56" cy="88" r="4" fill="#aaaaaa"/>
-        <circle cx="80" cy="88" r="4" fill="#555555"/>
-        <circle cx="102" cy="76" r="3.5" fill="#888888"/>
+<!-- ═══ NAV ═══════════════════════════════════════════════════════════════════ -->
+<nav id="main-nav" class="glass-nav fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-[68px]">
+    <a href="#hero" class="flex items-center gap-3 text-[#1E3A8A] no-underline">
+      <svg width="30" height="30" viewBox="0 0 120 120" fill="none">
+        <circle cx="60" cy="60" r="50" fill="none" stroke="#1E3A8A" stroke-width="0.8" opacity="0.3"/>
+        <line x1="50" y1="30" x2="40" y2="56" stroke="#1E3A8A" stroke-width="1.2" opacity="0.7"/>
+        <line x1="40" y1="56" x2="64" y2="60" stroke="#1E3A8A" stroke-width="1.2" opacity="0.7"/>
+        <line x1="64" y1="60" x2="88" y2="64" stroke="#1E3A8A" stroke-width="1.2" opacity="0.7"/>
+        <line x1="30" y1="78" x2="40" y2="56" stroke="#1E3A8A" stroke-width="1.2" opacity="0.7"/>
+        <line x1="80" y1="30" x2="64" y2="60" stroke="#3b82f6" stroke-width="1.2" opacity="0.7"/>
+        <line x1="50" y1="30" x2="80" y2="30" stroke="#3b82f6" stroke-width="1.2" opacity="0.7"/>
+        <circle cx="50" cy="30" r="5" fill="#1E3A8A"/>
+        <circle cx="80" cy="30" r="5" fill="#F59E0B"/>
+        <circle cx="40" cy="56" r="5" fill="#1E3A8A"/>
+        <circle cx="64" cy="60" r="5" fill="#3b82f6"/>
+        <circle cx="88" cy="64" r="4" fill="#1E3A8A"/>
+        <circle cx="30" cy="78" r="4" fill="#F59E0B"/>
       </svg>
-      <span class="wordmark"><span>Sys</span><span class="bio">Bio</span><span class="eng">Eng</span><span class="lab">Lab</span></span>
+      <div>
+        <span class="font-head text-[15px] font-700 leading-none tracking-tight" style="font-weight:700">
+          Sys<span style="color:#F59E0B">Bio</span>Eng
+        </span>
+        <span class="font-head text-[15px] font-300 text-slate-500 ml-1" style="font-weight:300">Lab</span>
+      </div>
     </a>
-    <div class="nav-links">
-      <a href="#home" class="active" data-nav="Home">Home</a>
-      <a href="#research" data-nav="Research">Research</a>
-      <a href="#people" data-nav="People">People</a>
-      <a href="#resources" data-nav="Resources">Resources</a>
-      <a href="#publications" data-nav="Publications">Publications</a>
-      <a href="#contact" data-nav="Contact">Contact</a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#pillars" class="nav-link text-[13px] font-medium text-slate-600 hover:text-[#1E3A8A]">Research</a>
+      <a href="#people" class="nav-link text-[13px] font-medium text-slate-600 hover:text-[#1E3A8A]">People</a>
+      <a href="#publications" class="nav-link text-[13px] font-medium text-slate-600 hover:text-[#1E3A8A]">Publications</a>
+      <a href="#resources" class="nav-link text-[13px] font-medium text-slate-600 hover:text-[#1E3A8A]">Resources</a>
+      <a href="#news" class="nav-link text-[13px] font-medium text-slate-600 hover:text-[#1E3A8A]">News</a>
+      <a href="#join" class="bg-[#F59E0B] hover:bg-[#D97706] text-white text-[13px] font-semibold px-4 py-2 rounded-lg transition-colors font-head">Join Us</a>
     </div>
   </div>
 </nav>
 
-<!-- HERO -->
-<section id="home">
-  <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.06;pointer-events:none" aria-hidden="true">
-    <defs>
-      <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
-        <path d="M 48 0 L 0 0 0 48" fill="none" stroke="currentColor" stroke-width="0.8"/>
-      </pattern>
-    </defs>
-    <rect width="100%" height="100%" fill="url(#grid)" />
+<!-- ═══ HERO ═══════════════════════════════════════════════════════════════════ -->
+<section id="hero" class="relative min-h-screen flex flex-col justify-center bg-[#1E3A8A] dot-bg-dark overflow-hidden pt-16">
+  <!-- subtle gradient overlay -->
+  <div class="absolute inset-0 bg-gradient-to-br from-[#162d6e] via-[#1E3A8A] to-[#1e40af] opacity-90"></div>
+
+  <!-- hero graph decorative SVG -->
+  <svg class="absolute right-0 top-1/2 -translate-y-1/2 opacity-[0.07] w-[640px] pointer-events-none hidden lg:block" viewBox="0 0 540 440" aria-hidden="true">
+    <line x1="200" y1="120" x2="340" y2="80" stroke="white" stroke-width="1.5"/>
+    <line x1="200" y1="120" x2="280" y2="200" stroke="white" stroke-width="1.5"/>
+    <line x1="200" y1="120" x2="120" y2="220" stroke="white" stroke-width="1.5"/>
+    <line x1="340" y1="80" x2="280" y2="200" stroke="white" stroke-width="1.5"/>
+    <line x1="340" y1="80" x2="460" y2="120" stroke="white" stroke-width="1.5"/>
+    <line x1="120" y1="220" x2="160" y2="320" stroke="white" stroke-width="1.5"/>
+    <line x1="280" y1="200" x2="400" y2="180" stroke="white" stroke-width="1.5"/>
+    <line x1="280" y1="200" x2="320" y2="300" stroke="white" stroke-width="1.5"/>
+    <line x1="280" y1="200" x2="240" y2="380" stroke="white" stroke-width="1.5"/>
+    <line x1="400" y1="180" x2="420" y2="290" stroke="white" stroke-width="1.5"/>
+    <line x1="160" y1="320" x2="320" y2="300" stroke="white" stroke-width="1.5"/>
+    <line x1="240" y1="380" x2="360" y2="360" stroke="white" stroke-width="1.5"/>
+    <line x1="420" y1="290" x2="360" y2="360" stroke="white" stroke-width="1.5"/>
+    <circle cx="200" cy="120" r="9" fill="white" opacity="0.6"/>
+    <circle cx="340" cy="80" r="6" fill="white" opacity="0.5"/>
+    <circle cx="280" cy="200" r="13" fill="#F59E0B" opacity="0.8"/>
+    <circle cx="120" cy="220" r="7" fill="white" opacity="0.5"/>
+    <circle cx="400" cy="180" r="6" fill="white" opacity="0.5"/>
+    <circle cx="160" cy="320" r="8" fill="white" opacity="0.5"/>
+    <circle cx="320" cy="300" r="6" fill="white" opacity="0.5"/>
+    <circle cx="240" cy="380" r="7" fill="white" opacity="0.5"/>
+    <circle cx="420" cy="290" r="5" fill="#F59E0B" opacity="0.7"/>
+    <circle cx="460" cy="120" r="5" fill="white" opacity="0.4"/>
+    <circle cx="360" cy="360" r="6" fill="white" opacity="0.4"/>
   </svg>
-  <div class="hero-inner">
-    <div>
-      <p class="hero-kicker">Pontificia Universidad Católica de Chile</p>
-      <h1 class="hero-h1">Systems<br><strong>Bioengineering</strong><br>Lab</h1>
-      <p class="hero-desc">We develop computational tools rooted in advanced optimization and machine learning to redesign and understand biological systems.</p>
-      <div class="tag-row">
-        <span class="tag">Metabolic Modeling</span>
-        <span class="tag">Systems Biotechnology</span>
-        <span class="tag">Bioprocess Optimization</span>
-        <span class="tag">Machine Learning</span>
+
+  <div class="relative max-w-7xl mx-auto px-6 py-24 lg:py-32">
+    <div class="max-w-2xl">
+      <span class="inline-flex items-center gap-2 text-[#F59E0B] text-[12px] font-semibold uppercase tracking-widest font-head mb-6">
+        <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+        Pontificia Universidad Católica de Chile
+      </span>
+      <h1 class="text-white text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-[1.05] tracking-tight mb-6">
+        Systems<br/>
+        <span style="color:#F59E0B">Bioengin</span><wbr/>eering<br/>
+        Laboratory
+      </h1>
+      <p class="text-blue-100 text-lg lg:text-xl leading-relaxed mb-3 font-light max-w-xl">
+        We build computational tools rooted in advanced optimization and machine learning to <strong class="text-white font-semibold">redesign and understand biological systems</strong> — bridging metabolic networks and real-world bioprocess performance.
+      </p>
+      <p class="text-blue-200/70 text-sm mb-10 italic">
+        The fundamental challenge: predicting cell behavior from molecular-scale kinetics to industrial bioreactors.
+      </p>
+      <div class="flex flex-wrap gap-3 mb-12">
+        <span class="tag-pill bg-white/10 text-blue-100 border border-white/20">Metabolic Modeling</span>
+        <span class="tag-pill bg-white/10 text-blue-100 border border-white/20">Systems Biotechnology</span>
+        <span class="tag-pill bg-white/10 text-blue-100 border border-white/20">Bioprocess Optimization</span>
+        <span class="tag-pill bg-white/10 text-blue-100 border border-white/20">Machine Learning</span>
+      </div>
+      <div class="flex flex-wrap gap-4">
+        <a href="#pillars" class="inline-flex items-center gap-2 bg-[#F59E0B] hover:bg-[#D97706] text-white font-semibold px-6 py-3 rounded-xl transition-colors font-head text-sm">
+          Explore Research <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+        <a href="#publications" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-xl transition-colors border border-white/25 text-sm">
+          <i data-lucide="book-open" class="w-4 h-4"></i> Publications
+        </a>
       </div>
     </div>
-    <div style="display:flex;justify-content:center;align-items:center">
-      <svg viewBox="0 0 540 440" style="width:100%;max-width:460px;opacity:0.85" aria-hidden="true">
-        <line x1="200" y1="120" x2="340" y2="80" stroke="var(--accent)" stroke-width="1" opacity="0.25"/>
-        <line x1="200" y1="120" x2="280" y2="200" stroke="var(--accent)" stroke-width="1" opacity="0.25"/>
-        <line x1="200" y1="120" x2="120" y2="220" stroke="var(--accent)" stroke-width="1" opacity="0.25"/>
-        <line x1="340" y1="80" x2="280" y2="200" stroke="var(--accent)" stroke-width="1" opacity="0.25"/>
-        <line x1="340" y1="80" x2="460" y2="120" stroke="var(--accent)" stroke-width="1" opacity="0.25"/>
-        <line x1="120" y1="220" x2="160" y2="320" stroke="var(--accent)" stroke-width="1" opacity="0.25"/>
-        <line x1="120" y1="220" x2="80" y2="160" stroke="var(--accent)" stroke-width="1" opacity="0.25"/>
-        <line x1="280" y1="200" x2="400" y2="180" stroke="var(--accent)" stroke-width="1" opacity="0.25"/>
-        <line x1="280" y1="200" x2="320" y2="300" stroke="var(--accent)" stroke-width="1" opacity="0.25"/>
-        <line x1="280" y1="200" x2="240" y2="380" stroke="var(--accent)" stroke-width="1" opacity="0.25"/>
-        <line x1="400" y1="180" x2="420" y2="290" stroke="var(--accent)" stroke-width="1" opacity="0.25"/>
-        <line x1="160" y1="320" x2="320" y2="300" stroke="var(--accent)" stroke-width="1" opacity="0.25"/>
-        <line x1="160" y1="320" x2="240" y2="380" stroke="var(--accent)" stroke-width="1" opacity="0.25"/>
-        <line x1="320" y1="300" x2="240" y2="380" stroke="var(--accent)" stroke-width="1" opacity="0.25"/>
-        <line x1="240" y1="380" x2="360" y2="360" stroke="var(--accent)" stroke-width="1" opacity="0.25"/>
-        <line x1="420" y1="290" x2="360" y2="360" stroke="var(--accent)" stroke-width="1" opacity="0.25"/>
-        <line x1="420" y1="290" x2="460" y2="120" stroke="var(--accent)" stroke-width="1" opacity="0.25"/>
-        <circle cx="200" cy="120" r="8" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity="0.5"/>
-        <circle cx="340" cy="80" r="5" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity="0.5"/>
-        <circle cx="120" cy="220" r="6" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity="0.5"/>
-        <circle cx="280" cy="200" r="10" fill="none" stroke="var(--accent)" stroke-width="2.5" opacity="0.9"/>
-        <circle cx="400" cy="180" r="5" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity="0.5"/>
-        <circle cx="160" cy="320" r="7" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity="0.5"/>
-        <circle cx="320" cy="300" r="5" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity="0.5"/>
-        <circle cx="240" cy="380" r="6" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity="0.5"/>
-        <circle cx="420" cy="290" r="4" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity="0.5"/>
-        <circle cx="80" cy="160" r="4" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity="0.5"/>
-        <circle cx="360" cy="360" r="5" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity="0.5"/>
-        <circle cx="460" cy="120" r="4" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity="0.5"/>
-        <circle cx="200" cy="120" r="3.2" fill="var(--accent)" opacity="0.35"/>
-        <circle cx="340" cy="80" r="2" fill="var(--accent)" opacity="0.35"/>
-        <circle cx="120" cy="220" r="2.4" fill="var(--accent)" opacity="0.35"/>
-        <circle cx="280" cy="200" r="4" fill="var(--accent)" opacity="0.75"/>
-        <circle cx="400" cy="180" r="2" fill="var(--accent)" opacity="0.35"/>
-        <circle cx="160" cy="320" r="2.8" fill="var(--accent)" opacity="0.35"/>
-        <circle cx="320" cy="300" r="2" fill="var(--accent)" opacity="0.35"/>
-        <circle cx="240" cy="380" r="2.4" fill="var(--accent)" opacity="0.35"/>
-        <circle cx="420" cy="290" r="1.6" fill="var(--accent)" opacity="0.35"/>
-        <circle cx="80" cy="160" r="1.6" fill="var(--accent)" opacity="0.35"/>
-        <circle cx="360" cy="360" r="2" fill="var(--accent)" opacity="0.35"/>
-        <circle cx="460" cy="120" r="1.6" fill="var(--accent)" opacity="0.35"/>
-      </svg>
+  </div>
+
+  <!-- stat bar -->
+  <div class="relative border-t border-white/10 mt-auto">
+    <div class="max-w-7xl mx-auto px-6 py-6 grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div class="text-center">
+        <p class="text-white text-3xl font-extrabold font-head">36+</p>
+        <p class="text-blue-200 text-xs mt-1 uppercase tracking-wider">Journal Papers</p>
+      </div>
+      <div class="text-center">
+        <p class="text-white text-3xl font-extrabold font-head">8</p>
+        <p class="text-blue-200 text-xs mt-1 uppercase tracking-wider">Current Students</p>
+      </div>
+      <div class="text-center">
+        <p class="text-white text-3xl font-extrabold font-head">6</p>
+        <p class="text-blue-200 text-xs mt-1 uppercase tracking-wider">Active Projects</p>
+      </div>
+      <div class="text-center">
+        <p class="text-white text-3xl font-extrabold font-head">5</p>
+        <p class="text-blue-200 text-xs mt-1 uppercase tracking-wider">Open-Source Tools</p>
+      </div>
     </div>
   </div>
 </section>
 
-<hr class="divider">
+<!-- ═══ RESEARCH PILLARS — BENTO ═══════════════════════════════════════════════ -->
+<section id="pillars" class="py-24 px-6 bg-white dot-bg">
+  <div class="max-w-7xl mx-auto">
+    <div class="mb-12">
+      <span class="text-[#F59E0B] text-[11px] font-semibold uppercase tracking-widest font-head">Research</span>
+      <h2 class="text-3xl lg:text-4xl font-bold text-[#1E3A8A] mt-2 leading-tight">Four Pillars of<br/>Computational Bioengineering</h2>
+    </div>
 
-<!-- ABOUT / RESEARCH -->
-<section id="research">
-  <div style="max-width:1200px;margin:0 auto">
-    <p class="section-label">About</p>
-    <div class="two-col">
-      <div>
-        <h2 class="about-h2">Group Leader <a href="https://www.ing.uc.cl/academicos-e-investigadores/pedro-saa-higuera/" target="_blank" rel="noopener noreferrer">Prof. Pedro Saa</a></h2>
-        <p class="about-p">Faculty member at the Department of Chemical and Bioprocess Engineering and the Institute for Mathematical and Computational Engineering of the Pontificia Universidad Católica de Chile.</p>
-        <p class="about-p">Our lab has openings for domestic and international students. Contact us for research opportunities.</p>
-        <div class="link-btn-row">
-          <a href="https://scholar.google.com/citations?user=q38WulcAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="link-btn">Google Scholar</a>
-          <a href="https://orcid.org/0000-0002-1659-9041" target="_blank" rel="noopener noreferrer" class="link-btn">ORCID</a>
-          <a href="https://www.researchgate.net/profile/Pedro-Saa-2" target="_blank" rel="noopener noreferrer" class="link-btn">ResearchGate</a>
+    <!-- bento grid -->
+    <div class="bento">
+      <!-- Large card: Metabolic Modeling -->
+      <div class="b1 bg-[#1E3A8A] rounded-2xl p-8 flex flex-col justify-between relative overflow-hidden dot-bg-dark">
+        <div class="absolute -right-12 -bottom-12 w-52 h-52 bg-white/5 rounded-full"></div>
+        <div class="absolute -right-4 -bottom-4 w-32 h-32 bg-[#F59E0B]/10 rounded-full"></div>
+        <div>
+          <span class="text-[#F59E0B]/80 text-[11px] font-semibold uppercase tracking-widest font-head">01</span>
+          <h3 class="text-white text-2xl font-bold mt-3 mb-4">Metabolic Modeling</h3>
+          <p class="text-blue-200 text-sm leading-relaxed">
+            Genome-scale network reconstruction, kinetic and stoichiometric models of cellular metabolism. We develop Bayesian frameworks to sample feasible kinetic parameter spaces and predict metabolic fluxes from sparse experimental data.
+          </p>
+        </div>
+        <div class="mt-6 flex items-center gap-3">
+          <a href="#publications" class="inline-flex items-center gap-1.5 text-[#F59E0B] text-[12px] font-semibold hover:text-amber-300 transition-colors">
+            Related Papers <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </a>
+          <span class="text-white/20">·</span>
+          <a href="https://doi.org/10.1186/s12859-023-05616-2" target="_blank" rel="noopener noreferrer" class="text-blue-300/70 text-[12px] hover:text-blue-200 transition-colors">GRASP · LooplessFluxSampler</a>
         </div>
       </div>
-      <div>
-        <div class="edu-card">
-          <p class="edu-label">Education</p>
-          <div class="edu-item">
-            <div class="edu-row"><span class="edu-degree">PhD</span><span class="edu-where">The University of Queensland, 2017</span></div>
-            <p class="edu-thesis">A Bayesian framework for sampling the feasible kinetic behaviour of metabolic reaction networks</p>
+
+      <!-- Small card: Systems Biotechnology -->
+      <div class="b2 bg-amber-50 border border-amber-100 rounded-2xl p-6 flex flex-col justify-between">
+        <div>
+          <span class="text-amber-600 text-[11px] font-semibold uppercase tracking-widest font-head">02</span>
+          <h3 class="text-slate-800 text-lg font-bold mt-2 mb-3">Systems Biotechnology</h3>
+          <p class="text-slate-600 text-sm leading-relaxed">Engineering biological systems for sustainable production of chemicals, fuels, and pharmaceuticals.</p>
+        </div>
+        <a href="#publications" class="inline-flex items-center gap-1 text-amber-600 text-[12px] font-semibold mt-4 hover:text-amber-700 transition-colors">
+          Related Papers <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+        </a>
+      </div>
+
+      <!-- Small card: Bioprocess Optimization -->
+      <div class="b3 bg-slate-800 rounded-2xl p-6 flex flex-col justify-between">
+        <div>
+          <span class="text-slate-400 text-[11px] font-semibold uppercase tracking-widest font-head">03</span>
+          <h3 class="text-white text-lg font-bold mt-2 mb-3">Bioprocess Optimization</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">Advanced optimization frameworks for bioreactor design, control, and scale-up strategies.</p>
+        </div>
+        <a href="#publications" class="inline-flex items-center gap-1 text-slate-300 text-[12px] font-semibold mt-4 hover:text-white transition-colors">
+          Related Papers <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+        </a>
+      </div>
+
+      <!-- Tall card: Machine Learning -->
+      <div class="b4 bg-gradient-to-b from-blue-600 to-[#1E3A8A] rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden">
+        <div class="absolute -left-8 -top-8 w-28 h-28 bg-white/5 rounded-full"></div>
+        <div>
+          <span class="text-blue-200/70 text-[11px] font-semibold uppercase tracking-widest font-head">04</span>
+          <h3 class="text-white text-lg font-bold mt-2 mb-3">Machine Learning</h3>
+          <p class="text-blue-200 text-sm leading-relaxed">Computational statistics and ML techniques to infer, predict, and design biological behavior from multi-omics data.</p>
+        </div>
+        <a href="#publications" class="inline-flex items-center gap-1 text-blue-200 text-[12px] font-semibold mt-4 hover:text-white transition-colors">
+          Related Papers <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+        </a>
+      </div>
+
+      <!-- Tall card: Open Tools -->
+      <div class="b5 bg-emerald-50 border border-emerald-100 rounded-2xl p-6 flex flex-col justify-between">
+        <div>
+          <i data-lucide="code-2" class="w-7 h-7 text-emerald-600 mb-3"></i>
+          <h3 class="text-slate-800 text-lg font-bold mb-3">Open-Source Tools</h3>
+          <p class="text-slate-600 text-sm leading-relaxed">Five software packages publicly released — METACONE, GRASP, LooplessFluxSampler, Fast-SNP, ll-ACHRB — with combined citations in 150+ works.</p>
+        </div>
+        <a href="#resources" class="inline-flex items-center gap-1 text-emerald-700 text-[12px] font-semibold mt-4 hover:text-emerald-900 transition-colors">
+          Explore Software <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+        </a>
+      </div>
+
+      <!-- Tall card: Lab quick facts -->
+      <div class="b6 bg-slate-100 rounded-2xl p-6 flex flex-col justify-between">
+        <div>
+          <i data-lucide="flask-conical" class="w-7 h-7 text-[#1E3A8A] mb-3"></i>
+          <h3 class="text-slate-800 text-lg font-bold mb-4">Lab at a Glance</h3>
+          <ul class="space-y-3 text-sm text-slate-600">
+            <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-[#F59E0B] mt-0.5 flex-shrink-0"></i>Basal Center for AI Research</li>
+            <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-[#F59E0B] mt-0.5 flex-shrink-0"></i>FONDECYT Regular 2026–2029</li>
+            <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-[#F59E0B] mt-0.5 flex-shrink-0"></i>Dept. Chemical &amp; Bioprocess Eng.</li>
+            <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-[#F59E0B] mt-0.5 flex-shrink-0"></i>Institute for Math &amp; Comp. Eng.</li>
+          </ul>
+        </div>
+        <a href="#join" class="inline-flex items-center gap-1 text-[#1E3A8A] text-[12px] font-semibold mt-4 hover:text-blue-700 transition-colors">
+          Open Positions <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PEOPLE ═══════════════════════════════════════════════════════════════════ -->
+<section id="people" class="py-24 px-6 bg-slate-50">
+  <div class="max-w-7xl mx-auto">
+    <div class="mb-12">
+      <span class="text-[#F59E0B] text-[11px] font-semibold uppercase tracking-widest font-head">Team</span>
+      <h2 class="text-3xl lg:text-4xl font-bold text-[#1E3A8A] mt-2">The People Behind the Science</h2>
+    </div>
+
+    <!-- PI Card -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-8 mb-10 flex flex-col md:flex-row gap-8">
+      <div class="flex-shrink-0">
+        <div class="pi-avatar mx-auto md:mx-0">PS</div>
+      </div>
+      <div class="flex-1">
+        <div class="flex flex-wrap items-start justify-between gap-4 mb-3">
+          <div>
+            <h3 class="text-xl font-bold text-[#1E3A8A]">Prof. Pedro A. Saa</h3>
+            <p class="text-sm text-slate-500 mt-0.5">Principal Investigator</p>
           </div>
-          <div class="edu-item">
-            <div class="edu-row"><span class="edu-degree">MEng</span><span class="edu-where">Pontificia Universidad Católica de Chile, 2012</span></div>
-            <p class="edu-thesis">Modelling oxygen dissolution during pulse oxygen additions under oenological conditions</p>
+          <div class="flex items-center gap-3">
+            <a href="mailto:pnsaa@uc.cl" class="inline-flex items-center gap-1.5 text-[12px] bg-[#1E3A8A] text-white px-3 py-1.5 rounded-lg hover:bg-blue-800 transition-colors font-semibold">
+              <i data-lucide="mail" class="w-3 h-3"></i> pnsaa@uc.cl
+            </a>
+            <a href="https://scholar.google.com/citations?user=q38WulcAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="p-1.5 text-slate-400 hover:text-[#1E3A8A] transition-colors" title="Google Scholar">
+              <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+            </a>
+            <a href="https://orcid.org/0000-0002-1659-9041" target="_blank" rel="noopener noreferrer" class="p-1.5 text-slate-400 hover:text-[#1E3A8A] transition-colors" title="ORCID">
+              <i data-lucide="link" class="w-4 h-4"></i>
+            </a>
           </div>
-          <div class="edu-item">
-            <div class="edu-row"><span class="edu-degree">BEng</span><span class="edu-where">Pontificia Universidad Católica de Chile, 2012</span></div>
-            <p class="edu-thesis">Biological Engineering</p>
+        </div>
+        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+          Faculty member at the Department of Chemical and Bioprocess Engineering and the Institute for Mathematical and Computational Engineering of PUC Chile. My group develops computational platforms at the intersection of optimization, Bayesian statistics, and machine learning to understand and engineer metabolism — from single-cell models to industrial bioprocesses.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="tag-pill bg-blue-50 text-[#1E3A8A] border border-blue-100">Metabolic Engineering</span>
+          <span class="tag-pill bg-blue-50 text-[#1E3A8A] border border-blue-100">Biosystems Modelling</span>
+          <span class="tag-pill bg-blue-50 text-[#1E3A8A] border border-blue-100">Optimization</span>
+          <span class="tag-pill bg-blue-50 text-[#1E3A8A] border border-blue-100">Computational Statistics</span>
+          <span class="tag-pill bg-amber-50 text-amber-700 border border-amber-100">Applied Machine Learning</span>
+        </div>
+        <div class="mt-4 pt-4 border-t border-slate-100">
+          <p class="text-[11px] text-slate-400 uppercase tracking-widest font-semibold mb-2">Education</p>
+          <div class="flex flex-wrap gap-x-6 gap-y-1 text-xs text-slate-500">
+            <span><strong class="text-slate-700">PhD</strong> — The University of Queensland, 2017</span>
+            <span><strong class="text-slate-700">MEng</strong> — PUC Chile, 2012</span>
+            <span><strong class="text-slate-700">BEng</strong> — PUC Chile, 2012</span>
           </div>
         </div>
       </div>
     </div>
 
-    <hr class="divider">
+    <!-- Filter buttons -->
+    <div class="flex flex-wrap gap-2 mb-6 no-print">
+      <button onclick="filterMembers('all')" data-filter="all" class="filter-btn active-filter text-[12px] px-3 py-1.5 rounded-lg border font-medium transition-all">All Members</button>
+      <button onclick="filterMembers('phd')" data-filter="phd" class="filter-btn text-[12px] px-3 py-1.5 rounded-lg border font-medium transition-all">PhD Students</button>
+      <button onclick="filterMembers('msc')" data-filter="msc" class="filter-btn text-[12px] px-3 py-1.5 rounded-lg border font-medium transition-all">Master Students</button>
+    </div>
 
-    <div class="research-areas">
-      <p class="section-label">Research Areas</p>
-      <div class="area-grid">
-        <div class="area-card">
-          <div class="area-num">01</div>
-          <h3 class="area-title">Metabolic Modeling</h3>
-          <p class="area-desc">Genome-scale network reconstruction, kinetic and stoichiometric models of cellular metabolism.</p>
-        </div>
-        <div class="area-card">
-          <div class="area-num">02</div>
-          <h3 class="area-title">Systems Biotechnology</h3>
-          <p class="area-desc">Engineering biological systems for sustainable production of chemicals, fuels, and pharmaceuticals.</p>
-        </div>
-        <div class="area-card">
-          <div class="area-num">03</div>
-          <h3 class="area-title">Bioprocess Optimization</h3>
-          <p class="area-desc">Advanced optimization frameworks for bioreactor design, control, and scale-up strategies.</p>
-        </div>
-        <div class="area-card">
-          <div class="area-num">04</div>
-          <h3 class="area-title">Machine Learning</h3>
-          <p class="area-desc">Computational statistics and ML techniques to infer, predict, and design biological behavior.</p>
-        </div>
+    <style>
+      .filter-btn { background:white; border-color:#e2e8f0; color:#64748b; }
+      .filter-btn:hover, .active-filter { background:#1E3A8A; border-color:#1E3A8A; color:white; }
+    </style>
+
+    <!-- PhD Students -->
+    <div id="phd-section">
+      <h4 class="text-[11px] text-slate-400 uppercase tracking-widest font-semibold mb-4 font-head">PhD Students</h4>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8" id="phd-grid">
+        <!-- cards generated below -->
       </div>
     </div>
-  </div>
-</section>
 
-<hr class="divider">
+    <!-- MSc Students -->
+    <div id="msc-section">
+      <h4 class="text-[11px] text-slate-400 uppercase tracking-widest font-semibold mb-4 font-head">Master Students</h4>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8" id="msc-grid">
+      </div>
+    </div>
 
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="projects-inner">
-    <p class="section-label">Projects</p>
+    <!-- Alumni -->
     <div>
-      <h3 class="sub-heading">Current</h3>
-      <div class="proj-table">
-        <div class="proj-row"><span class="proj-years">2021–ongoing</span><span class="proj-title">Basal Center for Artificial Intelligence Research</span><span class="proj-role">Principal Investigator</span></div>
-        <div class="proj-row"><span class="proj-years">2025–ongoing</span><span class="proj-title">Center for Research and Innovation VitiScience</span><span class="proj-role">Adjunct Investigator</span></div>
-        <div class="proj-row"><span class="proj-years">2026–2027</span><span class="proj-title">Avanza UC AV25292 — From mining waste to wealth: Optimization of EPS production by metabolic engineering using Sulfobacillus acidophilus</span><span class="proj-role">Principal Investigator</span></div>
-        <div class="proj-row"><span class="proj-years">2026–2029</span><span class="proj-title">FONDECYT Regular No. 1262500 — Scalable prediction of metabolic fluxes using modelling frameworks informed by enzyme kinetics and omics data</span><span class="proj-role">Principal Investigator</span></div>
-        <div class="proj-row"><span class="proj-years">2025–2029</span><span class="proj-title">FONDECYT Exploración No. 13250023 — Impact of GABA-producing bacterial consortia in neuroprotection</span><span class="proj-role">Co-Investigator</span></div>
-        <div class="proj-row"><span class="proj-years">2023–2027</span><span class="proj-title">FONDECYT Regular No. 1230764 — Model-guided analysis of microbial interactions in gut microbiota</span><span class="proj-role">Co-Investigator</span></div>
-      </div>
-    </div>
-    <div>
-      <div class="past-toggle-row">
-        <h3 class="sub-heading" style="margin-bottom:0">Past</h3>
-        <button class="toggle-btn" id="past-toggle" onclick="togglePast()">+ Show all</button>
-      </div>
-      <div id="past-projects">
-        <div class="proj-row past"><span class="proj-years">2025</span><span class="proj-title muted">Applied Seed Fund UC-Concha y Toro — Digital model of white wine fermentation</span><span class="proj-role muted">Principal Investigator</span></div>
-        <div class="proj-row past"><span class="proj-years">2024–2025</span><span class="proj-title muted">Open Seed Fund UC-Imperial College London — Rational engineering of yeast cell factories</span><span class="proj-role muted">Principal Investigator</span></div>
-        <div class="proj-row past"><span class="proj-years">2023–2025</span><span class="proj-title muted">Open Seed Fund UC-The University of Edinburgh — Computational framework for microbial community interaction networks</span><span class="proj-role muted">Principal Investigator</span></div>
-        <div class="proj-row past"><span class="proj-years">2023–2024</span><span class="proj-title muted">Applied Seed Fund UC-Tecnológico de Monterrey — Improvement of PHB production in H. campaniensis</span><span class="proj-role muted">Co-Investigator</span></div>
-        <div class="proj-row past"><span class="proj-years">2022–2024</span><span class="proj-title muted">Open Seed Fund UC-Northwestern University — Model-guided experimental design for cell-free enzymatic systems</span><span class="proj-role muted">Principal Investigator</span></div>
-        <div class="proj-row past"><span class="proj-years">2021–2024</span><span class="proj-title muted">FONDECYT Regular No. 1210346 — Sustainable production of mealybug pheromones</span><span class="proj-role muted">Co-Investigator</span></div>
-        <div class="proj-row past"><span class="proj-years">2021–2023</span><span class="proj-title muted">Open Seed Fund UC-The University of Queensland — Sampling framework for nonequilibrium thermodynamics and metabolic fluxes</span><span class="proj-role muted">Principal Investigator</span></div>
-        <div class="proj-row past"><span class="proj-years">2019–2023</span><span class="proj-title muted">FONDECYT Regular No. 1190074 — Cross-feeding interactions in the gut microbiome</span><span class="proj-role muted">Co-Investigator</span></div>
-        <div class="proj-row past"><span class="proj-years">2020–2022</span><span class="proj-title muted">Open Seed Fund UC-Tecnológico de Monterrey — Halomonas species as microbial platform for bioplastic production</span><span class="proj-role muted">Co-Investigator</span></div>
-        <div class="proj-row past" style="border-bottom:none"><span class="proj-years">2019–2022</span><span class="proj-title muted">FONDECYT Iniciación No. 11190871 — Bayesian framework for kinetic data and thermodynamic constraints in cellular metabolism</span><span class="proj-role muted">Principal Investigator</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PEOPLE -->
-<section id="people">
-  <div class="people-inner">
-    <p class="section-label">People</p>
-    <h3 class="sub-heading">Group Leader</h3>
-    <div class="pi-card">
-      <div>
-        <h2 class="pi-name">Prof. Pedro A. Saa</h2>
-        <a href="mailto:pnsaa@uc.cl" class="pi-email">pnsaa@uc.cl</a>
-        <p class="pi-affil">Department of Chemical and Bioprocess Engineering &amp; Institute for Mathematical and Computational Engineering, PUC Chile.</p>
-      </div>
-      <div>
-        <p class="pi-interests-label">Research Interests</p>
-        <p class="pi-interests">Metabolic Engineering · Biosystems Modelling · Optimization · Computational Statistics · Applied Machine Learning</p>
-      </div>
-    </div>
-
-    <h3 class="sub-heading">PhD Students</h3>
-    <div class="student-grid-3">
-      <div class="student-card"><p class="student-name">Reinier Rizo</p><p class="student-years">2024–ongoing</p><p class="student-prog">PhD — Chemical and Bioprocess Engineering, PUC</p></div>
-      <div class="student-card"><p class="student-name">Francisca Villanueva</p><p class="student-years">2024–ongoing</p><p class="student-prog">PhD — Chemical and Bioprocess Engineering, PUC</p></div>
-      <div class="student-card"><p class="student-name">Jorge Garay</p><p class="student-years">2023–ongoing</p><p class="student-prog">PhD — Chemical and Bioprocess Engineering, PUC</p></div>
-      <div class="student-card"><p class="student-name">Álvaro Altamirano</p><p class="student-years">2019–ongoing</p><p class="student-prog">PhD — Chemical and Bioprocess Engineering, PUC</p></div>
-    </div>
-
-    <h3 class="sub-heading">Master Students</h3>
-    <div class="student-grid-4">
-      <div class="student-card"><p class="student-name">Gabriel Miranda</p><p class="student-years">2025–ongoing</p><p class="student-prog">MSc — Chemical and Bioprocess Engineering, PUC</p></div>
-      <div class="student-card"><p class="student-name">Gabriel Díaz</p><p class="student-years">2024–ongoing</p><p class="student-prog">MSc — Chemical and Bioprocess Engineering, PUC</p></div>
-      <div class="student-card"><p class="student-name">Celeste Vargas</p><p class="student-years">2024–ongoing</p><p class="student-prog">MSc — Chemical and Bioprocess Engineering, PUC</p></div>
-      <div class="student-card"><p class="student-name">Ignacio Tapia</p><p class="student-years">2024–ongoing</p><p class="student-prog">MSc — Chemical and Bioprocess Engineering, PUC</p></div>
-    </div>
-
-    <h3 class="sub-heading">Alumni</h3>
-    <div class="alumni-table">
-      <div class="alumni-row"><div><p class="alumni-name">María Catalina Casanueva</p><p class="alumni-years">2022–2025</p></div><p class="alumni-current">Process Engineer at CCU, Santiago, Chile</p></div>
-      <div class="alumni-row"><div><p class="alumni-name">Ricardo Leiva</p><p class="alumni-years">2021–2025</p></div><p class="alumni-current">Software Engineer at DICTUC SA, Santiago, Chile</p></div>
-      <div class="alumni-row"><div><p class="alumni-name">Benjamín Elizondo</p><p class="alumni-years">2021–2024</p></div><p class="alumni-current">Bioprocess Engineer at Advanced Biotech, Inc., New Jersey, US</p></div>
-      <div class="alumni-row"><div><p class="alumni-name">Sebastián Zapararte</p><p class="alumni-years">2022–2024</p></div><p class="alumni-current">AI Engineer at Sticta Biologicals, Santiago, Chile</p></div>
-      <div class="alumni-row" style="border-bottom:none"><div><p class="alumni-name">Carolina Deantas</p><p class="alumni-years">2021–2023</p></div><p class="alumni-current">PhD student at ITQB Nova, University of Lisbon, Portugal</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- RESOURCES -->
-<section id="resources">
-  <div class="resources-inner">
-    <p class="section-label">Resources</p>
-    <div class="resources-header">
-      <h2 class="resources-h2">Open-source <strong>software</strong> &amp; code</h2>
-      <p class="resources-desc">Tools and frameworks developed by the lab for metabolic modeling, flux sampling, and kinetic simulation. All released as open source for the community.</p>
-    </div>
-    <div class="resource-grid">
-      <a href="https://doi.org/10.1016/j.compbiolchem.2025.108607" target="_blank" rel="noopener noreferrer" class="resource-card">
-        <div class="resource-top"><span class="resource-tag">Julia</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 11L11 3M11 3H5M11 3V9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3 class="resource-name">METACONE</h3>
-        <p class="resource-desc">Scalable framework for exploring the conversions cone of metabolic networks.</p>
-        <p class="resource-paper">Altamirano et al., 2026 — Comput. Biol. Chem.</p>
-      </a>
-      <a href="https://doi.org/10.1186/s12859-023-05616-2" target="_blank" rel="noopener noreferrer" class="resource-card">
-        <div class="resource-top"><span class="resource-tag">MATLAB</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 11L11 3M11 3H5M11 3V9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3 class="resource-name">LooplessFluxSampler</h3>
-        <p class="resource-desc">Efficient algorithm for sampling the loopless flux solution space of genome-scale metabolic models.</p>
-        <p class="resource-paper">Saa et al., 2024 — BMC Bioinformatics</p>
-      </a>
-      <a href="https://doi.org/10.1093/bioadv/vbac066" target="_blank" rel="noopener noreferrer" class="resource-card">
-        <div class="resource-top"><span class="resource-tag">MATLAB</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 11L11 3M11 3H5M11 3V9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3 class="resource-name">GRASP</h3>
-        <p class="resource-desc">Computational platform for building thermodynamically consistent kinetic models of cell metabolism.</p>
-        <p class="resource-paper">Matos et al., 2022 — Bioinformatics Advances</p>
-      </a>
-      <a href="http://dx.doi.org/10.1093/bioinformatics/btw555" target="_blank" rel="noopener noreferrer" class="resource-card">
-        <div class="resource-top"><span class="resource-tag">MATLAB</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 11L11 3M11 3H5M11 3V9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3 class="resource-name">Fast-SNP</h3>
-        <p class="resource-desc">Matrix pre-processing algorithm for efficient loopless flux optimization of metabolic models.</p>
-        <p class="resource-paper">Saa &amp; Nielsen, 2016 — Bioinformatics</p>
-      </a>
-      <a href="http://dx.doi.org/10.1093/bioinformatics/btw132" target="_blank" rel="noopener noreferrer" class="resource-card">
-        <div class="resource-top"><span class="resource-tag">MATLAB</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 11L11 3M11 3H5M11 3V9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3 class="resource-name">ll-ACHRB</h3>
-        <p class="resource-desc">Scalable algorithm for sampling the feasible solution space of metabolic networks.</p>
-        <p class="resource-paper">Saa &amp; Nielsen, 2016 — Bioinformatics</p>
-      </a>
-      <a href="https://github.com/SysBioengLab" target="_blank" rel="noopener noreferrer" class="resource-card">
-        <div class="resource-top"><span class="resource-tag">Repos</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 11L11 3M11 3H5M11 3V9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3 class="resource-name">GitHub Lab</h3>
-        <p class="resource-desc">Browse all open-source repositories, datasets, and supporting code released by the lab.</p>
-        <p class="resource-paper">Code &amp; data archives</p>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- PUBLICATIONS -->
-<section id="publications">
-  <div class="pub-inner">
-    <p class="section-label">Publications</p>
-    <div class="tab-row">
-      <button class="tab-btn active" onclick="switchTab('journal',this)">Journal Papers (36)</button>
-      <button class="tab-btn" onclick="switchTab('conference',this)">Conference Papers</button>
-      <button class="tab-btn" onclick="switchTab('books',this)">Book Chapters</button>
-      <button class="tab-btn" onclick="switchTab('pipeline',this)">In Preparation</button>
-    </div>
-
-    <!-- Journal -->
-    <div id="tab-journal" class="tab-panel active">
-      <div class="year-filters" id="year-filters"></div>
-      <div class="pub-list" id="pub-list"></div>
-    </div>
-
-    <!-- Conference papers -->
-    <div id="tab-conference" class="tab-panel">
-      <div class="pub-list">
-        <div class="pub-item"><div class="pub-year">2024</div><div class="pub-body"><p class="pub-authors">Márquez C, Saa P, Pérez-Correa JR</p><a href="https://doi.org/10.1109/ICA-ACCA62622.2024.10766766" target="_blank" rel="noopener noreferrer" class="pub-title">Evaluación por simulación de estrategias de control automático para fermentadores industriales de cerveza</a><p class="pub-journal">IEEE International Conference on Automation/XXVI Congress of the Chilean Association of Automatic Control (ICA-ACCA), Santiago, Chile</p></div></div>
-      </div>
-    </div>
-
-    <!-- Books -->
-    <div id="tab-books" class="tab-panel">
-      <div class="pub-list">
-        <div class="pub-item"><div class="pub-year">2022</div><div class="pub-body"><p class="pub-authors">Saa PA</p><a href="https://doi.org/10.1007/978-3-030-89680-5_1" target="_blank" rel="noopener noreferrer" class="pub-title">Rational metabolic pathway prediction and design: Computational tools and their applications for yeast systems and synthetic biology</a><p class="pub-journal">Synthetic Biology of Yeasts. Springer, Cham</p></div></div>
-        <div class="pub-item"><div class="pub-year">2022</div><div class="pub-body"><p class="pub-authors">Mendoza S, Saa PA, Teusink B, Agosin E</p><a href="https://doi.org/10.1007/978-1-0716-1831-8_16" target="_blank" rel="noopener noreferrer" class="pub-title">Metabolic modelling of wine fermentation at genome scale</a><p class="pub-journal">Computational Systems Biology in Medicine and Biotechnology. Methods in Molecular Biology vol. 2399, Springer</p></div></div>
-      </div>
-    </div>
-
-    <!-- Pipeline -->
-    <div id="tab-pipeline" class="tab-panel">
-      <div class="pipeline-section">
-        <p class="pipeline-label">Under Review</p>
-        <div class="pipeline-list">
-          <div class="pipeline-item">Vargas-Luna C, Tapia I, Godoy L, Saa PA, Franco W. Characterization and kinetic modeling of Levilactobacillus brevis malolactic fermentation under oenological conditions and different ethanol concentrations.</div>
-          <div class="pipeline-item">Sepúlveda-Celis A, Agosin E, Pérez-Correa JR, Saa PA. A computational framework for building dynamic bioreactor models integrating detailed enzyme kinetics with limited data: beta-ionone production in Saccharomyces cerevisiae as a case study.</div>
-          <div class="pipeline-item">Tapia I, Torrealba C, Luna R, Pérez-Correa JR, Saa PA. Dynamic balance of sparse flux vectors for efficient simulation of culture dynamics and network reduction.</div>
-          <div class="pipeline-item">Torrealba C, Luna R, Saa PA, Pérez-Correa JR. A systematic transfer workflow for robust model identification across scales: Application to wine fermentation.</div>
-        </div>
-      </div>
-      <div class="pipeline-section">
-        <p class="pipeline-label">In Preparation</p>
-        <div class="pipeline-list">
-          <div class="pipeline-item">Zapararte S, Marcellin E, Nielsen LK, Saa PA. Topologically-constrained sampling of thermodynamically feasible mass-balanced states in metabolic reaction networks.</div>
-          <div class="pipeline-item">Saa PA, Miranda G, Drovandi C, Nielsen LK. Bayesian parameter inference on the simplex: Convenient transformations and perturbation kernels for Sequential Monte Carlo sampling.</div>
-          <div class="pipeline-item">Riffo-Vicencio et al. A serum antibody profile against environmental and microbial antigens distinguishes new-onset inflammatory bowel disease patients in a newly industrialized country.</div>
+      <h4 class="text-[11px] text-slate-400 uppercase tracking-widest font-semibold mb-4 font-head">Alumni</h4>
+      <div class="bg-white rounded-xl border border-slate-100 overflow-hidden">
+        <div class="grid divide-y divide-slate-100">
+          <div class="grid grid-cols-3 gap-4 px-5 py-3 text-[11px] text-slate-400 uppercase tracking-widest font-semibold">
+            <span>Name</span><span>Years</span><span>Current Position</span>
+          </div>
+          <div class="grid grid-cols-3 gap-4 px-5 py-4 text-sm hover:bg-slate-50 transition-colors">
+            <span class="font-medium text-slate-700">María Catalina Casanueva</span>
+            <span class="text-slate-400 font-mono text-xs self-center">2022–2025</span>
+            <span class="text-slate-600 flex items-center gap-1.5"><i data-lucide="building-2" class="w-3.5 h-3.5 text-slate-400"></i>Process Engineer, CCU — Chile</span>
+          </div>
+          <div class="grid grid-cols-3 gap-4 px-5 py-4 text-sm hover:bg-slate-50 transition-colors">
+            <span class="font-medium text-slate-700">Ricardo Leiva</span>
+            <span class="text-slate-400 font-mono text-xs self-center">2021–2025</span>
+            <span class="text-slate-600 flex items-center gap-1.5"><i data-lucide="building-2" class="w-3.5 h-3.5 text-slate-400"></i>Software Engineer, DICTUC SA — Chile</span>
+          </div>
+          <div class="grid grid-cols-3 gap-4 px-5 py-4 text-sm hover:bg-slate-50 transition-colors">
+            <span class="font-medium text-slate-700">Benjamín Elizondo</span>
+            <span class="text-slate-400 font-mono text-xs self-center">2021–2024</span>
+            <span class="text-slate-600 flex items-center gap-1.5"><i data-lucide="building-2" class="w-3.5 h-3.5 text-slate-400"></i>Bioprocess Engineer, Advanced Biotech — NJ, US</span>
+          </div>
+          <div class="grid grid-cols-3 gap-4 px-5 py-4 text-sm hover:bg-slate-50 transition-colors">
+            <span class="font-medium text-slate-700">Sebastián Zapararte</span>
+            <span class="text-slate-400 font-mono text-xs self-center">2022–2024</span>
+            <span class="text-slate-600 flex items-center gap-1.5"><i data-lucide="building-2" class="w-3.5 h-3.5 text-slate-400"></i>AI Engineer, Sticta Biologicals — Chile</span>
+          </div>
+          <div class="grid grid-cols-3 gap-4 px-5 py-4 text-sm hover:bg-slate-50 transition-colors">
+            <span class="font-medium text-slate-700">Carolina Deantas</span>
+            <span class="text-slate-400 font-mono text-xs self-center">2021–2023</span>
+            <span class="text-slate-600 flex items-center gap-1.5"><i data-lucide="graduation-cap" class="w-3.5 h-3.5 text-slate-400"></i>PhD Student, ITQB Nova — Portugal</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER / CONTACT -->
-<footer id="contact">
-  <div class="footer-inner">
-    <div class="footer-grid">
+<!-- ═══ PUBLICATIONS ════════════════════════════════════════════════════════════ -->
+<section id="publications" class="py-24 px-6 bg-white">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-wrap items-end justify-between gap-4 mb-10">
       <div>
-        <div class="footer-logo-row">
-          <svg width="36" height="36" viewBox="0 0 120 120" fill="none" aria-hidden="true">
-            <circle cx="60" cy="60" r="50" fill="none" stroke="#aaaaaa" stroke-width="0.6" opacity="0.25"/>
-            <line x1="50" y1="30" x2="40" y2="56" stroke="#aaaaaa" stroke-width="1.1" opacity="0.75"/>
-            <line x1="40" y1="56" x2="64" y2="60" stroke="#aaaaaa" stroke-width="1.1" opacity="0.75"/>
-            <line x1="64" y1="60" x2="88" y2="64" stroke="#aaaaaa" stroke-width="1.1" opacity="0.75"/>
-            <line x1="30" y1="78" x2="40" y2="56" stroke="#aaaaaa" stroke-width="1.1" opacity="0.75"/>
-            <circle cx="50" cy="30" r="5" fill="#666666"/>
-            <circle cx="80" cy="30" r="5" fill="#999999" stroke="#1e1e1e" stroke-width="1.2"/>
-            <circle cx="40" cy="56" r="5" fill="#888888"/>
-            <circle cx="64" cy="60" r="5" fill="#666666"/>
-            <circle cx="88" cy="64" r="5" fill="#666666"/>
-            <circle cx="30" cy="78" r="4.5" fill="#bbbbbb" stroke="#1e1e1e" stroke-width="1.2"/>
+        <span class="text-[#F59E0B] text-[11px] font-semibold uppercase tracking-widest font-head">Publications</span>
+        <h2 class="text-3xl lg:text-4xl font-bold text-[#1E3A8A] mt-2">Publication Archive</h2>
+      </div>
+      <button onclick="window.print()" class="no-print inline-flex items-center gap-2 text-slate-500 hover:text-[#1E3A8A] border border-slate-200 hover:border-[#1E3A8A] text-[12px] px-4 py-2 rounded-lg transition-all">
+        <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print-Friendly
+      </button>
+    </div>
+
+    <!-- Tab row -->
+    <div class="no-print flex flex-wrap gap-0 mb-6 border border-slate-200 rounded-xl overflow-hidden w-fit bg-white">
+      <button onclick="switchPubTab('journal',this)" id="tab-journal-btn" class="pub-tab-btn active-tab px-5 py-2.5 text-[13px] font-medium border-r border-slate-200 transition-all">Journal Papers (36)</button>
+      <button onclick="switchPubTab('conference',this)" class="pub-tab-btn px-5 py-2.5 text-[13px] font-medium border-r border-slate-200 transition-all">Conference</button>
+      <button onclick="switchPubTab('books',this)" class="pub-tab-btn px-5 py-2.5 text-[13px] font-medium border-r border-slate-200 transition-all">Book Chapters</button>
+      <button onclick="switchPubTab('pipeline',this)" class="pub-tab-btn px-5 py-2.5 text-[13px] font-medium transition-all">In Preparation</button>
+    </div>
+    <style>
+      .pub-tab-btn { background:white; color:#64748b; }
+      .pub-tab-btn:hover { background:#f8fafc; color:#1E3A8A; }
+      .active-tab { background:#1E3A8A !important; color:white !important; }
+      .pub-panel { display:none; }
+      .pub-panel.active { display:block; }
+    </style>
+
+    <!-- Journal panel -->
+    <div id="panel-journal" class="pub-panel active">
+      <!-- year filters -->
+      <div class="no-print flex flex-wrap gap-2 mb-5" id="year-filters"></div>
+      <!-- featured -->
+      <div class="mb-6">
+        <h4 class="text-[11px] text-[#F59E0B] uppercase tracking-widest font-semibold mb-3 font-head">Featured Works</h4>
+        <div class="grid md:grid-cols-2 gap-4 mb-6" id="featured-list"></div>
+      </div>
+      <h4 class="text-[11px] text-slate-400 uppercase tracking-widest font-semibold mb-3 font-head">All Papers</h4>
+      <div class="border border-slate-100 rounded-xl overflow-hidden" id="pub-list"></div>
+    </div>
+
+    <!-- Conference panel -->
+    <div id="panel-conference" class="pub-panel">
+      <div class="border border-slate-100 rounded-xl overflow-hidden">
+        <div class="pub-row grid grid-cols-[56px_1fr] border-b border-slate-100">
+          <div class="py-5 pl-5 font-mono text-xs text-slate-400">2024</div>
+          <div class="py-4 pr-6">
+            <p class="text-xs text-slate-400 font-mono mb-1">Márquez C, Saa P, Pérez-Correa JR</p>
+            <a href="https://doi.org/10.1109/ICA-ACCA62622.2024.10766766" target="_blank" rel="noopener noreferrer" class="text-sm text-slate-800 hover:text-[#1E3A8A] transition-colors block mb-1">Evaluación por simulación de estrategias de control automático para fermentadores industriales de cerveza</a>
+            <p class="text-xs text-slate-500 italic">IEEE ICA-ACCA, Santiago, Chile</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Books panel -->
+    <div id="panel-books" class="pub-panel">
+      <div class="border border-slate-100 rounded-xl overflow-hidden">
+        <div class="pub-row grid grid-cols-[56px_1fr] border-b border-slate-100">
+          <div class="py-5 pl-5 font-mono text-xs text-slate-400">2022</div>
+          <div class="py-4 pr-6">
+            <p class="text-xs text-slate-400 font-mono mb-1">Saa PA</p>
+            <a href="https://doi.org/10.1007/978-3-030-89680-5_1" target="_blank" rel="noopener noreferrer" class="text-sm text-slate-800 hover:text-[#1E3A8A] transition-colors block mb-1">Rational metabolic pathway prediction and design: Computational tools and their applications for yeast systems and synthetic biology</a>
+            <p class="text-xs text-slate-500 italic">Synthetic Biology of Yeasts. Springer, Cham</p>
+          </div>
+        </div>
+        <div class="pub-row grid grid-cols-[56px_1fr]">
+          <div class="py-5 pl-5 font-mono text-xs text-slate-400">2022</div>
+          <div class="py-4 pr-6">
+            <p class="text-xs text-slate-400 font-mono mb-1">Mendoza S, Saa PA, Teusink B, Agosin E</p>
+            <a href="https://doi.org/10.1007/978-1-0716-1831-8_16" target="_blank" rel="noopener noreferrer" class="text-sm text-slate-800 hover:text-[#1E3A8A] transition-colors block mb-1">Metabolic modelling of wine fermentation at genome scale</a>
+            <p class="text-xs text-slate-500 italic">Methods in Molecular Biology vol. 2399, Springer</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pipeline panel -->
+    <div id="panel-pipeline" class="pub-panel">
+      <div class="mb-6">
+        <h4 class="text-[11px] text-slate-400 uppercase tracking-widest font-semibold mb-3 font-head">Under Review</h4>
+        <div class="border border-slate-100 rounded-xl overflow-hidden space-y-0 divide-y divide-slate-100">
+          <div class="p-5 text-sm text-slate-600 leading-relaxed">Vargas-Luna C, Tapia I, Godoy L, Saa PA, Franco W. Characterization and kinetic modeling of <em>Levilactobacillus brevis</em> malolactic fermentation under oenological conditions.</div>
+          <div class="p-5 text-sm text-slate-600 leading-relaxed">Sepúlveda-Celis A, Agosin E, Pérez-Correa JR, Saa PA. A computational framework for building dynamic bioreactor models integrating detailed enzyme kinetics with limited data: beta-ionone production in <em>S. cerevisiae</em>.</div>
+          <div class="p-5 text-sm text-slate-600 leading-relaxed">Tapia I, Torrealba C, Luna R, Pérez-Correa JR, Saa PA. Dynamic balance of sparse flux vectors for efficient simulation of culture dynamics and network reduction.</div>
+          <div class="p-5 text-sm text-slate-600 leading-relaxed">Torrealba C, Luna R, Saa PA, Pérez-Correa JR. A systematic transfer workflow for robust model identification across scales: Application to wine fermentation.</div>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-[11px] text-slate-400 uppercase tracking-widest font-semibold mb-3 font-head">In Preparation</h4>
+        <div class="border border-slate-100 rounded-xl overflow-hidden divide-y divide-slate-100">
+          <div class="p-5 text-sm text-slate-600 leading-relaxed">Zapararte S, Marcellin E, Nielsen LK, Saa PA. Topologically-constrained sampling of thermodynamically feasible mass-balanced states in metabolic reaction networks.</div>
+          <div class="p-5 text-sm text-slate-600 leading-relaxed">Saa PA, Miranda G, Drovandi C, Nielsen LK. Bayesian parameter inference on the simplex: Convenient transformations and perturbation kernels for Sequential Monte Carlo sampling.</div>
+          <div class="p-5 text-sm text-slate-600 leading-relaxed">Riffo-Vicencio et al. A serum antibody profile against environmental and microbial antigens distinguishes new-onset inflammatory bowel disease patients in a newly industrialized country.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ RESOURCES ════════════════════════════════════════════════════════════════ -->
+<section id="resources" class="py-24 px-6 bg-slate-900 dot-bg-dark">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-wrap items-end justify-between gap-4 mb-12">
+      <div>
+        <span class="text-[#F59E0B] text-[11px] font-semibold uppercase tracking-widest font-head">Open Source</span>
+        <h2 class="text-3xl lg:text-4xl font-bold text-white mt-2">Software &amp; Resources</h2>
+      </div>
+      <a href="https://github.com/SysBioengLab" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-slate-300 hover:text-white border border-slate-700 hover:border-slate-500 text-[13px] px-4 py-2 rounded-lg transition-all">
+        <i data-lucide="github" class="w-4 h-4"></i> GitHub Lab
+      </a>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+      <!-- METACONE -->
+      <a href="https://doi.org/10.1016/j.compbiolchem.2025.108607" target="_blank" rel="noopener noreferrer" class="group bg-slate-800 hover:bg-slate-750 border border-slate-700 hover:border-[#F59E0B]/40 rounded-2xl p-6 flex flex-col min-h-[220px] transition-all">
+        <div class="flex items-center justify-between mb-4">
+          <span class="tag-pill bg-[#F59E0B]/15 text-[#F59E0B] border border-[#F59E0B]/30">Julia</span>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-[#F59E0B] transition-colors"></i>
+        </div>
+        <h3 class="text-white text-lg font-bold mb-2">METACONE</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mb-auto">Scalable framework for exploring the conversions cone of metabolic networks.</p>
+        <div class="mt-5 pt-4 border-t border-slate-700 flex items-center justify-between">
+          <p class="text-slate-500 text-[11px] font-mono">Altamirano et al., 2026 — Comput. Biol. Chem.</p>
+          <div class="flex items-center gap-3 text-slate-500 text-[11px]">
+            <span class="flex items-center gap-1"><i data-lucide="star" class="w-3 h-3"></i> —</span>
+            <span class="flex items-center gap-1"><i data-lucide="git-fork" class="w-3 h-3"></i> —</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- LooplessFluxSampler -->
+      <a href="https://doi.org/10.1186/s12859-023-05616-2" target="_blank" rel="noopener noreferrer" class="group bg-slate-800 border border-slate-700 hover:border-[#F59E0B]/40 rounded-2xl p-6 flex flex-col min-h-[220px] transition-all">
+        <div class="flex items-center justify-between mb-4">
+          <span class="tag-pill bg-blue-500/15 text-blue-300 border border-blue-500/30">MATLAB</span>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-[#F59E0B] transition-colors"></i>
+        </div>
+        <h3 class="text-white text-lg font-bold mb-2">LooplessFluxSampler</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mb-auto">Efficient algorithm for sampling the loopless flux solution space of genome-scale metabolic models.</p>
+        <div class="mt-5 pt-4 border-t border-slate-700 flex items-center justify-between">
+          <p class="text-slate-500 text-[11px] font-mono">Saa et al., 2024 — BMC Bioinformatics</p>
+          <div class="flex items-center gap-3 text-slate-500 text-[11px]">
+            <span class="flex items-center gap-1"><i data-lucide="star" class="w-3 h-3"></i> —</span>
+            <span class="flex items-center gap-1"><i data-lucide="git-fork" class="w-3 h-3"></i> —</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- GRASP -->
+      <a href="https://doi.org/10.1093/bioadv/vbac066" target="_blank" rel="noopener noreferrer" class="group bg-slate-800 border border-slate-700 hover:border-[#F59E0B]/40 rounded-2xl p-6 flex flex-col min-h-[220px] transition-all">
+        <div class="flex items-center justify-between mb-4">
+          <span class="tag-pill bg-blue-500/15 text-blue-300 border border-blue-500/30">MATLAB</span>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-[#F59E0B] transition-colors"></i>
+        </div>
+        <h3 class="text-white text-lg font-bold mb-2">GRASP</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mb-auto">Computational platform for building thermodynamically consistent kinetic models of cell metabolism.</p>
+        <div class="mt-5 pt-4 border-t border-slate-700 flex items-center justify-between">
+          <p class="text-slate-500 text-[11px] font-mono">Matos et al., 2022 — Bioinformatics Adv.</p>
+          <div class="flex items-center gap-3 text-slate-500 text-[11px]">
+            <span class="flex items-center gap-1"><i data-lucide="star" class="w-3 h-3"></i> —</span>
+            <span class="flex items-center gap-1"><i data-lucide="git-fork" class="w-3 h-3"></i> —</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Fast-SNP -->
+      <a href="http://dx.doi.org/10.1093/bioinformatics/btw555" target="_blank" rel="noopener noreferrer" class="group bg-slate-800 border border-slate-700 hover:border-[#F59E0B]/40 rounded-2xl p-6 flex flex-col min-h-[220px] transition-all">
+        <div class="flex items-center justify-between mb-4">
+          <span class="tag-pill bg-blue-500/15 text-blue-300 border border-blue-500/30">MATLAB</span>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-[#F59E0B] transition-colors"></i>
+        </div>
+        <h3 class="text-white text-lg font-bold mb-2">Fast-SNP</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mb-auto">Matrix pre-processing algorithm for efficient loopless flux optimization of metabolic models.</p>
+        <div class="mt-5 pt-4 border-t border-slate-700 flex items-center justify-between">
+          <p class="text-slate-500 text-[11px] font-mono">Saa &amp; Nielsen, 2016 — Bioinformatics</p>
+          <div class="flex items-center gap-3 text-slate-500 text-[11px]">
+            <span class="flex items-center gap-1"><i data-lucide="star" class="w-3 h-3"></i> —</span>
+            <span class="flex items-center gap-1"><i data-lucide="git-fork" class="w-3 h-3"></i> —</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- ll-ACHRB -->
+      <a href="http://dx.doi.org/10.1093/bioinformatics/btw132" target="_blank" rel="noopener noreferrer" class="group bg-slate-800 border border-slate-700 hover:border-[#F59E0B]/40 rounded-2xl p-6 flex flex-col min-h-[220px] transition-all">
+        <div class="flex items-center justify-between mb-4">
+          <span class="tag-pill bg-blue-500/15 text-blue-300 border border-blue-500/30">MATLAB</span>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-[#F59E0B] transition-colors"></i>
+        </div>
+        <h3 class="text-white text-lg font-bold mb-2">ll-ACHRB</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mb-auto">Scalable algorithm for sampling the feasible solution space of metabolic networks.</p>
+        <div class="mt-5 pt-4 border-t border-slate-700 flex items-center justify-between">
+          <p class="text-slate-500 text-[11px] font-mono">Saa &amp; Nielsen, 2016 — Bioinformatics</p>
+          <div class="flex items-center gap-3 text-slate-500 text-[11px]">
+            <span class="flex items-center gap-1"><i data-lucide="star" class="w-3 h-3"></i> —</span>
+            <span class="flex items-center gap-1"><i data-lucide="git-fork" class="w-3 h-3"></i> —</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- GitHub archive -->
+      <a href="https://github.com/SysBioengLab" target="_blank" rel="noopener noreferrer" class="group bg-[#F59E0B]/10 border border-[#F59E0B]/30 hover:bg-[#F59E0B]/20 rounded-2xl p-6 flex flex-col min-h-[220px] transition-all">
+        <div class="flex items-center justify-between mb-4">
+          <span class="tag-pill bg-[#F59E0B]/15 text-[#F59E0B] border border-[#F59E0B]/30">Repos</span>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-[#F59E0B]/60 group-hover:text-[#F59E0B] transition-colors"></i>
+        </div>
+        <h3 class="text-white text-lg font-bold mb-2">GitHub Lab</h3>
+        <p class="text-slate-300 text-sm leading-relaxed mb-auto">Browse all open-source repositories, datasets, and supporting code released by the lab.</p>
+        <div class="mt-5 pt-4 border-t border-[#F59E0B]/20">
+          <p class="text-[#F59E0B]/70 text-[11px] font-mono">github.com/SysBioengLab</p>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ NEWS & MILESTONES ══════════════════════════════════════════════════════ -->
+<section id="news" class="py-24 px-6 bg-white">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid lg:grid-cols-2 gap-16">
+      <div>
+        <span class="text-[#F59E0B] text-[11px] font-semibold uppercase tracking-widest font-head">Updates</span>
+        <h2 class="text-3xl font-bold text-[#1E3A8A] mt-2 mb-10">News &amp; Milestones</h2>
+        <div class="relative pl-8 border-l-2 border-slate-100">
+          <!-- timeline items -->
+          <div class="relative mb-8">
+            <div class="tl-dot absolute -left-[33px]"></div>
+            <span class="text-[11px] font-mono text-slate-400 mb-1 block">2026</span>
+            <p class="text-sm font-semibold text-slate-800">New FONDECYT Regular Grant Awarded</p>
+            <p class="text-sm text-slate-500 mt-1">No. 1262500 — Scalable prediction of metabolic fluxes using modelling frameworks informed by enzyme kinetics and omics data (2026–2029).</p>
+          </div>
+          <div class="relative mb-8">
+            <div class="tl-dot absolute -left-[33px]"></div>
+            <span class="text-[11px] font-mono text-slate-400 mb-1 block">2026</span>
+            <p class="text-sm font-semibold text-slate-800">Paper: Beer Digital Twin</p>
+            <p class="text-sm text-slate-500 mt-1">Dazzarola et al. published in <em>Journal of Food Engineering</em> — a digital model integrating industrial process data for beer quality control.</p>
+          </div>
+          <div class="relative mb-8">
+            <div class="tl-dot absolute -left-[33px]"></div>
+            <span class="text-[11px] font-mono text-slate-400 mb-1 block">2026</span>
+            <p class="text-sm font-semibold text-slate-800">METACONE Released</p>
+            <p class="text-sm text-slate-500 mt-1">Altamirano et al. published METACONE in <em>Computational Biology and Chemistry</em> — a scalable Julia framework for metabolic network conversions.</p>
+          </div>
+          <div class="relative mb-8">
+            <div class="tl-dot absolute -left-[33px]"></div>
+            <span class="text-[11px] font-mono text-slate-400 mb-1 block">2025</span>
+            <p class="text-sm font-semibold text-slate-800">Avanza UC Grant — EPS Production from Mining Waste</p>
+            <p class="text-sm text-slate-500 mt-1">Awarded AV25292 to optimize EPS production by metabolic engineering using <em>Sulfobacillus acidophilus</em>.</p>
+          </div>
+          <div class="relative mb-8">
+            <div class="tl-dot absolute -left-[33px]"></div>
+            <span class="text-[11px] font-mono text-slate-400 mb-1 block">2025</span>
+            <p class="text-sm font-semibold text-slate-800">Center for VitiScience — Adjunct Investigator</p>
+            <p class="text-sm text-slate-500 mt-1">Joined the Center for Research and Innovation VitiScience as Adjunct Investigator.</p>
+          </div>
+          <div class="relative mb-8">
+            <div class="tl-dot absolute -left-[33px]"></div>
+            <span class="text-[11px] font-mono text-slate-400 mb-1 block">2025</span>
+            <p class="text-sm font-semibold text-slate-800">Paper: β-carotene in Yeast</p>
+            <p class="text-sm text-slate-500 mt-1">Elizondo &amp; Saa published complex kinetic models predicting β-carotene production in <em>ACS Synthetic Biology</em>.</p>
+          </div>
+          <div class="relative">
+            <div class="tl-dot absolute -left-[33px]"></div>
+            <span class="text-[11px] font-mono text-slate-400 mb-1 block">2024</span>
+            <p class="text-sm font-semibold text-slate-800">LooplessFluxSampler Published</p>
+            <p class="text-sm text-slate-500 mt-1">Saa et al. published efficient loopless flux sampling algorithm in <em>BMC Bioinformatics</em>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Projects sidebar -->
+      <div>
+        <span class="text-[#F59E0B] text-[11px] font-semibold uppercase tracking-widest font-head">Funding</span>
+        <h2 class="text-3xl font-bold text-[#1E3A8A] mt-2 mb-10">Active Projects</h2>
+        <div class="space-y-3">
+          <div class="bg-slate-50 border border-slate-100 rounded-xl p-5">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <span class="tag-pill bg-[#1E3A8A]/10 text-[#1E3A8A] border border-[#1E3A8A]/20 mb-2 inline-flex">Principal Investigator</span>
+                <p class="text-sm font-semibold text-slate-800 leading-snug">Basal Center for Artificial Intelligence Research</p>
+                <p class="text-xs text-slate-400 font-mono mt-1">2021–ongoing</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-slate-50 border border-slate-100 rounded-xl p-5">
+            <div>
+              <span class="tag-pill bg-[#1E3A8A]/10 text-[#1E3A8A] border border-[#1E3A8A]/20 mb-2 inline-flex">Principal Investigator</span>
+              <p class="text-sm font-semibold text-slate-800 leading-snug">FONDECYT Regular No. 1262500 — Scalable prediction of metabolic fluxes</p>
+              <p class="text-xs text-slate-400 font-mono mt-1">2026–2029</p>
+            </div>
+          </div>
+          <div class="bg-slate-50 border border-slate-100 rounded-xl p-5">
+            <div>
+              <span class="tag-pill bg-amber-50 text-amber-700 border border-amber-200 mb-2 inline-flex">Co-Investigator</span>
+              <p class="text-sm font-semibold text-slate-800 leading-snug">FONDECYT Exploración No. 13250023 — Impact of GABA-producing bacterial consortia in neuroprotection</p>
+              <p class="text-xs text-slate-400 font-mono mt-1">2025–2029</p>
+            </div>
+          </div>
+          <div class="bg-slate-50 border border-slate-100 rounded-xl p-5">
+            <div>
+              <span class="tag-pill bg-amber-50 text-amber-700 border border-amber-200 mb-2 inline-flex">Co-Investigator</span>
+              <p class="text-sm font-semibold text-slate-800 leading-snug">FONDECYT Regular No. 1230764 — Model-guided analysis of microbial interactions in gut microbiota</p>
+              <p class="text-xs text-slate-400 font-mono mt-1">2023–2027</p>
+            </div>
+          </div>
+          <div class="bg-slate-50 border border-slate-100 rounded-xl p-5">
+            <div>
+              <span class="tag-pill bg-[#1E3A8A]/10 text-[#1E3A8A] border border-[#1E3A8A]/20 mb-2 inline-flex">Principal Investigator</span>
+              <p class="text-sm font-semibold text-slate-800 leading-snug">Avanza UC AV25292 — EPS production from mining waste via <em>S. acidophilus</em></p>
+              <p class="text-xs text-slate-400 font-mono mt-1">2026–2027</p>
+            </div>
+          </div>
+          <div class="bg-slate-50 border border-slate-100 rounded-xl p-5">
+            <div>
+              <span class="tag-pill bg-[#1E3A8A]/10 text-[#1E3A8A] border border-[#1E3A8A]/20 mb-2 inline-flex">Adjunct Investigator</span>
+              <p class="text-sm font-semibold text-slate-800 leading-snug">Center for Research and Innovation VitiScience</p>
+              <p class="text-xs text-slate-400 font-mono mt-1">2025–ongoing</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ JOIN US ════════════════════════════════════════════════════════════════ -->
+<section id="join" class="py-24 px-6 bg-[#1E3A8A] dot-bg-dark relative overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-br from-[#1E3A8A] to-[#1e40af] opacity-95"></div>
+  <div class="relative max-w-7xl mx-auto">
+    <div class="text-center mb-16">
+      <span class="text-[#F59E0B] text-[11px] font-semibold uppercase tracking-widest font-head">Opportunities</span>
+      <h2 class="text-4xl lg:text-5xl font-extrabold text-white mt-3 mb-5">Join the Lab</h2>
+      <p class="text-blue-200 text-lg max-w-2xl mx-auto leading-relaxed">We welcome motivated researchers who are excited about computational approaches to biological challenges. We have openings for domestic and international applicants at all levels.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6 mb-14">
+      <!-- PhD -->
+      <div class="bg-white/8 border border-white/15 rounded-2xl p-7">
+        <div class="w-11 h-11 bg-[#F59E0B]/20 rounded-xl flex items-center justify-center mb-4">
+          <i data-lucide="graduation-cap" class="w-5 h-5 text-[#F59E0B]"></i>
+        </div>
+        <h3 class="text-white font-bold text-lg mb-3">PhD Students</h3>
+        <p class="text-blue-200 text-sm leading-relaxed mb-5">Admission through the PUC Graduate School. We look for a strong quantitative background (engineering, mathematics, physics, or biology).</p>
+        <ul class="space-y-2 text-blue-200 text-sm mb-6">
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#F59E0B] mt-0.5 flex-shrink-0"></i>Send CV + transcript</li>
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#F59E0B] mt-0.5 flex-shrink-0"></i>Brief statement of interest</li>
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#F59E0B] mt-0.5 flex-shrink-0"></i>2 reference contacts</li>
+        </ul>
+        <a href="mailto:pnsaa@uc.cl?subject=PhD Application — SysBioEng Lab" class="block text-center bg-[#F59E0B] hover:bg-[#D97706] text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors">Apply via Email</a>
+      </div>
+
+      <!-- Postdoc -->
+      <div class="bg-white/8 border border-white/15 rounded-2xl p-7">
+        <div class="w-11 h-11 bg-[#F59E0B]/20 rounded-xl flex items-center justify-center mb-4">
+          <i data-lucide="flask-conical" class="w-5 h-5 text-[#F59E0B]"></i>
+        </div>
+        <h3 class="text-white font-bold text-lg mb-3">Postdoctoral Researchers</h3>
+        <p class="text-blue-200 text-sm leading-relaxed mb-5">We support strong candidates to apply for FONDECYT Postdoc and international fellowship schemes.</p>
+        <ul class="space-y-2 text-blue-200 text-sm mb-6">
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#F59E0B] mt-0.5 flex-shrink-0"></i>CV + publication list</li>
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#F59E0B] mt-0.5 flex-shrink-0"></i>Research proposal outline</li>
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#F59E0B] mt-0.5 flex-shrink-0"></i>3 references</li>
+        </ul>
+        <a href="mailto:pnsaa@uc.cl?subject=Postdoc Inquiry — SysBioEng Lab" class="block text-center bg-white/10 hover:bg-white/20 text-white border border-white/25 text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors">Get in Touch</a>
+      </div>
+
+      <!-- MSc / Undergrad -->
+      <div class="bg-white/8 border border-white/15 rounded-2xl p-7">
+        <div class="w-11 h-11 bg-[#F59E0B]/20 rounded-xl flex items-center justify-center mb-4">
+          <i data-lucide="users" class="w-5 h-5 text-[#F59E0B]"></i>
+        </div>
+        <h3 class="text-white font-bold text-lg mb-3">MSc &amp; Undergrads</h3>
+        <p class="text-blue-200 text-sm leading-relaxed mb-5">PUC students are welcome to discuss thesis or project opportunities in metabolic modeling and computational biology.</p>
+        <ul class="space-y-2 text-blue-200 text-sm mb-6">
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#F59E0B] mt-0.5 flex-shrink-0"></i>Brief email introduction</li>
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#F59E0B] mt-0.5 flex-shrink-0"></i>Transcript or grades</li>
+          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#F59E0B] mt-0.5 flex-shrink-0"></i>Area of interest</li>
+        </ul>
+        <a href="mailto:pnsaa@uc.cl?subject=Thesis Inquiry — SysBioEng Lab" class="block text-center bg-white/10 hover:bg-white/20 text-white border border-white/25 text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors">Contact Us</a>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <p class="text-blue-200/70 text-sm">Contact Prof. Pedro Saa directly at
+        <a href="mailto:pnsaa@uc.cl" class="text-[#F59E0B] hover:text-amber-300 font-medium transition-colors">pnsaa@uc.cl</a>
+        · +56 2 2354 9674
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ════════════════════════════════════════════════════════════════ -->
+<footer class="bg-slate-900 text-slate-400 px-6 py-16">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid md:grid-cols-3 gap-12 mb-12">
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <svg width="28" height="28" viewBox="0 0 120 120" fill="none">
+            <circle cx="60" cy="60" r="50" fill="none" stroke="#aaaaaa" stroke-width="0.8" opacity="0.25"/>
+            <line x1="50" y1="30" x2="40" y2="56" stroke="#888" stroke-width="1.2" opacity="0.7"/>
+            <line x1="40" y1="56" x2="64" y2="60" stroke="#888" stroke-width="1.2" opacity="0.7"/>
+            <line x1="64" y1="60" x2="88" y2="64" stroke="#888" stroke-width="1.2" opacity="0.7"/>
+            <circle cx="50" cy="30" r="4" fill="#666"/>
+            <circle cx="80" cy="30" r="4" fill="#F59E0B"/>
+            <circle cx="40" cy="56" r="4" fill="#666"/>
+            <circle cx="64" cy="60" r="4" fill="#3b82f6"/>
+            <circle cx="30" cy="78" r="3.5" fill="#F59E0B"/>
           </svg>
-          <span class="wordmark wordmark-footer"><span>Sys</span><span class="bio">Bio</span><span class="eng">Eng</span><span class="lab">Lab</span></span>
+          <span class="font-head text-[15px] font-700 text-white" style="font-weight:700">
+            Sys<span style="color:#F59E0B">Bio</span>Eng <span class="font-300 text-slate-400" style="font-weight:300">Lab</span>
+          </span>
         </div>
-        <p class="footer-tagline">Systems Bioengineering Laboratory<br>Pontificia Universidad Católica de Chile</p>
+        <p class="text-[13px] leading-relaxed opacity-60">Systems Bioengineering Laboratory<br/>Pontificia Universidad Católica de Chile</p>
       </div>
       <div>
-        <p class="footer-col-label">Contact</p>
-        <p class="footer-col-text">Prof. Pedro Saa<br><a href="mailto:pnsaa@uc.cl">pnsaa@uc.cl</a><br>+56 2 2354 9674</p>
+        <p class="text-[11px] uppercase tracking-widest font-semibold mb-4 opacity-40 font-head">Contact</p>
+        <p class="text-[13px] leading-relaxed">
+          Prof. Pedro Saa<br/>
+          <a href="mailto:pnsaa@uc.cl" class="text-[#F59E0B] hover:text-amber-300 transition-colors">pnsaa@uc.cl</a><br/>
+          +56 2 2354 9674
+        </p>
       </div>
       <div>
-        <p class="footer-col-label">Address</p>
-        <p class="footer-col-text">Departamento de Ingeniería Química y Bioprocesos<br>Av. Vicuña Mackenna 4860<br>Macul, Santiago, Chile</p>
+        <p class="text-[11px] uppercase tracking-widest font-semibold mb-4 opacity-40 font-head">Address</p>
+        <p class="text-[13px] leading-relaxed opacity-80">
+          Departamento de Ingeniería Química y Bioprocesos<br/>
+          Av. Vicuña Mackenna 4860<br/>
+          Macul, Santiago, Chile
+        </p>
       </div>
     </div>
-    <div class="footer-bottom">
-      <p class="footer-copy">© 2026 SysBioEng Lab, PUC Chile</p>
-      <div class="footer-links">
-        <a href="https://scholar.google.com/citations?user=q38WulcAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Google Scholar</a>
-        <a href="https://orcid.org/0000-0002-1659-9041" target="_blank" rel="noopener noreferrer">ORCID</a>
-        <a href="https://www.researchgate.net/profile/Pedro-Saa-2" target="_blank" rel="noopener noreferrer">ResearchGate</a>
+    <div class="border-t border-slate-800 pt-8 flex flex-wrap items-center justify-between gap-4">
+      <p class="text-[11px] font-mono opacity-35">© 2026 SysBioEng Lab, PUC Chile</p>
+      <div class="flex items-center gap-5">
+        <a href="https://scholar.google.com/citations?user=q38WulcAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="text-[11px] font-mono opacity-45 hover:opacity-100 transition-opacity">Google Scholar</a>
+        <a href="https://orcid.org/0000-0002-1659-9041" target="_blank" rel="noopener noreferrer" class="text-[11px] font-mono opacity-45 hover:opacity-100 transition-opacity">ORCID</a>
+        <a href="https://www.researchgate.net/profile/Pedro-Saa-2" target="_blank" rel="noopener noreferrer" class="text-[11px] font-mono opacity-45 hover:opacity-100 transition-opacity">ResearchGate</a>
+        <a href="https://github.com/SysBioengLab" target="_blank" rel="noopener noreferrer" class="text-[11px] font-mono opacity-45 hover:opacity-100 transition-opacity">GitHub</a>
       </div>
     </div>
   </div>
 </footer>
 
+<!-- ═══ SCRIPTS ═══════════════════════════════════════════════════════════════ -->
 <script>
-// ─── PUBLICATIONS DATA ───────────────────────────────────────────────────────
-const PUBLICATIONS = [
-  { year: 2026, authors: "Dazzarola C, Tighe R, Pérez-Correa R, Saa PA", title: "Toward a digital twin for beer quality control: development of a digital model integrating industrial process data and model-based fermentation descriptors", journal: "Journal of Food Engineering", vol: "403: 112726", doi: "https://doi.org/10.1016/j.jfoodeng.2025.112726" },
-  { year: 2026, authors: "Altamirano A, Tapia I, Acuña V, Garrido D, Saa PA", title: "METACONE: A scalable framework for exploring the conversions cone of metabolic networks", journal: "Computational Biology and Chemistry", vol: "120(1): 108607", doi: "https://doi.org/10.1016/j.compbiolchem.2025.108607" },
-  { year: 2025, authors: "Elizondo B, Saa PA", title: "Complex kinetic models predict β-carotene production and reveal flux limitations in recombinant Saccharomyces cerevisiae strains", journal: "ACS Synthetic Biology", vol: "14(9): 3457–3472", doi: "https://doi.org/10.1021/acssynbio.5c00256" },
-  { year: 2025, authors: "Silva-Andrade C, Hernández S, Saa PA, Pérez-Rueda E, Garrido D, Martin AJ", title: "A machine-learning approach for predicting butyrate production by microbial consortia using metabolic network information", journal: "PeerJ", vol: "13:e19296", doi: "https://doi.org/10.7717/peerj.19296" },
-  { year: 2024, authors: "Van den Bogaard S, Saa PA, Alter T", title: "Sensitivities in protein allocation models reveal distribution of metabolic capacity and flux control", journal: "Bioinformatics", vol: "btae691", doi: "https://doi.org/10.1093/bioinformatics/btae691" },
-  { year: 2024, authors: "Bárzaga-Martell L et al., Saa PA, Pérez-Correa R", title: "Fractional adaptive observer for variable structure high cell density fed-batch cultures", journal: "IFAC-PapersOnLine", vol: "58(12): 37–42", doi: "https://doi.org/10.1016/j.ifacol.2024.08.163" },
-  { year: 2024, authors: "Ibáñez F et al., Saa PA, Agosin E, Pérez-Correa R", title: "Reliable calibration and validation of phenomenological and hybrid models of high-cell-density fed-batch cultures", journal: "Computers & Chemical Engineering", vol: "186: 108706", doi: "https://doi.org/10.1016/j.compchemeng.2024.108706" },
-  { year: 2024, authors: "Deantas-Jahn C, Mendoza S, Licona-Casani C, Orellana C, Saa PA", title: "Genome-scale metabolic modelling of Halomonas campaniensis provides insights into PHB production", journal: "Applied Microbiology and Biotechnology", vol: "108: 310", doi: "https://doi.org/10.1007/s00253-024-13111-8" },
-  { year: 2024, authors: "Román L, Melis-Arcos F, Pröschle T, Saa PA, Garrido D", title: "Genome-scale metabolic modeling of human milk oligosaccharide utilization by Bifidobacterium longum subsp. infantis", journal: "mSystems", vol: "9: e00715-23", doi: "https://doi.org/10.1128/msystems.00715-23" },
-  { year: 2024, authors: "Saa PA, Zapararte S, Drovandi CC, Nielsen LK", title: "LooplessFluxSampler: An efficient algorithm for sampling the loopless flux solution space of metabolic models", journal: "BMC Bioinformatics", vol: "25: 3", doi: "https://doi.org/10.1186/s12859-023-05616-2" },
-  { year: 2023, authors: "Martin AJ, Riquelme E, Saa PA, Garrido D", title: "Importance of microbial interactions in colonization resistance and gut dysbiosis: role of Bifidobacterium", journal: "Microbiome Research Reports", vol: "2: 17", doi: "https://dx.doi.org/10.20517/mrr.2023.10" },
-  { year: 2022, authors: "Matos M, Saa PA, Cowie N, Volkova S, de Leeuw M, Nielsen LK", title: "GRASP: A computational platform for building kinetic models of cell metabolism", journal: "Bioinformatics Advances", vol: "vbac066", doi: "https://doi.org/10.1093/bioadv/vbac066" },
-  { year: 2022, authors: "Hirmas B et al., Saa PA, Gotteland M, Garrido D", title: "Metabolic modeling and bidirectional culturing of two gut microbes reveal cross-feeding interactions", journal: "mSystems", vol: "e00646-22", doi: "https://doi.org/10.1128/msystems.00646-22" },
-  { year: 2022, authors: "Martínez VS, Saa PA, Jooste J, Tiwari K, Quek L, Nielsen LK", title: "The topology of genome-scale metabolic reconstructions unravels independent modules and high network flexibility", journal: "PLOS Computational Biology", vol: "18(6): e1010203", doi: "https://doi.org/10.1371/journal.pcbi.1010203" },
-  { year: 2022, authors: "Saa PA, Urrutia A, Silva-Andrade C, Martín AJ, Garrido D", title: "Modeling approaches for probing cross-feeding interactions in the gut microbiome", journal: "Computational and Structural Biotechnology Journal", vol: "20: 79–89", doi: "https://doi.org/10.1016/j.csbj.2021.12.006" },
-  { year: 2021, authors: "Eyheramendy S, Saa PA et al.", title: "Screening of COVID-19 cases through a Bayesian network symptoms model and psychophysical olfactory test", journal: "iScience", vol: "24(12): 103419", doi: "https://doi.org/10.1016/j.isci.2021.103419" },
-  { year: 2021, authors: "Ibáñez-Espinel F, Saa PA et al.", title: "Robust control of fed-batch high-cell density cultures: a simulation-based assessment", journal: "Computers & Chemical Engineering", vol: "155: 107545", doi: "https://doi.org/10.1016/j.compchemeng.2021.107545" },
-  { year: 2021, authors: "Bárzaga L, Duarte-Mermoud M, Ibáñez-Espinel F et al., Saa PA, Pérez-Correa R", title: "A robust hybrid observer for monitoring high-cell density cultures exhibiting overflow metabolism", journal: "Journal of Process Control", vol: "104: 112–125", doi: "https://doi.org/10.1016/j.jprocont.2021.06.006" },
-  { year: 2020, authors: "Altamirano A, Saa PA, Garrido D", title: "Inferring composition and function of the human gut microbiome in time and space: A review of genome-scale metabolic modelling tools", journal: "Computational and Structural Biotechnology Journal", vol: "18: 3897–3904", doi: "https://doi.org/10.1016/j.csbj.2020.11.035" },
-  { year: 2020, authors: "López L, Bustos D, Conrado C, Arenas N, Saa PA, Agosin E", title: "Engineering Saccharomyces cerevisiae for the overproduction of β-ionone and its precursor β-carotene", journal: "Frontiers in Bioengineering and Biotechnology", vol: "8: 578793", doi: "https://doi.org/10.3389/fbioe.2020.578793" },
-  { year: 2020, authors: "Cataldo V, Salgado V, Saa PA, Agosin E", title: "Genomic integration of unclonable gene expression cassettes in Saccharomyces cerevisiae", journal: "MicrobiologyOpen", vol: "00:e978", doi: "https://doi.org/10.1002/mbo3.978" },
-  { year: 2019, authors: "Torres P, Saa PA, Albiol J, Ferrer P, Agosin E", title: "Contextualized genome-scale model unveils high-order metabolic effects in recombinant Pichia pastoris", journal: "Metabolic Engineering Communications", vol: "9: e00103", doi: "https://doi.org/10.1016/j.mec.2019.e00103" },
-  { year: 2019, authors: "López L, Cataldo V et al., Saa PA, Agosin E", title: "Build your bioprocess on a solid strain — β-carotene production in recombinant Saccharomyces cerevisiae", journal: "Frontiers in Bioengineering and Biotechnology", vol: "7: 171", doi: "https://doi.org/10.3389/fbioe.2019.00171" },
-  { year: 2019, authors: "Saa PA, Cortés M, López J, Bustos D, Maass A, Agosin E", title: "Expanding metabolic capabilities through novel pathway designs: computational tools and case studies", journal: "Biotechnology Journal", vol: "14: 1800734", doi: "https://doi.org/10.1002/biot.201800734" },
-  { year: 2018, authors: "Dal'Molin C, Quek L, Saa PA et al., Nielsen LK", title: "From reconstruction to C4 metabolic engineering: a case study for overproduction of PHB in bioenergy grasses", journal: "Plant Science", vol: "273: 50–60", doi: "https://doi.org/10.1016/j.plantsci.2018.03.027" },
-  { year: 2017, authors: "Saa PA, Nielsen LK", title: "Formulation, construction and analysis of kinetic models of metabolism: A review of modelling frameworks", journal: "Biotechnology Advances", vol: "35(8): 981–1003", doi: "https://doi.org/10.1016/j.biotechadv.2017.09.005" },
-  { year: 2016, authors: "Saa PA, Nielsen LK", title: "Fast-SNP: a fast matrix pre-processing algorithm for efficient loopless flux optimization of metabolic models", journal: "Bioinformatics", vol: "32(24): 3807–3814", doi: "http://dx.doi.org/10.1093/bioinformatics/btw555" },
-  { year: 2016, authors: "Saa PA, Nielsen LK", title: "Construction of feasible and accurate kinetic models of metabolism: A Bayesian approach", journal: "Scientific Reports", vol: "6: 29635", doi: "http://dx.doi.org/10.1038/srep29635" },
-  { year: 2016, authors: "Saa PA, Nielsen LK", title: "ll-ACHRB: a scalable algorithm for sampling the feasible solution space of metabolic networks", journal: "Bioinformatics", vol: "32(15): 2330–2337", doi: "http://dx.doi.org/10.1093/bioinformatics/btw132" },
-  { year: 2016, authors: "Saa PA, Nielsen LK", title: "A probabilistic framework for the exploration of enzymatic capabilities based on feasible kinetics and control analysis", journal: "BBA General Subjects", vol: "1860(3): 576–587", doi: "http://dx.doi.org/10.1016/j.bbagen.2015.12.015" },
-  { year: 2015, authors: "Saa P, Nielsen L", title: "A general framework for thermodynamically consistent parameterization and efficient sampling of metabolic reactions", journal: "PLOS Computational Biology", vol: "11(4): e1004195", doi: "http://dx.doi.org/10.1371/journal.pcbi.1004195" },
-  { year: 2015, authors: "Dal'Molin C, Quek L, Saa PA, Nielsen LK", title: "A multi-tissue genome-scale metabolic modelling for the analysis of whole plant systems", journal: "Frontiers in Plant Science", vol: "6: 4", doi: "http://dx.doi.org/10.3389/fpls.2015.00004" },
-  { year: 2014, authors: "Cárcamo M, Saa P et al.", title: "Effective dissolved oxygen control strategy for high cell-density cultures", journal: "IEEE Latin America Transactions", vol: "12(3): 389–394", doi: "http://dx.doi.org/10.1109/TLA.2014.6827863" },
-  { year: 2014, authors: "Moenne I, Saa P et al.", title: "Oxygen incorporation and dissolution during industrial-scale red wine fermentations", journal: "Food and Bioprocess Technology", vol: "7: 2627–2636", doi: "http://dx.doi.org/10.1007/s11947-014-1257-2" },
-  { year: 2013, authors: "Saa P, Pérez-Correa R, Celentano D, Agosin E", title: "Impact of carbon dioxide injection on oxygen dissolution rate during oxygen additions in a bubble column", journal: "Chemical Engineering Journal", vol: "232: 157–166", doi: "http://dx.doi.org/10.1016/j.cej.2013.07.081" },
-  { year: 2012, authors: "Saa P, Moenne I, Pérez-Correa R, Agosin E", title: "Modeling oxygen dissolution and biological uptake during pulse oxygen additions in oenological fermentations", journal: "Bioprocess and Biosystems Engineering", vol: "35(7): 1167–1178", doi: "http://dx.doi.org/10.1007/s00449-012-0703-7" },
-  { year: 2011, authors: "Sacher J, Saa P, Cárcamo M et al.", title: "Improved calibration of a solid substrate fermentation model", journal: "Electronic Journal of Biotechnology", vol: "14: 5", doi: "http://dx.doi.org/10.2225/vol14-issue5-fulltext-7" },
+// ── Lucide icons init ────────────────────────────────────────────────────────
+lucide.createIcons();
+
+// ── Publications data ────────────────────────────────────────────────────────
+const PUBS = [
+  { year:2026, authors:"Dazzarola C, Tighe R, Pérez-Correa R, Saa PA", title:"Toward a digital twin for beer quality control: development of a digital model integrating industrial process data and model-based fermentation descriptors", journal:"Journal of Food Engineering", vol:"403: 112726", doi:"https://doi.org/10.1016/j.jfoodeng.2025.112726", featured:true },
+  { year:2026, authors:"Altamirano A, Tapia I, Acuña V, Garrido D, Saa PA", title:"METACONE: A scalable framework for exploring the conversions cone of metabolic networks", journal:"Computational Biology and Chemistry", vol:"120(1): 108607", doi:"https://doi.org/10.1016/j.compbiolchem.2025.108607", featured:true },
+  { year:2025, authors:"Elizondo B, Saa PA", title:"Complex kinetic models predict β-carotene production and reveal flux limitations in recombinant Saccharomyces cerevisiae strains", journal:"ACS Synthetic Biology", vol:"14(9): 3457–3472", doi:"https://doi.org/10.1021/acssynbio.5c00256", featured:true },
+  { year:2025, authors:"Silva-Andrade C, Hernández S, Saa PA, Pérez-Rueda E, Garrido D, Martin AJ", title:"A machine-learning approach for predicting butyrate production by microbial consortia using metabolic network information", journal:"PeerJ", vol:"13:e19296", doi:"https://doi.org/10.7717/peerj.19296", featured:false },
+  { year:2024, authors:"Van den Bogaard S, Saa PA, Alter T", title:"Sensitivities in protein allocation models reveal distribution of metabolic capacity and flux control", journal:"Bioinformatics", vol:"btae691", doi:"https://doi.org/10.1093/bioinformatics/btae691", featured:false },
+  { year:2024, authors:"Bárzaga-Martell L et al., Saa PA, Pérez-Correa R", title:"Fractional adaptive observer for variable structure high cell density fed-batch cultures", journal:"IFAC-PapersOnLine", vol:"58(12): 37–42", doi:"https://doi.org/10.1016/j.ifacol.2024.08.163", featured:false },
+  { year:2024, authors:"Ibáñez F et al., Saa PA, Agosin E, Pérez-Correa R", title:"Reliable calibration and validation of phenomenological and hybrid models of high-cell-density fed-batch cultures", journal:"Computers & Chemical Engineering", vol:"186: 108706", doi:"https://doi.org/10.1016/j.compchemeng.2024.108706", featured:false },
+  { year:2024, authors:"Deantas-Jahn C, Mendoza S, Licona-Casani C, Orellana C, Saa PA", title:"Genome-scale metabolic modelling of Halomonas campaniensis provides insights into PHB production", journal:"Applied Microbiology and Biotechnology", vol:"108: 310", doi:"https://doi.org/10.1007/s00253-024-13111-8", featured:false },
+  { year:2024, authors:"Román L, Melis-Arcos F, Pröschle T, Saa PA, Garrido D", title:"Genome-scale metabolic modeling of human milk oligosaccharide utilization by Bifidobacterium longum subsp. infantis", journal:"mSystems", vol:"9: e00715-23", doi:"https://doi.org/10.1128/msystems.00715-23", featured:false },
+  { year:2024, authors:"Saa PA, Zapararte S, Drovandi CC, Nielsen LK", title:"LooplessFluxSampler: An efficient algorithm for sampling the loopless flux solution space of metabolic models", journal:"BMC Bioinformatics", vol:"25: 3", doi:"https://doi.org/10.1186/s12859-023-05616-2", featured:true },
+  { year:2023, authors:"Martin AJ, Riquelme E, Saa PA, Garrido D", title:"Importance of microbial interactions in colonization resistance and gut dysbiosis: role of Bifidobacterium", journal:"Microbiome Research Reports", vol:"2: 17", doi:"https://dx.doi.org/10.20517/mrr.2023.10", featured:false },
+  { year:2022, authors:"Matos M, Saa PA, Cowie N, Volkova S, de Leeuw M, Nielsen LK", title:"GRASP: A computational platform for building kinetic models of cell metabolism", journal:"Bioinformatics Advances", vol:"vbac066", doi:"https://doi.org/10.1093/bioadv/vbac066", featured:true },
+  { year:2022, authors:"Hirmas B et al., Saa PA, Gotteland M, Garrido D", title:"Metabolic modeling and bidirectional culturing of two gut microbes reveal cross-feeding interactions", journal:"mSystems", vol:"e00646-22", doi:"https://doi.org/10.1128/msystems.00646-22", featured:false },
+  { year:2022, authors:"Martínez VS, Saa PA, Jooste J, Tiwari K, Quek L, Nielsen LK", title:"The topology of genome-scale metabolic reconstructions unravels independent modules and high network flexibility", journal:"PLOS Computational Biology", vol:"18(6): e1010203", doi:"https://doi.org/10.1371/journal.pcbi.1010203", featured:false },
+  { year:2022, authors:"Saa PA, Urrutia A, Silva-Andrade C, Martín AJ, Garrido D", title:"Modeling approaches for probing cross-feeding interactions in the gut microbiome", journal:"Computational and Structural Biotechnology Journal", vol:"20: 79–89", doi:"https://doi.org/10.1016/j.csbj.2021.12.006", featured:false },
+  { year:2021, authors:"Eyheramendy S, Saa PA et al.", title:"Screening of COVID-19 cases through a Bayesian network symptoms model and psychophysical olfactory test", journal:"iScience", vol:"24(12): 103419", doi:"https://doi.org/10.1016/j.isci.2021.103419", featured:false },
+  { year:2021, authors:"Ibáñez-Espinel F, Saa PA et al.", title:"Robust control of fed-batch high-cell density cultures: a simulation-based assessment", journal:"Computers & Chemical Engineering", vol:"155: 107545", doi:"https://doi.org/10.1016/j.compchemeng.2021.107545", featured:false },
+  { year:2021, authors:"Bárzaga L, Duarte-Mermoud M, Ibáñez-Espinel F et al., Saa PA, Pérez-Correa R", title:"A robust hybrid observer for monitoring high-cell density cultures exhibiting overflow metabolism", journal:"Journal of Process Control", vol:"104: 112–125", doi:"https://doi.org/10.1016/j.jprocont.2021.06.006", featured:false },
+  { year:2020, authors:"Altamirano A, Saa PA, Garrido D", title:"Inferring composition and function of the human gut microbiome in time and space: A review of genome-scale metabolic modelling tools", journal:"Computational and Structural Biotechnology Journal", vol:"18: 3897–3904", doi:"https://doi.org/10.1016/j.csbj.2020.11.035", featured:false },
+  { year:2020, authors:"López L, Bustos D, Conrado C, Arenas N, Saa PA, Agosin E", title:"Engineering Saccharomyces cerevisiae for the overproduction of β-ionone and its precursor β-carotene", journal:"Frontiers in Bioengineering and Biotechnology", vol:"8: 578793", doi:"https://doi.org/10.3389/fbioe.2020.578793", featured:false },
+  { year:2020, authors:"Cataldo V, Salgado V, Saa PA, Agosin E", title:"Genomic integration of unclonable gene expression cassettes in Saccharomyces cerevisiae", journal:"MicrobiologyOpen", vol:"00:e978", doi:"https://doi.org/10.1002/mbo3.978", featured:false },
+  { year:2019, authors:"Torres P, Saa PA, Albiol J, Ferrer P, Agosin E", title:"Contextualized genome-scale model unveils high-order metabolic effects in recombinant Pichia pastoris", journal:"Metabolic Engineering Communications", vol:"9: e00103", doi:"https://doi.org/10.1016/j.mec.2019.e00103", featured:false },
+  { year:2019, authors:"López L, Cataldo V et al., Saa PA, Agosin E", title:"Build your bioprocess on a solid strain — β-carotene production in recombinant Saccharomyces cerevisiae", journal:"Frontiers in Bioengineering and Biotechnology", vol:"7: 171", doi:"https://doi.org/10.3389/fbioe.2019.00171", featured:false },
+  { year:2019, authors:"Saa PA, Cortés M, López J, Bustos D, Maass A, Agosin E", title:"Expanding metabolic capabilities through novel pathway designs: computational tools and case studies", journal:"Biotechnology Journal", vol:"14: 1800734", doi:"https://doi.org/10.1002/biot.201800734", featured:false },
+  { year:2018, authors:"Dal'Molin C, Quek L, Saa PA et al., Nielsen LK", title:"From reconstruction to C4 metabolic engineering: a case study for overproduction of PHB in bioenergy grasses", journal:"Plant Science", vol:"273: 50–60", doi:"https://doi.org/10.1016/j.plantsci.2018.03.027", featured:false },
+  { year:2017, authors:"Saa PA, Nielsen LK", title:"Formulation, construction and analysis of kinetic models of metabolism: A review of modelling frameworks", journal:"Biotechnology Advances", vol:"35(8): 981–1003", doi:"https://doi.org/10.1016/j.biotechadv.2017.09.005", featured:true },
+  { year:2016, authors:"Saa PA, Nielsen LK", title:"Fast-SNP: a fast matrix pre-processing algorithm for efficient loopless flux optimization of metabolic models", journal:"Bioinformatics", vol:"32(24): 3807–3814", doi:"http://dx.doi.org/10.1093/bioinformatics/btw555", featured:false },
+  { year:2016, authors:"Saa PA, Nielsen LK", title:"Construction of feasible and accurate kinetic models of metabolism: A Bayesian approach", journal:"Scientific Reports", vol:"6: 29635", doi:"http://dx.doi.org/10.1038/srep29635", featured:true },
+  { year:2016, authors:"Saa PA, Nielsen LK", title:"ll-ACHRB: a scalable algorithm for sampling the feasible solution space of metabolic networks", journal:"Bioinformatics", vol:"32(15): 2330–2337", doi:"http://dx.doi.org/10.1093/bioinformatics/btw132", featured:false },
+  { year:2016, authors:"Saa PA, Nielsen LK", title:"A probabilistic framework for the exploration of enzymatic capabilities based on feasible kinetics and control analysis", journal:"BBA General Subjects", vol:"1860(3): 576–587", doi:"http://dx.doi.org/10.1016/j.bbagen.2015.12.015", featured:false },
+  { year:2015, authors:"Saa P, Nielsen L", title:"A general framework for thermodynamically consistent parameterization and efficient sampling of metabolic reactions", journal:"PLOS Computational Biology", vol:"11(4): e1004195", doi:"http://dx.doi.org/10.1371/journal.pcbi.1004195", featured:true },
+  { year:2015, authors:"Dal'Molin C, Quek L, Saa PA, Nielsen LK", title:"A multi-tissue genome-scale metabolic modelling for the analysis of whole plant systems", journal:"Frontiers in Plant Science", vol:"6: 4", doi:"http://dx.doi.org/10.3389/fpls.2015.00004", featured:false },
+  { year:2014, authors:"Cárcamo M, Saa P et al.", title:"Effective dissolved oxygen control strategy for high cell-density cultures", journal:"IEEE Latin America Transactions", vol:"12(3): 389–394", doi:"http://dx.doi.org/10.1109/TLA.2014.6827863", featured:false },
+  { year:2014, authors:"Moenne I, Saa P et al.", title:"Oxygen incorporation and dissolution during industrial-scale red wine fermentations", journal:"Food and Bioprocess Technology", vol:"7: 2627–2636", doi:"http://dx.doi.org/10.1007/s11947-014-1257-2", featured:false },
+  { year:2013, authors:"Saa P, Pérez-Correa R, Celentano D, Agosin E", title:"Impact of carbon dioxide injection on oxygen dissolution rate during oxygen additions in a bubble column", journal:"Chemical Engineering Journal", vol:"232: 157–166", doi:"http://dx.doi.org/10.1016/j.cej.2013.07.081", featured:false },
+  { year:2012, authors:"Saa P, Moenne I, Pérez-Correa R, Agosin E", title:"Modeling oxygen dissolution and biological uptake during pulse oxygen additions in oenological fermentations", journal:"Bioprocess and Biosystems Engineering", vol:"35(7): 1167–1178", doi:"http://dx.doi.org/10.1007/s00449-012-0703-7", featured:false },
+  { year:2011, authors:"Sacher J, Saa P, Cárcamo M et al.", title:"Improved calibration of a solid substrate fermentation model", journal:"Electronic Journal of Biotechnology", vol:"14: 5", doi:"http://dx.doi.org/10.2225/vol14-issue5-fulltext-7", featured:false },
 ];
 
-let currentFilter = 'all';
+// ── Members data ──────────────────────────────────────────────────────────────
+const MEMBERS = {
+  phd: [
+    { name:"Reinier Rizo", years:"2024–ongoing", prog:"PhD — Chemical & Bioprocess Eng.", initials:"RR", color:"#1E3A8A" },
+    { name:"Francisca Villanueva", years:"2024–ongoing", prog:"PhD — Chemical & Bioprocess Eng.", initials:"FV", color:"#1d4ed8" },
+    { name:"Jorge Garay", years:"2023–ongoing", prog:"PhD — Chemical & Bioprocess Eng.", initials:"JG", color:"#1E3A8A" },
+    { name:"Álvaro Altamirano", years:"2019–ongoing", prog:"PhD — Chemical & Bioprocess Eng.", initials:"AA", color:"#164e8a" },
+  ],
+  msc: [
+    { name:"Gabriel Miranda", years:"2025–ongoing", prog:"MSc — Chemical & Bioprocess Eng.", initials:"GM", color:"#0f766e" },
+    { name:"Gabriel Díaz", years:"2024–ongoing", prog:"MSc — Chemical & Bioprocess Eng.", initials:"GD", color:"#0f766e" },
+    { name:"Celeste Vargas", years:"2024–ongoing", prog:"MSc — Chemical & Bioprocess Eng.", initials:"CV", color:"#0f766e" },
+    { name:"Ignacio Tapia", years:"2024–ongoing", prog:"MSc — Chemical & Bioprocess Eng.", initials:"IT", color:"#0f766e" },
+  ]
+};
 
-function renderPublications(filter) {
-  const list = document.getElementById('pub-list');
-  const pubs = filter === 'all' ? PUBLICATIONS : PUBLICATIONS.filter(p => p.year === filter);
-  const sorted = [...pubs].sort((a,b) => b.year - a.year);
-  list.innerHTML = sorted.map(p => `
-    <div class="pub-item">
-      <div class="pub-year">${p.year}</div>
-      <div class="pub-body">
-        <p class="pub-authors">${p.authors}</p>
-        <a href="${p.doi}" target="_blank" rel="noopener noreferrer" class="pub-title">${p.title}</a>
-        <p class="pub-journal">${p.journal}. ${p.vol}</p>
-      </div>
+function memberCard(m) {
+  return `
+  <div class="mc bg-white border border-slate-100 rounded-2xl p-5 shadow-sm cursor-default select-none relative overflow-hidden">
+    <div class="mem-avatar mb-3" style="background:${m.color}">${m.initials}</div>
+    <p class="font-semibold text-slate-800 text-sm leading-snug mb-1">${m.name}</p>
+    <p class="font-mono text-[11px] text-[#F59E0B] mb-2">${m.years}</p>
+    <p class="text-[11px] text-slate-400 leading-snug">${m.prog}</p>
+    <div class="mc-overlay absolute inset-0 bg-[#1E3A8A]/90 rounded-2xl flex items-center justify-center gap-4">
+      <a href="mailto:pnsaa@uc.cl" class="text-white hover:text-[#F59E0B] transition-colors" title="Email lab"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a>
     </div>
-  `).join('');
+  </div>`;
 }
 
+function buildMembers() {
+  document.getElementById('phd-grid').innerHTML = MEMBERS.phd.map(memberCard).join('');
+  document.getElementById('msc-grid').innerHTML = MEMBERS.msc.map(memberCard).join('');
+  lucide.createIcons();
+}
+
+function filterMembers(role) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active-filter'));
+  document.querySelector(`[data-filter="${role}"]`).classList.add('active-filter');
+  const phd = document.getElementById('phd-section');
+  const msc = document.getElementById('msc-section');
+  if (role === 'all') { phd.style.display=''; msc.style.display=''; }
+  else if (role === 'phd') { phd.style.display=''; msc.style.display='none'; }
+  else { phd.style.display='none'; msc.style.display=''; }
+}
+
+// ── Year filters ──────────────────────────────────────────────────────────────
+let activeYear = 'all';
 function buildYearFilters() {
-  const years = [...new Set(PUBLICATIONS.map(p => p.year))].sort((a,b) => b-a);
-  const container = document.getElementById('year-filters');
-  const allBtn = document.createElement('button');
-  allBtn.className = 'year-btn active';
-  allBtn.textContent = 'All';
-  allBtn.onclick = () => setYearFilter('all', allBtn);
-  container.appendChild(allBtn);
-  years.forEach(y => {
-    const btn = document.createElement('button');
-    btn.className = 'year-btn';
-    btn.textContent = y;
-    btn.onclick = () => setYearFilter(y, btn);
-    container.appendChild(btn);
-  });
+  const years = [...new Set(PUBS.map(p => p.year))].sort((a,b) => b-a);
+  const c = document.getElementById('year-filters');
+  const makeBtn = (label, val) => {
+    const b = document.createElement('button');
+    b.textContent = label;
+    b.className = 'text-[11px] px-3 py-1 rounded-full border font-mono transition-all ' + (val === 'all' ? 'bg-[#1E3A8A] border-[#1E3A8A] text-white' : 'bg-white border-slate-200 text-slate-500 hover:border-[#1E3A8A] hover:text-[#1E3A8A]');
+    b.onclick = () => {
+      activeYear = val;
+      document.querySelectorAll('#year-filters button').forEach(x => {
+        x.className = 'text-[11px] px-3 py-1 rounded-full border font-mono transition-all bg-white border-slate-200 text-slate-500 hover:border-[#1E3A8A] hover:text-[#1E3A8A]';
+      });
+      b.className = 'text-[11px] px-3 py-1 rounded-full border font-mono transition-all bg-[#1E3A8A] border-[#1E3A8A] text-white';
+      renderPubs(val);
+    };
+    return b;
+  };
+  c.appendChild(makeBtn('All', 'all'));
+  years.forEach(y => c.appendChild(makeBtn(String(y), y)));
 }
 
-function setYearFilter(year, btn) {
-  currentFilter = year;
-  document.querySelectorAll('.year-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderPublications(year);
+function renderPubs(yearFilter) {
+  const list = document.getElementById('pub-list');
+  const featured = document.getElementById('featured-list');
+  const filtered = yearFilter === 'all' ? PUBS : PUBS.filter(p => p.year === yearFilter);
+  const sorted = [...filtered].sort((a,b) => b.year - a.year);
+
+  // Featured works (only show when "All" selected)
+  if (yearFilter === 'all') {
+    const fp = PUBS.filter(p => p.featured).sort((a,b) => b.year - a.year);
+    featured.innerHTML = fp.map(p => `
+      <a href="${p.doi}" target="_blank" rel="noopener noreferrer" class="group bg-blue-50 border border-blue-100 hover:border-[#1E3A8A] rounded-xl p-5 transition-all block">
+        <div class="flex items-start gap-2 mb-2">
+          <span class="featured-badge flex-shrink-0 mt-0.5">Featured</span>
+          <span class="font-mono text-[11px] text-slate-400">${p.year}</span>
+        </div>
+        <p class="font-mono text-[10px] text-slate-400 mb-1">${p.authors}</p>
+        <p class="text-sm font-semibold text-slate-800 group-hover:text-[#1E3A8A] leading-snug mb-2 transition-colors">${p.title}</p>
+        <p class="text-[11px] text-slate-500 italic">${p.journal}. ${p.vol}</p>
+      </a>`).join('');
+    featured.parentElement.style.display = '';
+  } else {
+    featured.parentElement.style.display = 'none';
+  }
+
+  list.innerHTML = sorted.map(p => `
+    <div class="pub-row grid grid-cols-[56px_1fr] border-b border-slate-100 last:border-0">
+      <div class="py-5 pl-4 font-mono text-[11px] text-slate-400 flex-shrink-0">${p.year}</div>
+      <div class="py-4 pr-5">
+        <p class="font-mono text-[10px] text-slate-400 mb-1">${p.authors}</p>
+        <a href="${p.doi}" target="_blank" rel="noopener noreferrer" class="text-sm text-slate-800 hover:text-[#1E3A8A] transition-colors block mb-1 leading-snug">${p.title}</a>
+        <p class="text-[11px] text-slate-500 italic">${p.journal}. ${p.vol}</p>
+      </div>
+    </div>`).join('');
 }
 
-// ─── TABS ────────────────────────────────────────────────────────────────────
-function switchTab(name, btn) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('tab-' + name).classList.add('active');
+// ── Tab switching ─────────────────────────────────────────────────────────────
+function switchPubTab(name, btn) {
+  document.querySelectorAll('.pub-tab-btn').forEach(b => b.classList.remove('active-tab'));
+  document.querySelectorAll('.pub-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active-tab');
+  document.getElementById('panel-' + name).classList.add('active');
 }
 
-// ─── PAST PROJECTS TOGGLE ────────────────────────────────────────────────────
-function togglePast() {
-  const el = document.getElementById('past-projects');
-  const btn = document.getElementById('past-toggle');
-  const visible = el.classList.toggle('visible');
-  btn.textContent = visible ? '− Hide' : '+ Show all';
-}
-
-// ─── NAV SCROLL ──────────────────────────────────────────────────────────────
+// ── Nav scroll ────────────────────────────────────────────────────────────────
 window.addEventListener('scroll', () => {
-  const nav = document.getElementById('main-nav');
-  nav.classList.toggle('scrolled', window.scrollY > 60);
+  document.getElementById('main-nav').classList.toggle('scrolled', scrollY > 50);
+  // active link
+  const sections = ['hero','pillars','people','publications','resources','news','join'];
+  let current = 'hero';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 120) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(a => {
+    const href = a.getAttribute('href')?.slice(1);
+    a.classList.toggle('active', href === current);
+  });
 });
 
-// ─── ACTIVE NAV LINK ─────────────────────────────────────────────────────────
-const navSections = ['home','research','people','resources','publications','contact'];
-const navLabels =   ['Home','Research','People','Resources','Publications','Contact'];
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      const idx = navSections.indexOf(e.target.id);
-      if (idx !== -1) {
-        document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-        document.querySelector(`.nav-links a[data-nav="${navLabels[idx]}"]`).classList.add('active');
-      }
-    }
-  });
-}, { rootMargin: '-40% 0px -40% 0px' });
-navSections.forEach(id => { const el = document.getElementById(id); if (el) observer.observe(el); });
-
-// ─── INIT ─────────────────────────────────────────────────────────────────────
+// ── Init ──────────────────────────────────────────────────────────────────────
+buildMembers();
 buildYearFilters();
-renderPublications('all');
+renderPubs('all');
+lucide.createIcons();
 </script>
 </body>
 </html>
