@@ -1,4 +1,4 @@
-# SysBioEng Lab — PUC Chile
+# Systems Bioengineering Lab
 
 Website of the **Systems Bioengineering Lab** at the Pontificia Universidad Católica de Chile, led by [Prof. Pedro A. Saa](https://www.ing.uc.cl/academicos-e-investigadores/pedro-saa-higuera/).
 
