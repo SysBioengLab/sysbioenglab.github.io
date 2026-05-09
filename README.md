@@ -33,7 +33,7 @@ Tools and frameworks developed by the lab:
 | [Fast-SNP](http://dx.doi.org/10.1093/bioinformatics/btw555) | MATLAB | Matrix pre-processing for efficient loopless flux optimization | Saa & Nielsen, 2016 |
 | [ll-ACHRB](http://dx.doi.org/10.1093/bioinformatics/btw132) | MATLAB | Scalable algorithm for sampling the feasible solution space of metabolic networks | Saa & Nielsen, 2016 |
 
-Browse all repositories at [github.com/saalab](https://github.com/saalab).
+Browse all repositories at [github.com/sysbioenglab](https://github.com/sysbioenglab/).
 
 ---
 
