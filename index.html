@@ -4,21 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SysBioEng Lab</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><circle cx='60' cy='60' r='52' fill='none' stroke='%231a9aa8' stroke-width='3' opacity='0.4'/><circle cx='50' cy='30' r='8' fill='%231d6478'/><circle cx='80' cy='30' r='8' fill='%231a9aa8'/><circle cx='40' cy='56' r='8' fill='%231a9aa8'/><circle cx='64' cy='60' r='8' fill='%231d6478'/><circle cx='88' cy='64' r='8' fill='%231d6478'/><circle cx='30' cy='78' r='7' fill='%235cc1c0'/><line x1='50' y1='30' x2='40' y2='56' stroke='%231a9aa8' stroke-width='2'/><line x1='40' y1='56' x2='64' y2='60' stroke='%231a9aa8' stroke-width='2'/><line x1='64' y1='60' x2='88' y2='64' stroke='%231a9aa8' stroke-width='2'/><line x1='30' y1='78' x2='40' y2='56' stroke='%231a9aa8' stroke-width='2'/></svg>" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><circle cx='60' cy='60' r='52' fill='none' stroke='%23666666' stroke-width='3' opacity='0.4'/><circle cx='50' cy='30' r='8' fill='%23444444'/><circle cx='80' cy='30' r='8' fill='%23666666'/><circle cx='40' cy='56' r='8' fill='%23666666'/><circle cx='64' cy='60' r='8' fill='%23444444'/><circle cx='88' cy='64' r='8' fill='%23444444'/><circle cx='30' cy='78' r='7' fill='%23888888'/><line x1='50' y1='30' x2='40' y2='56' stroke='%23666666' stroke-width='2'/><line x1='40' y1='56' x2='64' y2='60' stroke='%23666666' stroke-width='2'/><line x1='64' y1='60' x2='88' y2='64' stroke='%23666666' stroke-width='2'/><line x1='30' y1='78' x2='40' y2='56' stroke='%23666666' stroke-width='2'/></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #0d1b2a;
-      --fg: #e8f4f8;
-      --fg-muted: #7a9aac;
-      --fg-subtle: #4a6b7c;
-      --accent: #3aa8b0;
-      --accent-light: #162535;
-      --border: #1f3d52;
-      --card-bg: #0f2030;
+      --bg: #f0f0f0;
+      --fg: #1a1a1a;
+      --fg-muted: #5c5c5c;
+      --fg-subtle: #999999;
+      --accent: #444444;
+      --accent-light: #e2e2e2;
+      --border: #d4d4d4;
+      --card-bg: #fafafa;
       --font-sans: 'DM Sans', system-ui, sans-serif;
       --font-mono: 'DM Mono', monospace;
     }
@@ -35,7 +35,7 @@
       padding: 0 clamp(24px, 5vw, 80px);
     }
     nav.scrolled {
-      background: rgba(13,27,42,0.92);
+      background: rgba(240,240,240,0.92);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
     }
@@ -55,8 +55,8 @@
 
     /* LOGO WORDMARK */
     .wordmark { font-size: 16px; font-weight: 600; letter-spacing: -0.015em; line-height: 1; font-family: var(--font-sans); }
-    .wordmark .bio { color: #1d6478; }
-    .wordmark .eng { color: #1a9aa8; }
+    .wordmark .bio { color: #555555; }
+    .wordmark .eng { color: #333333; }
     .wordmark .lab { font-weight: 300; color: var(--fg-muted); margin-left: 4px; }
 
     /* SECTIONS */
@@ -80,7 +80,7 @@
     .hero-h1 strong { font-weight: 600; }
     .hero-desc { font-size: 17px; color: var(--fg-muted); line-height: 1.7; max-width: 480px; margin-bottom: 36px; font-weight: 300; }
     .tag-row { display: flex; gap: 8px; flex-wrap: wrap; }
-    .tag { padding: 5px 12px; font-size: 12px; font-family: var(--font-mono); background: var(--accent-light); color: var(--accent); border-radius: 3px; letter-spacing: 0.04em; }
+    .tag { padding: 5px 12px; font-size: 12px; font-family: var(--font-mono); background: var(--accent-light); color: var(--accent); border-radius: 3px; letter-spacing: 0.04em; border: 1px solid var(--border); }
 
     /* ABOUT */
     #research { padding: clamp(80px,10vw,120px) clamp(24px,5vw,80px); }
@@ -127,7 +127,7 @@
     .proj-years { font-family: var(--font-mono); font-size: 12px; color: var(--fg-subtle); padding-top: 2px; }
     .proj-title { font-size: 14px; line-height: 1.55; }
     .proj-title.muted { font-size: 13px; color: var(--fg-muted); }
-    .proj-role { font-size: 11px; font-family: var(--font-mono); color: var(--accent); background: var(--accent-light); padding: 3px 8px; border-radius: 3px; align-self: start; letter-spacing: 0.04em; text-align: center; }
+    .proj-role { font-size: 11px; font-family: var(--font-mono); color: var(--accent); background: var(--accent-light); padding: 3px 8px; border-radius: 3px; align-self: start; letter-spacing: 0.04em; text-align: center; border: 1px solid var(--border); }
     .proj-role.muted { color: var(--fg-subtle); background: var(--bg); border: 1px solid var(--border); }
     .past-toggle-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
     .toggle-btn { background: none; border: 1px solid var(--border); border-radius: 4px; padding: 6px 14px; font-size: 12px; color: var(--fg-muted); cursor: pointer; font-family: var(--font-mono); letter-spacing: 0.04em; transition: all 0.2s; }
@@ -136,7 +136,7 @@
     #past-projects.visible { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
 
     /* PEOPLE */
-    #people { padding: clamp(80px,10vw,120px) clamp(24px,5vw,80px); background: #0a1620; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    #people { padding: clamp(80px,10vw,120px) clamp(24px,5vw,80px); background: #e8e8e8; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
     .people-inner { max-width: 1200px; margin: 0 auto; }
     .pi-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 32px 36px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 72px; }
     .pi-name { font-size: 24px; font-weight: 500; margin-bottom: 6px; }
@@ -172,7 +172,7 @@
     }
     .resource-card:hover { background: var(--accent-light); }
     .resource-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-    .resource-tag { font-family: var(--font-mono); font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 3px 8px; border-radius: 3px; letter-spacing: 0.04em; }
+    .resource-tag { font-family: var(--font-mono); font-size: 11px; color: var(--accent); background: var(--accent-light); padding: 3px 8px; border-radius: 3px; letter-spacing: 0.04em; border: 1px solid var(--border); }
     .resource-name { font-size: 18px; font-weight: 500; margin-bottom: 12px; letter-spacing: -0.01em; }
     .resource-desc { font-size: 13px; color: var(--fg-muted); line-height: 1.6; font-weight: 300; margin-bottom: auto; }
     .resource-paper { font-size: 11px; color: var(--fg-subtle); font-family: var(--font-mono); margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
@@ -183,7 +183,7 @@
     .tab-row { display: flex; gap: 0; margin-bottom: 40px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; width: fit-content; }
     .tab-btn { padding: 9px 20px; font-size: 13px; border: none; cursor: pointer; background: var(--card-bg); color: var(--fg-muted); font-family: var(--font-sans); font-weight: 400; transition: all 0.2s; border-right: 1px solid var(--border); }
     .tab-btn:last-child { border-right: none; }
-    .tab-btn.active { background: var(--fg); color: #060f18; font-weight: 500; }
+    .tab-btn.active { background: var(--fg); color: var(--card-bg); font-weight: 500; }
     .year-filters { display: flex; gap: 8px; margin-bottom: 32px; flex-wrap: wrap; }
     .year-btn { padding: 5px 12px; font-size: 12px; font-family: var(--font-mono); border: 1px solid var(--border); border-radius: 4px; background: transparent; color: var(--fg-muted); cursor: pointer; letter-spacing: 0.04em; transition: all 0.2s; }
     .year-btn.active { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
@@ -203,23 +203,23 @@
     .pipeline-item:last-child { border-bottom: none; }
 
     /* FOOTER */
-    footer { background: #060f18; color: #c0d8e8; padding: clamp(60px,8vw,80px) clamp(24px,5vw,80px); }
+    footer { background: #1e1e1e; color: #cccccc; padding: clamp(60px,8vw,80px) clamp(24px,5vw,80px); }
     .footer-inner { max-width: 1200px; margin: 0 auto; }
     .footer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 60px; margin-bottom: 60px; }
     .footer-logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
     .footer-tagline { font-size: 13px; opacity: 0.6; line-height: 1.65; font-weight: 300; }
     .footer-col-label { font-family: var(--font-mono); font-size: 11px; opacity: 0.4; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
     .footer-col-text { font-size: 14px; font-weight: 300; opacity: 0.8; line-height: 1.65; }
-    .footer-col-text a { color: var(--accent); text-decoration: none; }
+    .footer-col-text a { color: #aaaaaa; text-decoration: none; }
     .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 28px; display: flex; justify-content: space-between; align-items: center; }
     .footer-copy { font-size: 12px; opacity: 0.35; font-family: var(--font-mono); }
     .footer-links { display: flex; gap: 20px; }
     .footer-links a { font-size: 12px; opacity: 0.45; color: inherit; text-decoration: none; font-family: var(--font-mono); transition: opacity 0.2s; }
     .footer-links a:hover { opacity: 1; }
 
-    .wordmark-dark .bio { color: #5cc1c0; }
-    .wordmark-dark .eng { color: #1a9aa8; }
-    .wordmark-dark .lab { color: rgba(255,255,255,0.6); }
+    .wordmark-footer .bio { color: #aaaaaa; }
+    .wordmark-footer .eng { color: #cccccc; }
+    .wordmark-footer .lab { color: rgba(255,255,255,0.5); }
 
     /* TAB PANELS */
     .tab-panel { display: none; }
@@ -233,40 +233,40 @@
   <div class="nav-inner">
     <a href="#home" class="nav-logo">
       <svg width="32" height="32" viewBox="0 0 120 120" fill="none" aria-label="SysBioEng logo">
-        <circle cx="60" cy="60" r="50" fill="none" stroke="#1a9aa8" stroke-width="0.6" opacity="0.25"/>
-        <line x1="60" y1="12" x2="50" y2="30" stroke="#5cc1c0" stroke-width="1.1" opacity="0.75"/>
-        <line x1="60" y1="12" x2="80" y2="30" stroke="#5cc1c0" stroke-width="1.1" opacity="0.75"/>
-        <line x1="28" y1="24" x2="50" y2="30" stroke="#1a9aa8" stroke-width="1.1" opacity="0.75"/>
-        <line x1="50" y1="30" x2="80" y2="30" stroke="#1a9aa8" stroke-width="1.1" opacity="0.75"/>
-        <line x1="80" y1="30" x2="100" y2="38" stroke="#1a9aa8" stroke-width="1.1" opacity="0.75"/>
-        <line x1="28" y1="24" x2="18" y2="50" stroke="#1a9aa8" stroke-width="1.1" opacity="0.75"/>
-        <line x1="50" y1="30" x2="40" y2="56" stroke="#1a9aa8" stroke-width="1.1" opacity="0.75"/>
-        <line x1="18" y1="50" x2="40" y2="56" stroke="#1a9aa8" stroke-width="1.1" opacity="0.75"/>
-        <line x1="40" y1="56" x2="64" y2="60" stroke="#1a9aa8" stroke-width="1.1" opacity="0.75"/>
-        <line x1="80" y1="30" x2="64" y2="60" stroke="#1a9aa8" stroke-width="1.1" opacity="0.75"/>
-        <line x1="100" y1="38" x2="88" y2="64" stroke="#1a9aa8" stroke-width="1.1" opacity="0.75"/>
-        <line x1="64" y1="60" x2="88" y2="64" stroke="#1a9aa8" stroke-width="1.1" opacity="0.75"/>
-        <line x1="40" y1="56" x2="30" y2="78" stroke="#1a9aa8" stroke-width="1.1" opacity="0.75"/>
-        <line x1="30" y1="78" x2="56" y2="88" stroke="#1a9aa8" stroke-width="1.1" opacity="0.75"/>
-        <line x1="56" y1="88" x2="80" y2="88" stroke="#1a9aa8" stroke-width="1.1" opacity="0.75"/>
-        <line x1="64" y1="60" x2="80" y2="88" stroke="#1a9aa8" stroke-width="1.1" opacity="0.75"/>
-        <line x1="88" y1="64" x2="80" y2="88" stroke="#1a9aa8" stroke-width="1.1" opacity="0.75"/>
-        <line x1="88" y1="64" x2="102" y2="76" stroke="#1a9aa8" stroke-width="1.1" opacity="0.75"/>
-        <line x1="18" y1="50" x2="30" y2="78" stroke="#1a9aa8" stroke-width="1.1" opacity="0.75"/>
-        <line x1="30" y1="78" x2="64" y2="60" stroke="#1a9aa8" stroke-width="1.1" opacity="0.75"/>
-        <circle cx="60" cy="12" r="4" fill="#5cc1c0"/>
-        <circle cx="28" cy="24" r="4.5" fill="#1a9aa8"/>
-        <circle cx="50" cy="30" r="5" fill="#1d6478"/>
-        <circle cx="80" cy="30" r="5" fill="#e36b3a" stroke="#fff" stroke-width="1.2"/>
-        <circle cx="100" cy="38" r="4" fill="#1d6478"/>
-        <circle cx="18" cy="50" r="4" fill="#5cc1c0"/>
-        <circle cx="40" cy="56" r="5" fill="#1a9aa8"/>
-        <circle cx="64" cy="60" r="5" fill="#1d6478"/>
-        <circle cx="88" cy="64" r="5" fill="#1d6478"/>
-        <circle cx="30" cy="78" r="4.5" fill="#f0c020" stroke="#fff" stroke-width="1.2"/>
-        <circle cx="56" cy="88" r="4" fill="#5cc1c0"/>
-        <circle cx="80" cy="88" r="4" fill="#1d6478"/>
-        <circle cx="102" cy="76" r="3.5" fill="#1a9aa8"/>
+        <circle cx="60" cy="60" r="50" fill="none" stroke="#888888" stroke-width="0.6" opacity="0.35"/>
+        <line x1="60" y1="12" x2="50" y2="30" stroke="#666666" stroke-width="1.1" opacity="0.75"/>
+        <line x1="60" y1="12" x2="80" y2="30" stroke="#666666" stroke-width="1.1" opacity="0.75"/>
+        <line x1="28" y1="24" x2="50" y2="30" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
+        <line x1="50" y1="30" x2="80" y2="30" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
+        <line x1="80" y1="30" x2="100" y2="38" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
+        <line x1="28" y1="24" x2="18" y2="50" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
+        <line x1="50" y1="30" x2="40" y2="56" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
+        <line x1="18" y1="50" x2="40" y2="56" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
+        <line x1="40" y1="56" x2="64" y2="60" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
+        <line x1="80" y1="30" x2="64" y2="60" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
+        <line x1="100" y1="38" x2="88" y2="64" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
+        <line x1="64" y1="60" x2="88" y2="64" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
+        <line x1="40" y1="56" x2="30" y2="78" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
+        <line x1="30" y1="78" x2="56" y2="88" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
+        <line x1="56" y1="88" x2="80" y2="88" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
+        <line x1="64" y1="60" x2="80" y2="88" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
+        <line x1="88" y1="64" x2="80" y2="88" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
+        <line x1="88" y1="64" x2="102" y2="76" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
+        <line x1="18" y1="50" x2="30" y2="78" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
+        <line x1="30" y1="78" x2="64" y2="60" stroke="#888888" stroke-width="1.1" opacity="0.75"/>
+        <circle cx="60" cy="12" r="4" fill="#aaaaaa"/>
+        <circle cx="28" cy="24" r="4.5" fill="#888888"/>
+        <circle cx="50" cy="30" r="5" fill="#555555"/>
+        <circle cx="80" cy="30" r="5" fill="#777777" stroke="#f0f0f0" stroke-width="1.2"/>
+        <circle cx="100" cy="38" r="4" fill="#555555"/>
+        <circle cx="18" cy="50" r="4" fill="#aaaaaa"/>
+        <circle cx="40" cy="56" r="5" fill="#888888"/>
+        <circle cx="64" cy="60" r="5" fill="#555555"/>
+        <circle cx="88" cy="64" r="5" fill="#555555"/>
+        <circle cx="30" cy="78" r="4.5" fill="#bbbbbb" stroke="#f0f0f0" stroke-width="1.2"/>
+        <circle cx="56" cy="88" r="4" fill="#aaaaaa"/>
+        <circle cx="80" cy="88" r="4" fill="#555555"/>
+        <circle cx="102" cy="76" r="3.5" fill="#888888"/>
       </svg>
       <span class="wordmark"><span>Sys</span><span class="bio">Bio</span><span class="eng">Eng</span><span class="lab">Lab</span></span>
     </a>
@@ -283,7 +283,7 @@
 
 <!-- HERO -->
 <section id="home">
-  <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.035;pointer-events:none" aria-hidden="true">
+  <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.06;pointer-events:none" aria-hidden="true">
     <defs>
       <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
         <path d="M 48 0 L 0 0 0 48" fill="none" stroke="currentColor" stroke-width="0.8"/>
@@ -304,7 +304,7 @@
       </div>
     </div>
     <div style="display:flex;justify-content:center;align-items:center">
-      <svg viewBox="0 0 540 440" style="width:100%;max-width:460px;opacity:0.9" aria-hidden="true">
+      <svg viewBox="0 0 540 440" style="width:100%;max-width:460px;opacity:0.85" aria-hidden="true">
         <line x1="200" y1="120" x2="340" y2="80" stroke="var(--accent)" stroke-width="1" opacity="0.25"/>
         <line x1="200" y1="120" x2="280" y2="200" stroke="var(--accent)" stroke-width="1" opacity="0.25"/>
         <line x1="200" y1="120" x2="120" y2="220" stroke="var(--accent)" stroke-width="1" opacity="0.25"/>
@@ -334,18 +334,18 @@
         <circle cx="80" cy="160" r="4" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity="0.5"/>
         <circle cx="360" cy="360" r="5" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity="0.5"/>
         <circle cx="460" cy="120" r="4" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity="0.5"/>
-        <circle cx="200" cy="120" r="3.2" fill="var(--accent)" opacity="0.3"/>
-        <circle cx="340" cy="80" r="2" fill="var(--accent)" opacity="0.3"/>
-        <circle cx="120" cy="220" r="2.4" fill="var(--accent)" opacity="0.3"/>
-        <circle cx="280" cy="200" r="4" fill="var(--accent)" opacity="0.7"/>
-        <circle cx="400" cy="180" r="2" fill="var(--accent)" opacity="0.3"/>
-        <circle cx="160" cy="320" r="2.8" fill="var(--accent)" opacity="0.3"/>
-        <circle cx="320" cy="300" r="2" fill="var(--accent)" opacity="0.3"/>
-        <circle cx="240" cy="380" r="2.4" fill="var(--accent)" opacity="0.3"/>
-        <circle cx="420" cy="290" r="1.6" fill="var(--accent)" opacity="0.3"/>
-        <circle cx="80" cy="160" r="1.6" fill="var(--accent)" opacity="0.3"/>
-        <circle cx="360" cy="360" r="2" fill="var(--accent)" opacity="0.3"/>
-        <circle cx="460" cy="120" r="1.6" fill="var(--accent)" opacity="0.3"/>
+        <circle cx="200" cy="120" r="3.2" fill="var(--accent)" opacity="0.35"/>
+        <circle cx="340" cy="80" r="2" fill="var(--accent)" opacity="0.35"/>
+        <circle cx="120" cy="220" r="2.4" fill="var(--accent)" opacity="0.35"/>
+        <circle cx="280" cy="200" r="4" fill="var(--accent)" opacity="0.75"/>
+        <circle cx="400" cy="180" r="2" fill="var(--accent)" opacity="0.35"/>
+        <circle cx="160" cy="320" r="2.8" fill="var(--accent)" opacity="0.35"/>
+        <circle cx="320" cy="300" r="2" fill="var(--accent)" opacity="0.35"/>
+        <circle cx="240" cy="380" r="2.4" fill="var(--accent)" opacity="0.35"/>
+        <circle cx="420" cy="290" r="1.6" fill="var(--accent)" opacity="0.35"/>
+        <circle cx="80" cy="160" r="1.6" fill="var(--accent)" opacity="0.35"/>
+        <circle cx="360" cy="360" r="2" fill="var(--accent)" opacity="0.35"/>
+        <circle cx="460" cy="120" r="1.6" fill="var(--accent)" opacity="0.35"/>
       </svg>
     </div>
   </div>
@@ -555,7 +555,7 @@
     <div class="tab-row">
       <button class="tab-btn active" onclick="switchTab('journal',this)">Journal Papers (36)</button>
       <button class="tab-btn" onclick="switchTab('conference',this)">Conference Papers</button>
-      <button class="tab-btn" onclick="switchTab('books',this)">Book Chapters</button>      
+      <button class="tab-btn" onclick="switchTab('books',this)">Book Chapters</button>
       <button class="tab-btn" onclick="switchTab('pipeline',this)">In Preparation</button>
     </div>
 
@@ -610,19 +610,19 @@
       <div>
         <div class="footer-logo-row">
           <svg width="36" height="36" viewBox="0 0 120 120" fill="none" aria-hidden="true">
-            <circle cx="60" cy="60" r="50" fill="none" stroke="#5cc1c0" stroke-width="0.6" opacity="0.25"/>
-            <line x1="50" y1="30" x2="40" y2="56" stroke="#5cc1c0" stroke-width="1.1" opacity="0.75"/>
-            <line x1="40" y1="56" x2="64" y2="60" stroke="#5cc1c0" stroke-width="1.1" opacity="0.75"/>
-            <line x1="64" y1="60" x2="88" y2="64" stroke="#5cc1c0" stroke-width="1.1" opacity="0.75"/>
-            <line x1="30" y1="78" x2="40" y2="56" stroke="#5cc1c0" stroke-width="1.1" opacity="0.75"/>
-            <circle cx="50" cy="30" r="5" fill="#1d6478"/>
-            <circle cx="80" cy="30" r="5" fill="#e36b3a" stroke="#333" stroke-width="1.2"/>
-            <circle cx="40" cy="56" r="5" fill="#1a9aa8"/>
-            <circle cx="64" cy="60" r="5" fill="#1d6478"/>
-            <circle cx="88" cy="64" r="5" fill="#1d6478"/>
-            <circle cx="30" cy="78" r="4.5" fill="#f0c020" stroke="#333" stroke-width="1.2"/>
+            <circle cx="60" cy="60" r="50" fill="none" stroke="#aaaaaa" stroke-width="0.6" opacity="0.25"/>
+            <line x1="50" y1="30" x2="40" y2="56" stroke="#aaaaaa" stroke-width="1.1" opacity="0.75"/>
+            <line x1="40" y1="56" x2="64" y2="60" stroke="#aaaaaa" stroke-width="1.1" opacity="0.75"/>
+            <line x1="64" y1="60" x2="88" y2="64" stroke="#aaaaaa" stroke-width="1.1" opacity="0.75"/>
+            <line x1="30" y1="78" x2="40" y2="56" stroke="#aaaaaa" stroke-width="1.1" opacity="0.75"/>
+            <circle cx="50" cy="30" r="5" fill="#666666"/>
+            <circle cx="80" cy="30" r="5" fill="#999999" stroke="#1e1e1e" stroke-width="1.2"/>
+            <circle cx="40" cy="56" r="5" fill="#888888"/>
+            <circle cx="64" cy="60" r="5" fill="#666666"/>
+            <circle cx="88" cy="64" r="5" fill="#666666"/>
+            <circle cx="30" cy="78" r="4.5" fill="#bbbbbb" stroke="#1e1e1e" stroke-width="1.2"/>
           </svg>
-          <span class="wordmark wordmark-dark"><span>Sys</span><span class="bio">Bio</span><span class="eng">Eng</span><span class="lab">Lab</span></span>
+          <span class="wordmark wordmark-footer"><span>Sys</span><span class="bio">Bio</span><span class="eng">Eng</span><span class="lab">Lab</span></span>
         </div>
         <p class="footer-tagline">Systems Bioengineering Laboratory<br>Pontificia Universidad Católica de Chile</p>
       </div>
