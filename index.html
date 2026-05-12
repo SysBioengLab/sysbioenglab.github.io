@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SysBioEng Lab | Systems Bioengineering — PUC Chile</title>
+  <title>SysBioEng Lab — PUC Chile</title>
   <meta name="description" content="SysBioEng Lab builds computational tools grounded in optimization and machine learning to redesign and understand biological systems. Led by Prof. Pedro Saa at Pontificia Universidad Católica de Chile." />
   <meta name="keywords" content="Pedro Saa, metabolic modeling, kinetic models, systems biotechnology, bioprocess optimization, machine learning, GRASP, flux sampling, PUC Chile" />
   <meta property="og:title" content="SysBioEng Lab — PUC Chile" />
@@ -11,423 +11,305 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@400;500;600;700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <style>
-    :root {
-      --bg:       #0c0f16;
-      --surface:  #141720;
-      --raised:   #1b1f2d;
-      --border:   #242838;
-      --border-l: #2e3446;
-      --fg:       #ddd8cc;
-      --fg-muted: #857f74;
-      --fg-dim:   #524e47;
-      --gold:     #b8924f;
-      --gold-lt:  #cba968;
-      --gold-dim: #2a2213;
-      --navy:     #1a2340;
-    }
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .font-head { font-family: 'Montserrat', sans-serif; }
+    h1,h2,h3,h4 { font-family: 'Montserrat', sans-serif; }
 
-    *, *::before, *::after { box-sizing: border-box; }
-    body { background: var(--bg); color: var(--fg); font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    .dot-bg { background-image: radial-gradient(#1e2d4a 1.5px, transparent 1.5px); background-size: 26px 26px; }
+    .dot-bg-dark { background-image: radial-gradient(#ffffff0f 1.5px, transparent 1.5px); background-size: 26px 26px; }
 
-    /* typography */
-    .display { font-family: 'Playfair Display', Georgia, serif; }
-    .mono    { font-family: 'DM Mono', monospace; }
-    .label   { font-family: 'Montserrat', sans-serif; }
-    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
-
-    /* dot matrix */
-    .dot-bg      { background-image: radial-gradient(#b8924f14 1.5px, transparent 1.5px); background-size: 26px 26px; }
-    .dot-bg-gold { background-image: radial-gradient(#b8924f22 1.5px, transparent 1.5px); background-size: 26px 26px; }
-
-    /* glassmorphism nav */
     .glass-nav {
-      background: rgba(12,15,22,0.86);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
+      background: rgba(8, 12, 26, 0.90);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
     }
     .glass-nav.scrolled { box-shadow: 0 2px 24px rgba(0,0,0,0.5); }
 
-    /* nav links */
-    .nav-link { position: relative; transition: color 0.18s; font-family: 'Montserrat', sans-serif; font-size: 13px; }
-    .nav-link::after { content:''; position:absolute; bottom:-4px; left:0; right:0; height:1.5px; background:var(--gold); border-radius:1px; transform:scaleX(0); transition:transform 0.22s; }
-    .nav-link:hover { color: var(--gold-lt) !important; }
+    .nav-link { position: relative; transition: color 0.18s; }
+    .nav-link::after { content:''; position:absolute; bottom:-4px; left:0; right:0; height:2px; background:#F59E0B; border-radius:1px; transform:scaleX(0); transition:transform 0.2s; }
     .nav-link:hover::after, .nav-link.active::after { transform:scaleX(1); }
-    .nav-link.active { color: var(--fg) !important; font-weight:600; }
+    .nav-link.active { color:#F59E0B; font-weight:600; }
 
-    /* bento */
+    /* bento grid */
     .bento { display:grid; grid-template-columns:repeat(12,1fr); gap:14px; }
-    .b1 { grid-column:span 7; min-height:230px; }
-    .b2 { grid-column:span 5; min-height:108px; }
-    .b3 { grid-column:span 5; min-height:108px; }
-    .b4 { grid-column:span 4; min-height:210px; }
-    .b5 { grid-column:span 4; min-height:210px; }
-    .b6 { grid-column:span 4; min-height:210px; }
+    .b1 { grid-column:span 7; min-height:220px; }
+    .b2 { grid-column:span 5; min-height:104px; }
+    .b3 { grid-column:span 5; min-height:104px; }
+    .b4 { grid-column:span 4; min-height:200px; }
+    .b5 { grid-column:span 4; min-height:200px; }
+    .b6 { grid-column:span 4; min-height:200px; }
     @media(max-width:900px){
       .b1,.b2,.b3,.b4,.b5,.b6 { grid-column:span 12; min-height:auto; }
     }
 
-    /* member card hover */
-    .mc-overlay { opacity:0; transition:opacity 0.22s; }
+    /* member card hover overlay */
+    .mc-overlay { opacity:0; transition:opacity 0.2s; }
     .mc:hover .mc-overlay { opacity:1; }
-    .mc { transition:transform 0.22s, box-shadow 0.22s; }
-    .mc:hover { transform:translateY(-5px); box-shadow:0 14px 40px rgba(0,0,0,0.55); }
+    .mc { transition:transform 0.2s, box-shadow 0.2s; }
+    .mc:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(0,0,0,0.5); }
 
-    /* timeline dot */
-    .tl-dot { width:10px; height:10px; background:var(--gold); border:2px solid var(--bg); border-radius:50%; flex-shrink:0; margin-top:5px; box-shadow:0 0 0 3px #b8924f30; }
+    /* timeline */
+    .tl-dot { width:10px; height:10px; background:#F59E0B; border:2px solid #0a0f1e; border-radius:50%; flex-shrink:0; margin-top:5px; box-shadow:0 0 0 3px #F59E0B33; }
 
-    /* pub hover */
-    .pub-row:hover { background: var(--raised); }
+    /* publication hover */
+    .pub-row { transition:background 0.15s; }
+    .pub-row:hover { background:rgba(255,255,255,0.04); }
 
-    /* tag pill */
-    .tag-pill { display:inline-flex; align-items:center; padding:2px 10px; border-radius:999px; font-size:11px; font-family:'Montserrat',sans-serif; font-weight:500; letter-spacing:0.03em; }
-
-    /* PI avatar */
-    .pi-avatar { width:88px; height:88px; border-radius:50%; background: linear-gradient(135deg, #242838, #1b2040); border: 2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:28px; font-weight:700; color:var(--gold); flex-shrink:0; }
-    .mem-avatar { width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Montserrat',sans-serif; font-size:18px; font-weight:700; }
-
-    /* featured badge */
-    .featured-badge { background: linear-gradient(135deg, var(--gold), #c47c28); color: #0c0f16; font-size:10px; font-weight:700; padding:1px 8px; border-radius:3px; letter-spacing:0.06em; text-transform:uppercase; font-family:'Montserrat',sans-serif; }
-
-    /* filter buttons */
-    .filter-btn { background:var(--surface); border:1px solid var(--border); color:var(--fg-muted); font-family:'Montserrat',sans-serif; font-size:12px; border-radius:8px; padding:6px 14px; cursor:pointer; transition:all 0.18s; }
-    .filter-btn:hover, .active-filter { background:var(--gold); border-color:var(--gold); color:#0c0f16; font-weight:600; }
-
-    /* pub tab */
-    .pub-tab-btn { background:var(--surface); color:var(--fg-muted); padding:9px 20px; font-size:13px; border:none; cursor:pointer; font-family:'Montserrat',sans-serif; font-weight:500; transition:all 0.18s; border-right:1px solid var(--border); }
-    .pub-tab-btn:last-child { border-right:none; }
-    .pub-tab-btn:hover { color:var(--fg); background:var(--raised); }
-    .active-tab { background:var(--gold) !important; color:#0c0f16 !important; font-weight:700 !important; }
-    .pub-panel { display:none; }
-    .pub-panel.active { display:block; }
-
-    /* divider */
-    .rule { border:none; border-top:1px solid var(--border); }
+    @media print {
+      nav,#hero,#pillars,#people,#resources,#news,#join,footer { display:none !important; }
+      #publications { display:block !important; padding:0 !important; }
+      .pub-row { break-inside:avoid; border-bottom:1px solid #1e293b; }
+      .no-print { display:none !important; }
+    }
 
     [id] { scroll-margin-top:76px; }
 
-    @media print {
-      nav, #hero, #pillars, #people, #resources, #news, #join, footer { display:none !important; }
-      #publications { display:block !important; padding:0 !important; color:#000 !important; background:#fff !important; }
-      .pub-row { break-inside:avoid; border-bottom:1px solid #ccc; }
-      .no-print { display:none !important; }
-    }
+    .tag-pill { display:inline-flex; align-items:center; padding:2px 10px; border-radius:999px; font-size:11px; font-family:'Inter',sans-serif; font-weight:500; letter-spacing:0.03em; }
+
+    /* avatar ring */
+    .pi-avatar { width:88px; height:88px; border-radius:50%; background:linear-gradient(135deg,#1E3A8A,#3b82f6); display:flex; align-items:center; justify-content:center; font-family:'Montserrat',sans-serif; font-size:28px; font-weight:700; color:white; flex-shrink:0; }
+    .mem-avatar { width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Montserrat',sans-serif; font-size:18px; font-weight:700; color:white; }
+
+    .featured-badge { background:linear-gradient(135deg,#F59E0B,#f97316); color:white; font-size:10px; font-weight:700; padding:1px 8px; border-radius:3px; letter-spacing:0.06em; text-transform:uppercase; }
   </style>
 </head>
-<body>
+<body class="bg-[#0a0f1e] text-slate-100 antialiased">
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     NAV
-     ══════════════════════════════════════════════════════════════════════════ -->
+<!-- ═══ NAV ═══════════════════════════════════════════════════════════════════ -->
 <nav id="main-nav" class="glass-nav fixed top-0 left-0 right-0 z-50 transition-all duration-300">
   <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-[68px]">
-
-    <a href="#hero" class="flex items-center gap-3 no-underline">
-      <svg width="30" height="30" viewBox="0 0 120 120" fill="none">
-        <circle cx="60" cy="60" r="50" fill="none" stroke="#b8924f" stroke-width="0.8" opacity="0.3"/>
-        <line x1="50" y1="30" x2="40" y2="56" stroke="#b8924f" stroke-width="1.2" opacity="0.6"/>
-        <line x1="40" y1="56" x2="64" y2="60" stroke="#b8924f" stroke-width="1.2" opacity="0.6"/>
-        <line x1="64" y1="60" x2="88" y2="64" stroke="#b8924f" stroke-width="1.2" opacity="0.6"/>
-        <line x1="30" y1="78" x2="40" y2="56" stroke="#b8924f" stroke-width="1.2" opacity="0.6"/>
-        <line x1="80" y1="30" x2="64" y2="60" stroke="#6e7aaa" stroke-width="1.2" opacity="0.6"/>
-        <line x1="50" y1="30" x2="80" y2="30" stroke="#6e7aaa" stroke-width="1.2" opacity="0.6"/>
-        <circle cx="50" cy="30" r="5" fill="#b8924f" opacity="0.8"/>
-        <circle cx="80" cy="30" r="5" fill="#cba968"/>
-        <circle cx="40" cy="56" r="5" fill="#6e7aaa" opacity="0.8"/>
-        <circle cx="64" cy="60" r="5" fill="#b8924f"/>
-        <circle cx="88" cy="64" r="4" fill="#6e7aaa" opacity="0.7"/>
-        <circle cx="30" cy="78" r="4" fill="#cba968" opacity="0.9"/>
+    <a href="#hero" class="flex items-center gap-3 text-white no-underline">
+      <svg width="36" height="36" viewBox="0 0 100 100" fill="none">
+        <line x1="20" y1="14" x2="12" y2="54" stroke="white" stroke-width="5" stroke-linecap="round" opacity="0.9"/>
+        <line x1="20" y1="14" x2="80" y2="14" stroke="white" stroke-width="5" stroke-linecap="round" opacity="0.9"/>
+        <line x1="12" y1="54" x2="52" y2="60" stroke="white" stroke-width="5" stroke-linecap="round" opacity="0.9"/>
+        <line x1="52" y1="60" x2="88" y2="65" stroke="white" stroke-width="5" stroke-linecap="round" opacity="0.9"/>
+        <line x1="22" y1="83" x2="12" y2="54" stroke="white" stroke-width="5" stroke-linecap="round" opacity="0.9"/>
+        <line x1="80" y1="14" x2="52" y2="60" stroke="white" stroke-width="5" stroke-linecap="round" opacity="0.9"/>
+        <circle cx="20" cy="14" r="7" fill="#F59E0B"/>
+        <circle cx="80" cy="14" r="7" fill="#F59E0B"/>
+        <circle cx="12" cy="54" r="7" fill="#F59E0B"/>
+        <circle cx="52" cy="60" r="7" fill="#F59E0B"/>
+        <circle cx="88" cy="65" r="7" fill="#F59E0B"/>
+        <circle cx="22" cy="83" r="7" fill="#F59E0B"/>
       </svg>
-      <div class="leading-none">
-        <span class="label text-[15px] font-bold" style="color:var(--fg)">
-          Sys<span style="color:var(--gold)">Bio</span>Eng
+      <div>
+        <span class="font-head text-[15px] font-700 leading-none tracking-tight" style="font-weight:700">
+          Sys<span style="color:#F59E0B">Bio</span>Eng
         </span>
-        <span class="label text-[15px] font-light ml-1" style="color:var(--fg-muted)">Lab</span>
+        <span class="font-head text-[15px] font-300 text-slate-400 ml-1" style="font-weight:300">Lab</span>
       </div>
     </a>
-
     <div class="hidden md:flex items-center gap-8">
-      <a href="#pillars"      class="nav-link font-medium" style="color:var(--fg-muted)">Research</a>
-      <a href="#people"       class="nav-link font-medium" style="color:var(--fg-muted)">People</a>
-      <a href="#publications" class="nav-link font-medium" style="color:var(--fg-muted)">Publications</a>
-      <a href="#resources"    class="nav-link font-medium" style="color:var(--fg-muted)">Resources</a>
-      <a href="#news"         class="nav-link font-medium" style="color:var(--fg-muted)">News</a>
-      <a href="#join" class="label text-[13px] font-semibold px-4 py-2 rounded-lg transition-colors border"
-         style="background:var(--gold);color:#0c0f16;border-color:var(--gold);"
-         onmouseover="this.style.background='var(--gold-lt)';this.style.borderColor='var(--gold-lt)'"
-         onmouseout="this.style.background='var(--gold)';this.style.borderColor='var(--gold)'">Join Us</a>
+      <a href="#pillars" class="nav-link text-[13px] font-medium text-slate-300 hover:text-white">Research</a>
+      <a href="#people" class="nav-link text-[13px] font-medium text-slate-300 hover:text-white">People</a>
+      <a href="#publications" class="nav-link text-[13px] font-medium text-slate-300 hover:text-white">Publications</a>
+      <a href="#resources" class="nav-link text-[13px] font-medium text-slate-300 hover:text-white">Resources</a>
+      <a href="#news" class="nav-link text-[13px] font-medium text-slate-300 hover:text-white">News</a>
+      <a href="#join" class="nav-link text-[13px] font-medium text-slate-300 hover:text-white">Contact</a>
     </div>
-
   </div>
 </nav>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     HERO
-     ══════════════════════════════════════════════════════════════════════════ -->
-<section id="hero" class="relative min-h-screen flex flex-col justify-center overflow-hidden pt-16" style="background:var(--bg)">
-  <div class="absolute inset-0 dot-bg-gold opacity-60"></div>
-  <div class="absolute inset-0" style="background:radial-gradient(ellipse 80% 60% at 60% 40%, #1a2340 0%, transparent 70%)"></div>
+<!-- ═══ HERO ═══════════════════════════════════════════════════════════════════ -->
+<section id="hero" class="relative min-h-screen flex flex-col justify-center bg-[#070c1a] dot-bg-dark overflow-hidden pt-16">
+  <!-- subtle gradient overlay -->
+  <div class="absolute inset-0 bg-gradient-to-br from-[#060a16] via-[#0d1528] to-[#0f1e3d] opacity-90"></div>
 
-  <!-- decorative graph -->
-  <svg class="absolute right-0 top-1/2 -translate-y-1/2 opacity-[0.06] w-[620px] pointer-events-none hidden lg:block" viewBox="0 0 540 440" aria-hidden="true">
-    <line x1="200" y1="120" x2="340" y2="80"  stroke="#b8924f" stroke-width="1.5"/>
-    <line x1="200" y1="120" x2="280" y2="200" stroke="#b8924f" stroke-width="1.5"/>
-    <line x1="200" y1="120" x2="120" y2="220" stroke="#b8924f" stroke-width="1.5"/>
-    <line x1="340" y1="80"  x2="280" y2="200" stroke="#b8924f" stroke-width="1.5"/>
-    <line x1="340" y1="80"  x2="460" y2="120" stroke="#b8924f" stroke-width="1.5"/>
-    <line x1="120" y1="220" x2="160" y2="320" stroke="#b8924f" stroke-width="1.5"/>
-    <line x1="280" y1="200" x2="400" y2="180" stroke="#b8924f" stroke-width="1.5"/>
-    <line x1="280" y1="200" x2="320" y2="300" stroke="#b8924f" stroke-width="1.5"/>
-    <line x1="280" y1="200" x2="240" y2="380" stroke="#b8924f" stroke-width="1.5"/>
-    <line x1="400" y1="180" x2="420" y2="290" stroke="#b8924f" stroke-width="1.5"/>
-    <line x1="160" y1="320" x2="320" y2="300" stroke="#b8924f" stroke-width="1.5"/>
-    <line x1="240" y1="380" x2="360" y2="360" stroke="#b8924f" stroke-width="1.5"/>
-    <line x1="420" y1="290" x2="360" y2="360" stroke="#b8924f" stroke-width="1.5"/>
-    <circle cx="200" cy="120" r="9"  fill="#b8924f" opacity="0.5"/>
-    <circle cx="340" cy="80"  r="6"  fill="#b8924f" opacity="0.4"/>
-    <circle cx="280" cy="200" r="13" fill="#cba968" opacity="0.75"/>
-    <circle cx="120" cy="220" r="7"  fill="#b8924f" opacity="0.4"/>
-    <circle cx="400" cy="180" r="6"  fill="#b8924f" opacity="0.4"/>
-    <circle cx="160" cy="320" r="8"  fill="#b8924f" opacity="0.45"/>
-    <circle cx="320" cy="300" r="6"  fill="#b8924f" opacity="0.4"/>
-    <circle cx="240" cy="380" r="7"  fill="#b8924f" opacity="0.4"/>
-    <circle cx="420" cy="290" r="5"  fill="#cba968" opacity="0.6"/>
-    <circle cx="460" cy="120" r="5"  fill="#b8924f" opacity="0.35"/>
-    <circle cx="360" cy="360" r="6"  fill="#b8924f" opacity="0.35"/>
+  <!-- hero graph decorative SVG -->
+  <svg class="absolute right-0 top-1/2 -translate-y-1/2 opacity-[0.07] w-[640px] pointer-events-none hidden lg:block" viewBox="0 0 540 440" aria-hidden="true">
+    <line x1="200" y1="120" x2="340" y2="80" stroke="white" stroke-width="1.5"/>
+    <line x1="200" y1="120" x2="280" y2="200" stroke="white" stroke-width="1.5"/>
+    <line x1="200" y1="120" x2="120" y2="220" stroke="white" stroke-width="1.5"/>
+    <line x1="340" y1="80" x2="280" y2="200" stroke="white" stroke-width="1.5"/>
+    <line x1="340" y1="80" x2="460" y2="120" stroke="white" stroke-width="1.5"/>
+    <line x1="120" y1="220" x2="160" y2="320" stroke="white" stroke-width="1.5"/>
+    <line x1="280" y1="200" x2="400" y2="180" stroke="white" stroke-width="1.5"/>
+    <line x1="280" y1="200" x2="320" y2="300" stroke="white" stroke-width="1.5"/>
+    <line x1="280" y1="200" x2="240" y2="380" stroke="white" stroke-width="1.5"/>
+    <line x1="400" y1="180" x2="420" y2="290" stroke="white" stroke-width="1.5"/>
+    <line x1="160" y1="320" x2="320" y2="300" stroke="white" stroke-width="1.5"/>
+    <line x1="240" y1="380" x2="360" y2="360" stroke="white" stroke-width="1.5"/>
+    <line x1="420" y1="290" x2="360" y2="360" stroke="white" stroke-width="1.5"/>
+    <circle cx="200" cy="120" r="9" fill="white" opacity="0.6"/>
+    <circle cx="340" cy="80" r="6" fill="white" opacity="0.5"/>
+    <circle cx="280" cy="200" r="13" fill="#F59E0B" opacity="0.8"/>
+    <circle cx="120" cy="220" r="7" fill="white" opacity="0.5"/>
+    <circle cx="400" cy="180" r="6" fill="white" opacity="0.5"/>
+    <circle cx="160" cy="320" r="8" fill="white" opacity="0.5"/>
+    <circle cx="320" cy="300" r="6" fill="white" opacity="0.5"/>
+    <circle cx="240" cy="380" r="7" fill="white" opacity="0.5"/>
+    <circle cx="420" cy="290" r="5" fill="#F59E0B" opacity="0.7"/>
+    <circle cx="460" cy="120" r="5" fill="white" opacity="0.4"/>
+    <circle cx="360" cy="360" r="6" fill="white" opacity="0.4"/>
   </svg>
 
   <div class="relative max-w-7xl mx-auto px-6 py-24 lg:py-32">
     <div class="max-w-2xl">
-      <span class="inline-flex items-center gap-2 mono text-[11px] font-medium uppercase tracking-widest mb-6" style="color:var(--gold)">
-        <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+      <span class="inline-flex items-center gap-2 text-[#F59E0B] text-[12px] font-semibold uppercase tracking-widest font-head mb-6">
         Pontificia Universidad Católica de Chile
       </span>
-
-      <h1 class="display text-5xl lg:text-[62px] xl:text-7xl font-bold leading-[1.06] tracking-tight mb-6" style="color:var(--fg)">
+      <h1 class="text-white text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-[1.05] tracking-tight mb-6">
         Systems<br/>
-        <span style="color:var(--gold)">Bioengin</span><wbr/>eering<br/>
-        <span class="font-normal italic">Laboratory</span>
+        <span style="color:#F59E0B">Bioengineering</span><wbr/><br/>
+        Laboratory
       </h1>
-
-      <p class="text-lg lg:text-xl leading-relaxed mb-3 font-light max-w-xl" style="color:var(--fg-muted)">
-        We build computational tools rooted in advanced optimization and machine learning to
-        <strong class="font-semibold" style="color:var(--fg)">redesign and understand biological systems</strong>
-        — bridging metabolic networks and real-world bioprocess performance.
+      <p class="text-blue-100 text-lg lg:text-xl leading-relaxed mb-3 font-light max-w-xl">
+        Our group builds computational tools rooted in advanced optimization and machine learning to <strong class="text-white font-semibold">redesign and understand biological systems</strong>.
       </p>
-      <p class="text-sm mb-10 italic" style="color:var(--fg-dim)">
-        The fundamental challenge: predicting cell behavior from molecular-scale kinetics to industrial bioreactors.
-      </p>
-
-      <div class="flex flex-wrap gap-2 mb-12">
-        <span class="tag-pill border" style="background:var(--raised);color:var(--fg-muted);border-color:var(--border)">Metabolic Modeling</span>
-        <span class="tag-pill border" style="background:var(--raised);color:var(--fg-muted);border-color:var(--border)">Systems Biotechnology</span>
-        <span class="tag-pill border" style="background:var(--raised);color:var(--fg-muted);border-color:var(--border)">Bioprocess Optimization</span>
-        <span class="tag-pill border" style="background:var(--raised);color:var(--fg-muted);border-color:var(--border)">Machine Learning</span>
+      <div class="flex flex-wrap gap-3 mb-12">
+        <span class="tag-pill bg-white/10 text-blue-100 border border-white/20">Metabolic Modeling</span>
+        <span class="tag-pill bg-white/10 text-blue-100 border border-white/20">Systems Biotechnology</span>
+        <span class="tag-pill bg-white/10 text-blue-100 border border-white/20">Bioprocess Optimization</span>
+        <span class="tag-pill bg-white/10 text-blue-100 border border-white/20">Machine Learning</span>
       </div>
-
       <div class="flex flex-wrap gap-4">
-        <a href="#pillars" class="label inline-flex items-center gap-2 text-sm font-semibold px-6 py-3 rounded-xl transition-all"
-           style="background:var(--gold);color:#0c0f16"
-           onmouseover="this.style.background='var(--gold-lt)'" onmouseout="this.style.background='var(--gold)'">
-          Explore Research <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        <a href="#pillars" class="inline-flex items-center gap-2 bg-[#F59E0B] hover:bg-[#D97706] text-white font-semibold px-6 py-3 rounded-xl transition-colors font-head text-sm">
+          Research <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </a>
-        <a href="#publications" class="label inline-flex items-center gap-2 text-sm font-semibold px-6 py-3 rounded-xl transition-all border"
-           style="background:transparent;color:var(--fg-muted);border-color:var(--border-l)"
-           onmouseover="this.style.color='var(--fg)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--fg-muted)';this.style.borderColor='var(--border-l)'">
+        <a href="#publications" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-xl transition-colors border border-white/25 text-sm">
           <i data-lucide="book-open" class="w-4 h-4"></i> Publications
         </a>
       </div>
     </div>
   </div>
 
-  <!-- stat bar -->
-  <div class="relative" style="border-top:1px solid var(--border)">
-    <div class="max-w-7xl mx-auto px-6 py-6 grid grid-cols-2 md:grid-cols-4 gap-6">
-      <div class="text-center">
-        <p class="display text-3xl font-bold" style="color:var(--gold)">36+</p>
-        <p class="mono text-[11px] uppercase tracking-wider mt-1" style="color:var(--fg-dim)">Journal Papers</p>
-      </div>
-      <div class="text-center">
-        <p class="display text-3xl font-bold" style="color:var(--gold)">8</p>
-        <p class="mono text-[11px] uppercase tracking-wider mt-1" style="color:var(--fg-dim)">Current Students</p>
-      </div>
-      <div class="text-center">
-        <p class="display text-3xl font-bold" style="color:var(--gold)">6</p>
-        <p class="mono text-[11px] uppercase tracking-wider mt-1" style="color:var(--fg-dim)">Active Projects</p>
-      </div>
-      <div class="text-center">
-        <p class="display text-3xl font-bold" style="color:var(--gold)">5</p>
-        <p class="mono text-[11px] uppercase tracking-wider mt-1" style="color:var(--fg-dim)">Open-Source Tools</p>
-      </div>
-    </div>
-  </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     RESEARCH PILLARS — BENTO
-     ══════════════════════════════════════════════════════════════════════════ -->
-<section id="pillars" class="py-24 px-6" style="background:var(--surface)">
+<!-- ═══ RESEARCH PILLARS — BENTO ═══════════════════════════════════════════════ -->
+<section id="pillars" class="py-24 px-6 bg-[#0d1528] dot-bg">
   <div class="max-w-7xl mx-auto">
     <div class="mb-12">
-      <span class="label text-[11px] font-semibold uppercase tracking-widest" style="color:var(--gold)">Research</span>
-      <h2 class="display text-3xl lg:text-4xl font-bold mt-2 leading-tight" style="color:var(--fg)">
-        Four Pillars of<br/><em>Computational Bioengineering</em>
-      </h2>
+      <span class="text-[#F59E0B] text-[11px] font-semibold uppercase tracking-widest font-head">Research</span>
+      <h2 class="text-3xl lg:text-4xl font-bold text-blue-400 mt-2 leading-tight">Research Lines</h2>
     </div>
 
+    <!-- bento grid -->
     <div class="bento">
-      <!-- Large: Metabolic Modeling -->
-      <div class="b1 rounded-2xl p-8 flex flex-col justify-between relative overflow-hidden dot-bg" style="background:var(--raised);border:1px solid var(--border-l)">
-        <div class="absolute -right-10 -bottom-10 w-48 h-48 rounded-full opacity-10" style="background:var(--gold)"></div>
+      <!-- Large card: Metabolic Modeling -->
+      <div class="b1 bg-[#1E3A8A] rounded-2xl p-8 flex flex-col justify-between relative overflow-hidden dot-bg-dark">
+        <div class="absolute -right-12 -bottom-12 w-52 h-52 bg-white/5 rounded-full"></div>
+        <div class="absolute -right-4 -bottom-4 w-32 h-32 bg-[#F59E0B]/10 rounded-full"></div>
         <div>
-          <span class="mono text-[11px] font-medium uppercase tracking-widest mb-3 block" style="color:var(--gold)">01</span>
-          <h3 class="display text-2xl font-bold mb-4" style="color:var(--fg)">Metabolic Modeling</h3>
-          <p class="text-sm leading-relaxed" style="color:var(--fg-muted)">
-            Genome-scale network reconstruction, kinetic and stoichiometric models of cellular metabolism.
-            We develop Bayesian frameworks to sample feasible kinetic parameter spaces and predict metabolic
-            fluxes from sparse experimental data.
+          <span class="text-[#F59E0B]/80 text-[11px] font-semibold uppercase tracking-widest font-head">01</span>
+          <h3 class="text-white text-2xl font-bold mt-3 mb-4">Metabolic Modeling</h3>
+          <p class="text-blue-200 text-sm leading-relaxed">
+            Genome-scale network reconstruction, construction and analysis of stoichiometric and kinetic models of cellular metabolism.
           </p>
         </div>
         <div class="mt-6 flex items-center gap-3">
-          <a href="#publications" class="label inline-flex items-center gap-1.5 text-[12px] font-semibold transition-colors" style="color:var(--gold)"
-             onmouseover="this.style.color='var(--gold-lt)'" onmouseout="this.style.color='var(--gold)'">
+          <a href="#publications" class="inline-flex items-center gap-1.5 text-[#F59E0B] text-[12px] font-semibold hover:text-amber-300 transition-colors">
             Related Papers <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
           </a>
-          <span style="color:var(--border-l)">·</span>
-          <a href="https://doi.org/10.1186/s12859-023-05616-2" target="_blank" rel="noopener noreferrer" class="text-[12px] transition-colors" style="color:var(--fg-dim)"
-             onmouseover="this.style.color='var(--fg-muted)'" onmouseout="this.style.color='var(--fg-dim)'">GRASP · LooplessFluxSampler</a>
+          <span class="text-white/20">·</span>
+          <a href="https://doi.org/10.1186/s12859-023-05616-2" target="_blank" rel="noopener noreferrer" class="text-blue-300/70 text-[12px] hover:text-blue-200 transition-colors">GRASP · LooplessFluxSampler</a>
         </div>
       </div>
 
-      <!-- Systems Biotechnology -->
-      <div class="b2 rounded-2xl p-6 flex flex-col justify-between" style="background:var(--raised);border:1px solid var(--border)">
+      <!-- Small card: Systems Biotechnology -->
+      <div class="b2 bg-amber-950/40 border border-amber-800/25 rounded-2xl p-6 flex flex-col justify-between">
         <div>
-          <span class="mono text-[11px] uppercase tracking-widest mb-2 block" style="color:var(--fg-dim)">02</span>
-          <h3 class="display text-lg font-bold mb-3" style="color:var(--fg)">Systems Biotechnology</h3>
-          <p class="text-sm leading-relaxed" style="color:var(--fg-muted)">Engineering biological systems for sustainable production of chemicals, fuels, and pharmaceuticals.</p>
+          <span class="text-amber-400 text-[11px] font-semibold uppercase tracking-widest font-head">02</span>
+          <h3 class="text-slate-100 text-lg font-bold mt-2 mb-3">Systems Biotechnology</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">Engineering biological systems for sustainable production of food ingredients and high-value chemicals.</p>
         </div>
-        <a href="#publications" class="label inline-flex items-center gap-1 text-[12px] font-semibold mt-4 transition-colors" style="color:var(--gold)"
-           onmouseover="this.style.color='var(--gold-lt)'" onmouseout="this.style.color='var(--gold)'">
+        <a href="#publications" class="inline-flex items-center gap-1 text-amber-400 text-[12px] font-semibold mt-4 hover:text-amber-300 transition-colors">
           Related Papers <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
         </a>
       </div>
 
-      <!-- Bioprocess Optimization -->
-      <div class="b3 rounded-2xl p-6 flex flex-col justify-between" style="background:var(--bg);border:1px solid var(--border)">
+      <!-- Small card: Bioprocess Optimization -->
+      <div class="b3 bg-slate-800 rounded-2xl p-6 flex flex-col justify-between">
         <div>
-          <span class="mono text-[11px] uppercase tracking-widest mb-2 block" style="color:var(--fg-dim)">03</span>
-          <h3 class="display text-lg font-bold mb-3" style="color:var(--fg)">Bioprocess Optimization</h3>
-          <p class="text-sm leading-relaxed" style="color:var(--fg-muted)">Advanced optimization frameworks for bioreactor design, control, and scale-up strategies.</p>
+          <span class="text-slate-400 text-[11px] font-semibold uppercase tracking-widest font-head">03</span>
+          <h3 class="text-white text-lg font-bold mt-2 mb-3">Bioprocess Optimization</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">Advanced optimization frameworks for bioreactor design, control, and process scale-up.</p>
         </div>
-        <a href="#publications" class="label inline-flex items-center gap-1 text-[12px] font-semibold mt-4 transition-colors" style="color:var(--fg-muted)"
-           onmouseover="this.style.color='var(--fg)'" onmouseout="this.style.color='var(--fg-muted)'">
+        <a href="#publications" class="inline-flex items-center gap-1 text-slate-300 text-[12px] font-semibold mt-4 hover:text-white transition-colors">
           Related Papers <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
         </a>
       </div>
 
-      <!-- Machine Learning (tall) -->
-      <div class="b4 rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden" style="background:linear-gradient(160deg,#1a2340 0%,var(--bg) 100%);border:1px solid var(--border-l)">
-        <div class="absolute -left-6 -top-6 w-24 h-24 rounded-full" style="background:var(--gold);opacity:0.05"></div>
+      <!-- Tall card: Machine Learning -->
+      <div class="b4 bg-gradient-to-b from-blue-600 to-[#1E3A8A] rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden">
+        <div class="absolute -left-8 -top-8 w-28 h-28 bg-white/5 rounded-full"></div>
         <div>
-          <span class="mono text-[11px] uppercase tracking-widest mb-2 block" style="color:var(--fg-dim)">04</span>
-          <h3 class="display text-lg font-bold mb-3" style="color:var(--fg)">Machine Learning</h3>
-          <p class="text-sm leading-relaxed" style="color:var(--fg-muted)">Computational statistics and ML techniques to infer, predict, and design biological behavior from multi-omics data.</p>
+          <span class="text-blue-200/70 text-[11px] font-semibold uppercase tracking-widest font-head">04</span>
+          <h3 class="text-white text-lg font-bold mt-2 mb-3">Machine Learning</h3>
+          <p class="text-blue-200 text-sm leading-relaxed">Computational statistics and ML techniques to infer, predict, and design biological behavior from sparse data.</p>
         </div>
-        <a href="#publications" class="label inline-flex items-center gap-1 text-[12px] font-semibold mt-4 transition-colors" style="color:var(--gold)"
-           onmouseover="this.style.color='var(--gold-lt)'" onmouseout="this.style.color='var(--gold)'">
+        <a href="#publications" class="inline-flex items-center gap-1 text-blue-200 text-[12px] font-semibold mt-4 hover:text-white transition-colors">
           Related Papers <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
         </a>
       </div>
 
-      <!-- Open-Source Tools (tall) -->
-      <div class="b5 rounded-2xl p-6 flex flex-col justify-between" style="background:var(--raised);border:1px solid var(--border)">
+      <!-- Tall card: Open Tools -->
+      <div class="b5 bg-emerald-950/40 border border-emerald-800/25 rounded-2xl p-6 flex flex-col justify-between">
         <div>
-          <i data-lucide="code-2" class="w-7 h-7 mb-3" style="color:var(--gold)"></i>
-          <h3 class="display text-lg font-bold mb-3" style="color:var(--fg)">Open-Source Tools</h3>
-          <p class="text-sm leading-relaxed" style="color:var(--fg-muted)">Five software packages publicly released — METACONE, GRASP, LooplessFluxSampler, Fast-SNP, ll-ACHRB — with combined citations in 150+ works.</p>
+          <i data-lucide="code-2" class="w-7 h-7 text-emerald-400 mb-3"></i>
+          <h3 class="text-slate-100 text-lg font-bold mb-3">Open-Source Tools</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">Computational tools and resources publicly released — METACONE, GRASP, LooplessFluxSampler, Fast-SNP, ll-ACHRB, among others.</p>
         </div>
-        <a href="#resources" class="label inline-flex items-center gap-1 text-[12px] font-semibold mt-4 transition-colors" style="color:var(--gold)"
-           onmouseover="this.style.color='var(--gold-lt)'" onmouseout="this.style.color='var(--gold)'">
+        <a href="#resources" class="inline-flex items-center gap-1 text-emerald-400 text-[12px] font-semibold mt-4 hover:text-emerald-300 transition-colors">
           Explore Software <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
         </a>
       </div>
 
-      <!-- Lab quick facts (tall) -->
-      <div class="b6 rounded-2xl p-6 flex flex-col justify-between" style="background:var(--bg);border:1px solid var(--border)">
-        <div>
-          <i data-lucide="flask-conical" class="w-7 h-7 mb-3" style="color:var(--gold)"></i>
-          <h3 class="display text-lg font-bold mb-4" style="color:var(--fg)">Lab at a Glance</h3>
-          <ul class="space-y-3 text-sm" style="color:var(--fg-muted)">
-            <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 mt-0.5 flex-shrink-0" style="color:var(--gold)"></i>Basal Center for AI Research</li>
-            <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 mt-0.5 flex-shrink-0" style="color:var(--gold)"></i>FONDECYT Regular 2026–2029</li>
-            <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 mt-0.5 flex-shrink-0" style="color:var(--gold)"></i>Dept. Chemical &amp; Bioprocess Eng.</li>
-            <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 mt-0.5 flex-shrink-0" style="color:var(--gold)"></i>Institute for Math &amp; Comp. Eng.</li>
-          </ul>
-        </div>
-        <a href="#join" class="label inline-flex items-center gap-1 text-[12px] font-semibold mt-4 transition-colors" style="color:var(--fg-muted)"
-           onmouseover="this.style.color='var(--fg)'" onmouseout="this.style.color='var(--fg-muted)'">
-          Open Positions <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
-        </a>
-      </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     PEOPLE
-     ══════════════════════════════════════════════════════════════════════════ -->
-<section id="people" class="py-24 px-6" style="background:var(--bg)">
+<!-- ═══ PEOPLE ═══════════════════════════════════════════════════════════════════ -->
+<section id="people" class="py-24 px-6 bg-[#0a0f1e]">
   <div class="max-w-7xl mx-auto">
     <div class="mb-12">
-      <span class="label text-[11px] font-semibold uppercase tracking-widest" style="color:var(--gold)">Team</span>
-      <h2 class="display text-3xl lg:text-4xl font-bold mt-2" style="color:var(--fg)">The People Behind the Science</h2>
+      <span class="text-[#F59E0B] text-[11px] font-semibold uppercase tracking-widest font-head">Our Group</span>
+      <h2 class="text-3xl lg:text-4xl font-bold text-blue-400 mt-2">Systems BioEngineering Lab</h2>
     </div>
 
     <!-- PI Card -->
-    <div class="rounded-2xl p-8 mb-10 flex flex-col md:flex-row gap-8" style="background:var(--surface);border:1px solid var(--border-l)">
+    <div class="bg-[#111827] rounded-2xl shadow-md border border-slate-700/50 p-8 mb-10 flex flex-col md:flex-row gap-8">
       <div class="flex-shrink-0">
         <div class="pi-avatar mx-auto md:mx-0">PS</div>
       </div>
       <div class="flex-1">
         <div class="flex flex-wrap items-start justify-between gap-4 mb-3">
           <div>
-            <h3 class="display text-xl font-bold" style="color:var(--fg)">Prof. Pedro A. Saa</h3>
-            <p class="label text-sm mt-0.5" style="color:var(--fg-dim)">Principal Investigator</p>
+            <h3 class="text-xl font-bold text-blue-400">Prof. Pedro A. Saa</h3>
+            <p class="text-sm text-slate-500 mt-0.5">Group Leader</p>
           </div>
           <div class="flex items-center gap-3">
-            <a href="mailto:pnsaa@uc.cl" class="label inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-all" style="background:var(--gold);color:#0c0f16"
-               onmouseover="this.style.background='var(--gold-lt)'" onmouseout="this.style.background='var(--gold)'">
+            <a href="mailto:pnsaa@uc.cl" class="inline-flex items-center gap-1.5 text-[12px] bg-[#1E3A8A] text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
               <i data-lucide="mail" class="w-3 h-3"></i> pnsaa@uc.cl
             </a>
-            <a href="https://scholar.google.com/citations?user=q38WulcAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="p-1.5 transition-colors" style="color:var(--fg-dim)" title="Google Scholar"
-               onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--fg-dim)'">
+            <a href="https://scholar.google.com/citations?user=q38WulcAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="p-1.5 text-slate-500 hover:text-blue-400 transition-colors" title="Google Scholar">
               <i data-lucide="graduation-cap" class="w-4 h-4"></i>
             </a>
-            <a href="https://orcid.org/0000-0002-1659-9041" target="_blank" rel="noopener noreferrer" class="p-1.5 transition-colors" style="color:var(--fg-dim)" title="ORCID"
-               onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--fg-dim)'">
+            <a href="https://orcid.org/0000-0002-1659-9041" target="_blank" rel="noopener noreferrer" class="p-1.5 text-slate-500 hover:text-blue-400 transition-colors" title="ORCID">
               <i data-lucide="link" class="w-4 h-4"></i>
             </a>
           </div>
         </div>
-        <p class="text-sm leading-relaxed mb-4" style="color:var(--fg-muted)">
-          Faculty member at the Department of Chemical and Bioprocess Engineering and the Institute for Mathematical and Computational Engineering of PUC Chile. My group develops computational platforms at the intersection of optimization, Bayesian statistics, and machine learning to understand and engineer metabolism — from single-cell models to industrial bioprocesses.
+        <p class="text-slate-300 text-sm leading-relaxed mb-4">
+          Faculty member at the Department of Chemical and Bioprocess Engineering and the Institute for Mathematical and Computational Engineering of PUC Chile. My interests include genome-scale network reconstruction and analysis, metabolic modelling and engineering, and bioprocess and biosystems optimization.
         </p>
         <div class="flex flex-wrap gap-2">
-          <span class="tag-pill border" style="background:var(--raised);color:var(--fg-muted);border-color:var(--border)">Metabolic Engineering</span>
-          <span class="tag-pill border" style="background:var(--raised);color:var(--fg-muted);border-color:var(--border)">Biosystems Modelling</span>
-          <span class="tag-pill border" style="background:var(--raised);color:var(--fg-muted);border-color:var(--border)">Optimization</span>
-          <span class="tag-pill border" style="background:var(--raised);color:var(--fg-muted);border-color:var(--border)">Computational Statistics</span>
-          <span class="tag-pill border" style="background:var(--gold-dim);color:var(--gold-lt);border-color:var(--gold)">Applied Machine Learning</span>
+          <span class="tag-pill bg-blue-900/40 text-blue-300 border border-blue-700/40">Metabolic Engineering</span>
+          <span class="tag-pill bg-blue-900/40 text-blue-300 border border-blue-700/40">Biosystems Modelling</span>
+          <span class="tag-pill bg-blue-900/40 text-blue-300 border border-blue-700/40">Optimization</span>
+          <span class="tag-pill bg-blue-900/40 text-blue-300 border border-blue-700/40">Computational Statistics</span>
+          <span class="tag-pill bg-amber-900/30 text-amber-300 border border-amber-700/40">Applied Machine Learning</span>
         </div>
-        <div class="mt-4 pt-4" style="border-top:1px solid var(--border)">
-          <p class="mono text-[11px] uppercase tracking-widest mb-2" style="color:var(--fg-dim)">Education</p>
-          <div class="flex flex-wrap gap-x-6 gap-y-1 text-xs" style="color:var(--fg-muted)">
-            <span><strong style="color:var(--fg)">PhD</strong> — The University of Queensland, 2017</span>
-            <span><strong style="color:var(--fg)">MEng</strong> — PUC Chile, 2012</span>
-            <span><strong style="color:var(--fg)">BEng</strong> — PUC Chile, 2012</span>
+        <div class="mt-4 pt-4 border-t border-slate-700/50">
+          <p class="text-[11px] text-slate-500 uppercase tracking-widest font-semibold mb-2">Education</p>
+          <div class="flex flex-wrap gap-x-6 gap-y-1 text-xs text-slate-400">
+            <span><strong class="text-slate-200">PhD</strong> — The University of Queensland, 2017</span>
+            <span><strong class="text-slate-200">MEng</strong> — PUC Chile, 2012</span>
+            <span><strong class="text-slate-200">BEng</strong> — PUC Chile, 2012</span>
           </div>
         </div>
       </div>
@@ -435,60 +317,63 @@
 
     <!-- Filter buttons -->
     <div class="flex flex-wrap gap-2 mb-6 no-print">
-      <button onclick="filterMembers('all')" data-filter="all" class="filter-btn active-filter">All Members</button>
-      <button onclick="filterMembers('phd')" data-filter="phd" class="filter-btn">PhD Students</button>
-      <button onclick="filterMembers('msc')" data-filter="msc" class="filter-btn">Master Students</button>
+      <button onclick="filterMembers('all')" data-filter="all" class="filter-btn active-filter text-[12px] px-3 py-1.5 rounded-lg border font-medium transition-all">All Members</button>
+      <button onclick="filterMembers('phd')" data-filter="phd" class="filter-btn text-[12px] px-3 py-1.5 rounded-lg border font-medium transition-all">PhD Students</button>
+      <button onclick="filterMembers('msc')" data-filter="msc" class="filter-btn text-[12px] px-3 py-1.5 rounded-lg border font-medium transition-all">Master Students</button>
     </div>
+
+    <style>
+      .filter-btn { background:#1e293b; border-color:#334155; color:#94a3b8; }
+      .filter-btn:hover, .active-filter { background:#1E3A8A; border-color:#1E3A8A; color:white; }
+    </style>
 
     <!-- PhD Students -->
     <div id="phd-section">
-      <h4 class="mono text-[11px] uppercase tracking-widest font-semibold mb-4" style="color:var(--fg-dim)">PhD Students</h4>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8" id="phd-grid"></div>
+      <h4 class="text-[11px] text-slate-500 uppercase tracking-widest font-semibold mb-4 font-head">PhD Students</h4>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8" id="phd-grid">
+        <!-- cards generated below -->
+      </div>
     </div>
 
     <!-- MSc Students -->
     <div id="msc-section">
-      <h4 class="mono text-[11px] uppercase tracking-widest font-semibold mb-4" style="color:var(--fg-dim)">Master Students</h4>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8" id="msc-grid"></div>
+      <h4 class="text-[11px] text-slate-500 uppercase tracking-widest font-semibold mb-4 font-head">Master Students</h4>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8" id="msc-grid">
+      </div>
     </div>
 
     <!-- Alumni -->
     <div>
-      <h4 class="mono text-[11px] uppercase tracking-widest font-semibold mb-4" style="color:var(--fg-dim)">Alumni</h4>
-      <div class="rounded-xl overflow-hidden" style="border:1px solid var(--border)">
-        <div class="grid divide-y" style="border-color:var(--border)">
-          <div class="grid grid-cols-3 gap-4 px-5 py-3 mono text-[11px] uppercase tracking-widest" style="color:var(--fg-dim);background:var(--surface)">
+      <h4 class="text-[11px] text-slate-500 uppercase tracking-widest font-semibold mb-4 font-head">Alumni</h4>
+      <div class="bg-[#111827] rounded-xl border border-slate-700/50 overflow-hidden">
+        <div class="grid divide-y divide-slate-700/50">
+          <div class="grid grid-cols-3 gap-4 px-5 py-3 text-[11px] text-slate-500 uppercase tracking-widest font-semibold">
             <span>Name</span><span>Years</span><span>Current Position</span>
           </div>
-          <div class="grid grid-cols-3 gap-4 px-5 py-4 text-sm transition-colors cursor-default" style="background:var(--bg);border-color:var(--border)"
-               onmouseover="this.style.background='var(--surface)'" onmouseout="this.style.background='var(--bg)'">
-            <span class="font-medium" style="color:var(--fg)">María Catalina Casanueva</span>
-            <span class="mono text-xs self-center" style="color:var(--fg-dim)">2022–2025</span>
-            <span class="flex items-center gap-1.5" style="color:var(--fg-muted)"><i data-lucide="building-2" class="w-3.5 h-3.5" style="color:var(--fg-dim)"></i>Process Engineer, CCU — Chile</span>
+          <div class="grid grid-cols-3 gap-4 px-5 py-4 text-sm hover:bg-slate-800/50 transition-colors">
+            <span class="font-medium text-slate-200">María Catalina Casanueva</span>
+            <span class="text-slate-500 font-mono text-xs self-center">2022–2025</span>
+            <span class="text-slate-400 flex items-center gap-1.5"><i data-lucide="building-2" class="w-3.5 h-3.5 text-slate-500"></i>Process Engineer, CCU — Chile</span>
           </div>
-          <div class="grid grid-cols-3 gap-4 px-5 py-4 text-sm transition-colors cursor-default" style="background:var(--bg);border-color:var(--border)"
-               onmouseover="this.style.background='var(--surface)'" onmouseout="this.style.background='var(--bg)'">
-            <span class="font-medium" style="color:var(--fg)">Ricardo Leiva</span>
-            <span class="mono text-xs self-center" style="color:var(--fg-dim)">2021–2025</span>
-            <span class="flex items-center gap-1.5" style="color:var(--fg-muted)"><i data-lucide="building-2" class="w-3.5 h-3.5" style="color:var(--fg-dim)"></i>Software Engineer, DICTUC SA — Chile</span>
+          <div class="grid grid-cols-3 gap-4 px-5 py-4 text-sm hover:bg-slate-800/50 transition-colors">
+            <span class="font-medium text-slate-200">Ricardo Leiva</span>
+            <span class="text-slate-500 font-mono text-xs self-center">2021–2025</span>
+            <span class="text-slate-400 flex items-center gap-1.5"><i data-lucide="building-2" class="w-3.5 h-3.5 text-slate-500"></i>Software Engineer, DICTUC SA — Chile</span>
           </div>
-          <div class="grid grid-cols-3 gap-4 px-5 py-4 text-sm transition-colors cursor-default" style="background:var(--bg);border-color:var(--border)"
-               onmouseover="this.style.background='var(--surface)'" onmouseout="this.style.background='var(--bg)'">
-            <span class="font-medium" style="color:var(--fg)">Benjamín Elizondo</span>
-            <span class="mono text-xs self-center" style="color:var(--fg-dim)">2021–2024</span>
-            <span class="flex items-center gap-1.5" style="color:var(--fg-muted)"><i data-lucide="building-2" class="w-3.5 h-3.5" style="color:var(--fg-dim)"></i>Bioprocess Engineer, Advanced Biotech — NJ, US</span>
+          <div class="grid grid-cols-3 gap-4 px-5 py-4 text-sm hover:bg-slate-800/50 transition-colors">
+            <span class="font-medium text-slate-200">Benjamín Elizondo</span>
+            <span class="text-slate-500 font-mono text-xs self-center">2021–2024</span>
+            <span class="text-slate-400 flex items-center gap-1.5"><i data-lucide="building-2" class="w-3.5 h-3.5 text-slate-500"></i>Bioprocess Engineer, Advanced Biotech — NJ, US</span>
           </div>
-          <div class="grid grid-cols-3 gap-4 px-5 py-4 text-sm transition-colors cursor-default" style="background:var(--bg);border-color:var(--border)"
-               onmouseover="this.style.background='var(--surface)'" onmouseout="this.style.background='var(--bg)'">
-            <span class="font-medium" style="color:var(--fg)">Sebastián Zapararte</span>
-            <span class="mono text-xs self-center" style="color:var(--fg-dim)">2022–2024</span>
-            <span class="flex items-center gap-1.5" style="color:var(--fg-muted)"><i data-lucide="building-2" class="w-3.5 h-3.5" style="color:var(--fg-dim)"></i>AI Engineer, Sticta Biologicals — Chile</span>
+          <div class="grid grid-cols-3 gap-4 px-5 py-4 text-sm hover:bg-slate-800/50 transition-colors">
+            <span class="font-medium text-slate-200">Sebastián Zapararte</span>
+            <span class="text-slate-500 font-mono text-xs self-center">2022–2024</span>
+            <span class="text-slate-400 flex items-center gap-1.5"><i data-lucide="building-2" class="w-3.5 h-3.5 text-slate-500"></i>AI Engineer, Sticta Biologicals — Chile</span>
           </div>
-          <div class="grid grid-cols-3 gap-4 px-5 py-4 text-sm transition-colors cursor-default" style="background:var(--bg);border-color:var(--border)"
-               onmouseover="this.style.background='var(--surface)'" onmouseout="this.style.background='var(--bg)'">
-            <span class="font-medium" style="color:var(--fg)">Carolina Deantas</span>
-            <span class="mono text-xs self-center" style="color:var(--fg-dim)">2021–2023</span>
-            <span class="flex items-center gap-1.5" style="color:var(--fg-muted)"><i data-lucide="graduation-cap" class="w-3.5 h-3.5" style="color:var(--fg-dim)"></i>PhD Student, ITQB Nova — Portugal</span>
+          <div class="grid grid-cols-3 gap-4 px-5 py-4 text-sm hover:bg-slate-800/50 transition-colors">
+            <span class="font-medium text-slate-200">Carolina Deantas</span>
+            <span class="text-slate-500 font-mono text-xs self-center">2021–2023</span>
+            <span class="text-slate-400 flex items-center gap-1.5"><i data-lucide="graduation-cap" class="w-3.5 h-3.5 text-slate-500"></i>PhD Student, ITQB Nova — Portugal</span>
           </div>
         </div>
       </div>
@@ -496,52 +381,53 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     PUBLICATIONS
-     ══════════════════════════════════════════════════════════════════════════ -->
-<section id="publications" class="py-24 px-6" style="background:var(--surface)">
+<!-- ═══ PUBLICATIONS ════════════════════════════════════════════════════════════ -->
+<section id="publications" class="py-24 px-6 bg-[#0d1528]">
   <div class="max-w-7xl mx-auto">
     <div class="flex flex-wrap items-end justify-between gap-4 mb-10">
       <div>
-        <span class="label text-[11px] font-semibold uppercase tracking-widest" style="color:var(--gold)">Publications</span>
-        <h2 class="display text-3xl lg:text-4xl font-bold mt-2" style="color:var(--fg)">Publication Archive</h2>
+        <span class="text-[#F59E0B] text-[11px] font-semibold uppercase tracking-widest font-head">Publications</span>
+        <h2 class="text-3xl lg:text-4xl font-bold text-blue-400 mt-2">Articles</h2>
       </div>
-      <button onclick="window.print()" class="no-print label inline-flex items-center gap-2 text-[12px] px-4 py-2 rounded-lg transition-all border"
-              style="color:var(--fg-muted);border-color:var(--border)"
-              onmouseover="this.style.color='var(--fg)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--fg-muted)';this.style.borderColor='var(--border)'">
-        <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print-Friendly
-      </button>
     </div>
 
     <!-- Tab row -->
-    <div class="no-print flex flex-wrap gap-0 mb-6 rounded-xl overflow-hidden w-fit" style="border:1px solid var(--border)">
-      <button onclick="switchPubTab('journal',this)" class="pub-tab-btn active-tab">Journal Papers (36)</button>
-      <button onclick="switchPubTab('conference',this)" class="pub-tab-btn">Conference</button>
-      <button onclick="switchPubTab('books',this)" class="pub-tab-btn">Book Chapters</button>
-      <button onclick="switchPubTab('pipeline',this)" class="pub-tab-btn">In Preparation</button>
+    <div class="no-print flex flex-wrap gap-0 mb-6 border border-slate-700/60 rounded-xl overflow-hidden w-fit bg-[#111827]">
+      <button onclick="switchPubTab('journal',this)" id="tab-journal-btn" class="pub-tab-btn active-tab px-5 py-2.5 text-[13px] font-medium border-r border-slate-700/60 transition-all">Journal Papers</button>
+      <button onclick="switchPubTab('conference',this)" class="pub-tab-btn px-5 py-2.5 text-[13px] font-medium border-r border-slate-700/60 transition-all">Conference</button>
+      <button onclick="switchPubTab('books',this)" class="pub-tab-btn px-5 py-2.5 text-[13px] font-medium border-r border-slate-700/60 transition-all">Book Chapters</button>
+      <button onclick="switchPubTab('pipeline',this)" class="pub-tab-btn px-5 py-2.5 text-[13px] font-medium transition-all">In Preparation</button>
     </div>
+    <style>
+      .pub-tab-btn { background:#111827; color:#64748b; }
+      .pub-tab-btn:hover { background:#0d1528; color:#93c5fd; }
+      .active-tab { background:#1E3A8A !important; color:white !important; }
+      .pub-panel { display:none; }
+      .pub-panel.active { display:block; }
+    </style>
 
     <!-- Journal panel -->
     <div id="panel-journal" class="pub-panel active">
+      <!-- year filters -->
       <div class="no-print flex flex-wrap gap-2 mb-5" id="year-filters"></div>
+      <!-- featured -->
       <div class="mb-6">
-        <h4 class="label text-[11px] uppercase tracking-widest font-semibold mb-3" style="color:var(--gold)">Featured Works</h4>
+        <h4 class="text-[11px] text-[#F59E0B] uppercase tracking-widest font-semibold mb-3 font-head">Featured Works</h4>
         <div class="grid md:grid-cols-2 gap-4 mb-6" id="featured-list"></div>
       </div>
-      <h4 class="label text-[11px] uppercase tracking-widest font-semibold mb-3" style="color:var(--fg-dim)">All Papers</h4>
-      <div class="rounded-xl overflow-hidden" style="border:1px solid var(--border)" id="pub-list"></div>
+      <h4 class="text-[11px] text-slate-500 uppercase tracking-widest font-semibold mb-3 font-head">All Papers</h4>
+      <div class="border border-slate-700/50 rounded-xl overflow-hidden" id="pub-list"></div>
     </div>
 
     <!-- Conference panel -->
     <div id="panel-conference" class="pub-panel">
-      <div class="rounded-xl overflow-hidden" style="border:1px solid var(--border)">
-        <div class="pub-row grid grid-cols-[56px_1fr]" style="border-bottom:1px solid var(--border)">
-          <div class="py-5 pl-5 mono text-[11px]" style="color:var(--fg-dim)">2024</div>
+      <div class="border border-slate-700/50 rounded-xl overflow-hidden">
+        <div class="pub-row grid grid-cols-[56px_1fr] border-b border-slate-700/50">
+          <div class="py-5 pl-5 font-mono text-xs text-slate-500">2024</div>
           <div class="py-4 pr-6">
-            <p class="mono text-[10px] mb-1" style="color:var(--fg-dim)">Márquez C, Saa P, Pérez-Correa JR</p>
-            <a href="https://doi.org/10.1109/ICA-ACCA62622.2024.10766766" target="_blank" rel="noopener noreferrer" class="text-sm block mb-1 transition-colors" style="color:var(--fg)"
-               onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--fg)'">Evaluación por simulación de estrategias de control automático para fermentadores industriales de cerveza</a>
-            <p class="text-xs italic" style="color:var(--fg-muted)">IEEE ICA-ACCA, Santiago, Chile</p>
+            <p class="text-xs text-slate-500 font-mono mb-1">Márquez C, Saa P, Pérez-Correa JR</p>
+            <a href="https://doi.org/10.1109/ICA-ACCA62622.2024.10766766" target="_blank" rel="noopener noreferrer" class="text-sm text-slate-200 hover:text-blue-400 transition-colors block mb-1">Evaluación por simulación de estrategias de control automático para fermentadores industriales de cerveza</a>
+            <p class="text-xs text-slate-400 italic">IEEE ICA-ACCA, Santiago, Chile</p>
           </div>
         </div>
       </div>
@@ -549,23 +435,21 @@
 
     <!-- Books panel -->
     <div id="panel-books" class="pub-panel">
-      <div class="rounded-xl overflow-hidden" style="border:1px solid var(--border)">
-        <div class="pub-row grid grid-cols-[56px_1fr]" style="border-bottom:1px solid var(--border)">
-          <div class="py-5 pl-5 mono text-[11px]" style="color:var(--fg-dim)">2022</div>
+      <div class="border border-slate-700/50 rounded-xl overflow-hidden">
+        <div class="pub-row grid grid-cols-[56px_1fr] border-b border-slate-700/50">
+          <div class="py-5 pl-5 font-mono text-xs text-slate-500">2022</div>
           <div class="py-4 pr-6">
-            <p class="mono text-[10px] mb-1" style="color:var(--fg-dim)">Saa PA</p>
-            <a href="https://doi.org/10.1007/978-3-030-89680-5_1" target="_blank" rel="noopener noreferrer" class="text-sm block mb-1 transition-colors" style="color:var(--fg)"
-               onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--fg)'">Rational metabolic pathway prediction and design: Computational tools and their applications for yeast systems and synthetic biology</a>
-            <p class="text-xs italic" style="color:var(--fg-muted)">Synthetic Biology of Yeasts. Springer, Cham</p>
+            <p class="text-xs text-slate-500 font-mono mb-1">Saa PA</p>
+            <a href="https://doi.org/10.1007/978-3-030-89680-5_1" target="_blank" rel="noopener noreferrer" class="text-sm text-slate-200 hover:text-blue-400 transition-colors block mb-1">Rational metabolic pathway prediction and design: Computational tools and their applications for yeast systems and synthetic biology</a>
+            <p class="text-xs text-slate-400 italic">Synthetic Biology of Yeasts. Springer, Cham</p>
           </div>
         </div>
         <div class="pub-row grid grid-cols-[56px_1fr]">
-          <div class="py-5 pl-5 mono text-[11px]" style="color:var(--fg-dim)">2022</div>
+          <div class="py-5 pl-5 font-mono text-xs text-slate-500">2022</div>
           <div class="py-4 pr-6">
-            <p class="mono text-[10px] mb-1" style="color:var(--fg-dim)">Mendoza S, Saa PA, Teusink B, Agosin E</p>
-            <a href="https://doi.org/10.1007/978-1-0716-1831-8_16" target="_blank" rel="noopener noreferrer" class="text-sm block mb-1 transition-colors" style="color:var(--fg)"
-               onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--fg)'">Metabolic modelling of wine fermentation at genome scale</a>
-            <p class="text-xs italic" style="color:var(--fg-muted)">Methods in Molecular Biology vol. 2399, Springer</p>
+            <p class="text-xs text-slate-500 font-mono mb-1">Mendoza S, Saa PA, Teusink B, Agosin E</p>
+            <a href="https://doi.org/10.1007/978-1-0716-1831-8_16" target="_blank" rel="noopener noreferrer" class="text-sm text-slate-200 hover:text-blue-400 transition-colors block mb-1">Metabolic modelling of wine fermentation at genome scale</a>
+            <p class="text-xs text-slate-400 italic">Methods in Molecular Biology vol. 2399, Springer</p>
           </div>
         </div>
       </div>
@@ -574,146 +458,136 @@
     <!-- Pipeline panel -->
     <div id="panel-pipeline" class="pub-panel">
       <div class="mb-6">
-        <h4 class="mono text-[11px] uppercase tracking-widest font-semibold mb-3" style="color:var(--fg-dim)">Under Review</h4>
-        <div class="rounded-xl overflow-hidden divide-y" style="border:1px solid var(--border);border-color:var(--border)">
-          <div class="p-5 text-sm leading-relaxed" style="background:var(--bg);color:var(--fg-muted)">Vargas-Luna C, Tapia I, Godoy L, Saa PA, Franco W. Characterization and kinetic modeling of <em>Levilactobacillus brevis</em> malolactic fermentation under oenological conditions.</div>
-          <div class="p-5 text-sm leading-relaxed" style="background:var(--bg);color:var(--fg-muted);border-color:var(--border)">Sepúlveda-Celis A, Agosin E, Pérez-Correa JR, Saa PA. A computational framework for building dynamic bioreactor models integrating detailed enzyme kinetics with limited data: beta-ionone production in <em>S. cerevisiae</em>.</div>
-          <div class="p-5 text-sm leading-relaxed" style="background:var(--bg);color:var(--fg-muted);border-color:var(--border)">Tapia I, Torrealba C, Luna R, Pérez-Correa JR, Saa PA. Dynamic balance of sparse flux vectors for efficient simulation of culture dynamics and network reduction.</div>
-          <div class="p-5 text-sm leading-relaxed" style="background:var(--bg);color:var(--fg-muted);border-color:var(--border)">Torrealba C, Luna R, Saa PA, Pérez-Correa JR. A systematic transfer workflow for robust model identification across scales: Application to wine fermentation.</div>
+        <h4 class="text-[11px] text-slate-500 uppercase tracking-widest font-semibold mb-3 font-head">Under Review</h4>
+        <div class="border border-slate-700/50 rounded-xl overflow-hidden space-y-0 divide-y divide-slate-700/50">
+          <div class="p-5 text-sm text-slate-300 leading-relaxed">Vargas-Luna C, Tapia I, Godoy L, Saa PA, Franco W. Characterization and kinetic modeling of <em>Levilactobacillus brevis</em> malolactic fermentation under oenological conditions.</div>
+          <div class="p-5 text-sm text-slate-300 leading-relaxed">Sepúlveda-Celis A, Agosin E, Pérez-Correa JR, Saa PA. A computational framework for building dynamic bioreactor models integrating detailed enzyme kinetics with limited data: beta-ionone production in <em>S. cerevisiae</em>.</div>
+          <div class="p-5 text-sm text-slate-300 leading-relaxed">Tapia I, Torrealba C, Luna R, Pérez-Correa JR, Saa PA. Dynamic balance of sparse flux vectors for efficient simulation of culture dynamics and network reduction.</div>
+          <div class="p-5 text-sm text-slate-300 leading-relaxed">Torrealba C, Luna R, Saa PA, Pérez-Correa JR. A systematic transfer workflow for robust model identification across scales: Application to wine fermentation.</div>
         </div>
       </div>
       <div>
-        <h4 class="mono text-[11px] uppercase tracking-widest font-semibold mb-3" style="color:var(--fg-dim)">In Preparation</h4>
-        <div class="rounded-xl overflow-hidden divide-y" style="border:1px solid var(--border)">
-          <div class="p-5 text-sm leading-relaxed" style="background:var(--bg);color:var(--fg-muted)">Zapararte S, Marcellin E, Nielsen LK, Saa PA. Topologically-constrained sampling of thermodynamically feasible mass-balanced states in metabolic reaction networks.</div>
-          <div class="p-5 text-sm leading-relaxed" style="background:var(--bg);color:var(--fg-muted);border-color:var(--border)">Saa PA, Miranda G, Drovandi C, Nielsen LK. Bayesian parameter inference on the simplex: Convenient transformations and perturbation kernels for Sequential Monte Carlo sampling.</div>
-          <div class="p-5 text-sm leading-relaxed" style="background:var(--bg);color:var(--fg-muted);border-color:var(--border)">Riffo-Vicencio et al. A serum antibody profile against environmental and microbial antigens distinguishes new-onset inflammatory bowel disease patients in a newly industrialized country.</div>
+        <h4 class="text-[11px] text-slate-500 uppercase tracking-widest font-semibold mb-3 font-head">In Preparation</h4>
+        <div class="border border-slate-700/50 rounded-xl overflow-hidden divide-y divide-slate-700/50">
+          <div class="p-5 text-sm text-slate-300 leading-relaxed">Zapararte S, Marcellin E, Nielsen LK, Saa PA. Topologically-constrained sampling of thermodynamically feasible mass-balanced states in metabolic reaction networks.</div>
+          <div class="p-5 text-sm text-slate-300 leading-relaxed">Saa PA, Miranda G, Drovandi C, Nielsen LK. Bayesian parameter inference on the simplex: Convenient transformations and perturbation kernels for Sequential Monte Carlo sampling.</div>
+          <div class="p-5 text-sm text-slate-300 leading-relaxed">Riffo-Vicencio et al. A serum antibody profile against environmental and microbial antigens distinguishes new-onset inflammatory bowel disease patients in a newly industrialized country.</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     RESOURCES
-     ══════════════════════════════════════════════════════════════════════════ -->
-<section id="resources" class="py-24 px-6 dot-bg" style="background:var(--bg)">
+<!-- ═══ RESOURCES ════════════════════════════════════════════════════════════════ -->
+<section id="resources" class="py-24 px-6 bg-slate-900 dot-bg-dark">
   <div class="max-w-7xl mx-auto">
     <div class="flex flex-wrap items-end justify-between gap-4 mb-12">
       <div>
-        <span class="label text-[11px] font-semibold uppercase tracking-widest" style="color:var(--gold)">Open Source</span>
-        <h2 class="display text-3xl lg:text-4xl font-bold mt-2" style="color:var(--fg)">Software &amp; Resources</h2>
+        <span class="text-[#F59E0B] text-[11px] font-semibold uppercase tracking-widest font-head">Open Source</span>
+        <h2 class="text-3xl lg:text-4xl font-bold text-white mt-2">Resources</h2>
       </div>
-      <a href="https://github.com/SysBioengLab" target="_blank" rel="noopener noreferrer" class="label inline-flex items-center gap-2 text-[13px] px-4 py-2 rounded-lg transition-all border"
-         style="color:var(--fg-muted);border-color:var(--border)"
-         onmouseover="this.style.color='var(--fg)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--fg-muted)';this.style.borderColor='var(--border)'">
+      <a href="https://github.com/SysBioengLab" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-slate-300 hover:text-white border border-slate-700 hover:border-slate-500 text-[13px] px-4 py-2 rounded-lg transition-all">
         <i data-lucide="github" class="w-4 h-4"></i> GitHub Lab
       </a>
     </div>
 
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
 
-      <a href="https://doi.org/10.1016/j.compbiolchem.2025.108607" target="_blank" rel="noopener noreferrer"
-         class="group flex flex-col min-h-[220px] rounded-2xl p-6 transition-all" style="background:var(--surface);border:1px solid var(--border)"
-         onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+      <!-- METACONE -->
+      <a href="https://doi.org/10.1016/j.compbiolchem.2025.108607" target="_blank" rel="noopener noreferrer" class="group bg-slate-800 hover:bg-slate-750 border border-slate-700 hover:border-[#F59E0B]/40 rounded-2xl p-6 flex flex-col min-h-[220px] transition-all">
         <div class="flex items-center justify-between mb-4">
-          <span class="tag-pill border" style="background:var(--gold-dim);color:var(--gold-lt);border-color:var(--gold)">Julia</span>
-          <i data-lucide="arrow-up-right" class="w-4 h-4 transition-colors" style="color:var(--fg-dim)"></i>
+          <span class="tag-pill bg-blue-500/15 text-blue-300 border border-blue-500/30">MATLAB</span>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-[#F59E0B] transition-colors"></i>
         </div>
-        <h3 class="display text-lg font-bold mb-2" style="color:var(--fg)">METACONE</h3>
-        <p class="text-sm leading-relaxed mb-auto" style="color:var(--fg-muted)">Scalable framework for exploring the conversions cone of metabolic networks.</p>
-        <div class="mt-5 pt-4 flex items-center justify-between" style="border-top:1px solid var(--border)">
-          <p class="mono text-[11px]" style="color:var(--fg-dim)">Altamirano et al., 2026 — Comput. Biol. Chem.</p>
-          <div class="flex items-center gap-3 mono text-[11px]" style="color:var(--fg-dim)">
+        <h3 class="text-white text-lg font-bold mb-2">METACONE</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mb-auto">Scalable framework for exploring the conversions cone of metabolic networks.</p>
+        <div class="mt-5 pt-4 border-t border-slate-700 flex items-center justify-between">
+          <p class="text-slate-500 text-[11px] font-mono">Altamirano et al., 2026 — Comput. Biol. Chem.</p>
+          <div class="flex items-center gap-3 text-slate-500 text-[11px]">
             <span class="flex items-center gap-1"><i data-lucide="star" class="w-3 h-3"></i> —</span>
             <span class="flex items-center gap-1"><i data-lucide="git-fork" class="w-3 h-3"></i> —</span>
           </div>
         </div>
       </a>
 
-      <a href="https://doi.org/10.1186/s12859-023-05616-2" target="_blank" rel="noopener noreferrer"
-         class="group flex flex-col min-h-[220px] rounded-2xl p-6 transition-all" style="background:var(--surface);border:1px solid var(--border)"
-         onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+      <!-- LooplessFluxSampler -->
+      <a href="https://doi.org/10.1186/s12859-023-05616-2" target="_blank" rel="noopener noreferrer" class="group bg-slate-800 border border-slate-700 hover:border-[#F59E0B]/40 rounded-2xl p-6 flex flex-col min-h-[220px] transition-all">
         <div class="flex items-center justify-between mb-4">
-          <span class="tag-pill border" style="background:var(--raised);color:var(--fg-muted);border-color:var(--border-l)">MATLAB</span>
-          <i data-lucide="arrow-up-right" class="w-4 h-4" style="color:var(--fg-dim)"></i>
+          <span class="tag-pill bg-blue-500/15 text-blue-300 border border-blue-500/30">MATLAB</span>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-[#F59E0B] transition-colors"></i>
         </div>
-        <h3 class="display text-lg font-bold mb-2" style="color:var(--fg)">LooplessFluxSampler</h3>
-        <p class="text-sm leading-relaxed mb-auto" style="color:var(--fg-muted)">Efficient algorithm for sampling the loopless flux solution space of genome-scale metabolic models.</p>
-        <div class="mt-5 pt-4 flex items-center justify-between" style="border-top:1px solid var(--border)">
-          <p class="mono text-[11px]" style="color:var(--fg-dim)">Saa et al., 2024 — BMC Bioinformatics</p>
-          <div class="flex items-center gap-3 mono text-[11px]" style="color:var(--fg-dim)">
+        <h3 class="text-white text-lg font-bold mb-2">LooplessFluxSampler</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mb-auto">Efficient algorithm for sampling the loopless flux solution space of genome-scale metabolic models.</p>
+        <div class="mt-5 pt-4 border-t border-slate-700 flex items-center justify-between">
+          <p class="text-slate-500 text-[11px] font-mono">Saa et al., 2024 — BMC Bioinformatics</p>
+          <div class="flex items-center gap-3 text-slate-500 text-[11px]">
             <span class="flex items-center gap-1"><i data-lucide="star" class="w-3 h-3"></i> —</span>
             <span class="flex items-center gap-1"><i data-lucide="git-fork" class="w-3 h-3"></i> —</span>
           </div>
         </div>
       </a>
 
-      <a href="https://doi.org/10.1093/bioadv/vbac066" target="_blank" rel="noopener noreferrer"
-         class="group flex flex-col min-h-[220px] rounded-2xl p-6 transition-all" style="background:var(--surface);border:1px solid var(--border)"
-         onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+      <!-- GRASP -->
+      <a href="https://doi.org/10.1093/bioadv/vbac066" target="_blank" rel="noopener noreferrer" class="group bg-slate-800 border border-slate-700 hover:border-[#F59E0B]/40 rounded-2xl p-6 flex flex-col min-h-[220px] transition-all">
         <div class="flex items-center justify-between mb-4">
-          <span class="tag-pill border" style="background:var(--raised);color:var(--fg-muted);border-color:var(--border-l)">MATLAB</span>
-          <i data-lucide="arrow-up-right" class="w-4 h-4" style="color:var(--fg-dim)"></i>
+          <span class="tag-pill bg-blue-500/15 text-blue-300 border border-blue-500/30">MATLAB</span>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-[#F59E0B] transition-colors"></i>
         </div>
-        <h3 class="display text-lg font-bold mb-2" style="color:var(--fg)">GRASP</h3>
-        <p class="text-sm leading-relaxed mb-auto" style="color:var(--fg-muted)">Computational platform for building thermodynamically consistent kinetic models of cell metabolism.</p>
-        <div class="mt-5 pt-4 flex items-center justify-between" style="border-top:1px solid var(--border)">
-          <p class="mono text-[11px]" style="color:var(--fg-dim)">Matos et al., 2022 — Bioinformatics Adv.</p>
-          <div class="flex items-center gap-3 mono text-[11px]" style="color:var(--fg-dim)">
+        <h3 class="text-white text-lg font-bold mb-2">GRASP</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mb-auto">Computational platform for building thermodynamically consistent kinetic models of cell metabolism.</p>
+        <div class="mt-5 pt-4 border-t border-slate-700 flex items-center justify-between">
+          <p class="text-slate-500 text-[11px] font-mono">Matos et al., 2022 — Bioinformatics Adv.</p>
+          <div class="flex items-center gap-3 text-slate-500 text-[11px]">
             <span class="flex items-center gap-1"><i data-lucide="star" class="w-3 h-3"></i> —</span>
             <span class="flex items-center gap-1"><i data-lucide="git-fork" class="w-3 h-3"></i> —</span>
           </div>
         </div>
       </a>
 
-      <a href="http://dx.doi.org/10.1093/bioinformatics/btw555" target="_blank" rel="noopener noreferrer"
-         class="group flex flex-col min-h-[220px] rounded-2xl p-6 transition-all" style="background:var(--surface);border:1px solid var(--border)"
-         onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+      <!-- Fast-SNP -->
+      <a href="http://dx.doi.org/10.1093/bioinformatics/btw555" target="_blank" rel="noopener noreferrer" class="group bg-slate-800 border border-slate-700 hover:border-[#F59E0B]/40 rounded-2xl p-6 flex flex-col min-h-[220px] transition-all">
         <div class="flex items-center justify-between mb-4">
-          <span class="tag-pill border" style="background:var(--raised);color:var(--fg-muted);border-color:var(--border-l)">MATLAB</span>
-          <i data-lucide="arrow-up-right" class="w-4 h-4" style="color:var(--fg-dim)"></i>
+          <span class="tag-pill bg-blue-500/15 text-blue-300 border border-blue-500/30">MATLAB</span>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-[#F59E0B] transition-colors"></i>
         </div>
-        <h3 class="display text-lg font-bold mb-2" style="color:var(--fg)">Fast-SNP</h3>
-        <p class="text-sm leading-relaxed mb-auto" style="color:var(--fg-muted)">Matrix pre-processing algorithm for efficient loopless flux optimization of metabolic models.</p>
-        <div class="mt-5 pt-4 flex items-center justify-between" style="border-top:1px solid var(--border)">
-          <p class="mono text-[11px]" style="color:var(--fg-dim)">Saa &amp; Nielsen, 2016 — Bioinformatics</p>
-          <div class="flex items-center gap-3 mono text-[11px]" style="color:var(--fg-dim)">
+        <h3 class="text-white text-lg font-bold mb-2">Fast-SNP</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mb-auto">Matrix pre-processing algorithm for efficient loopless flux optimization of metabolic models.</p>
+        <div class="mt-5 pt-4 border-t border-slate-700 flex items-center justify-between">
+          <p class="text-slate-500 text-[11px] font-mono">Saa &amp; Nielsen, 2016 — Bioinformatics</p>
+          <div class="flex items-center gap-3 text-slate-500 text-[11px]">
             <span class="flex items-center gap-1"><i data-lucide="star" class="w-3 h-3"></i> —</span>
             <span class="flex items-center gap-1"><i data-lucide="git-fork" class="w-3 h-3"></i> —</span>
           </div>
         </div>
       </a>
 
-      <a href="http://dx.doi.org/10.1093/bioinformatics/btw132" target="_blank" rel="noopener noreferrer"
-         class="group flex flex-col min-h-[220px] rounded-2xl p-6 transition-all" style="background:var(--surface);border:1px solid var(--border)"
-         onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+      <!-- ll-ACHRB -->
+      <a href="http://dx.doi.org/10.1093/bioinformatics/btw132" target="_blank" rel="noopener noreferrer" class="group bg-slate-800 border border-slate-700 hover:border-[#F59E0B]/40 rounded-2xl p-6 flex flex-col min-h-[220px] transition-all">
         <div class="flex items-center justify-between mb-4">
-          <span class="tag-pill border" style="background:var(--raised);color:var(--fg-muted);border-color:var(--border-l)">MATLAB</span>
-          <i data-lucide="arrow-up-right" class="w-4 h-4" style="color:var(--fg-dim)"></i>
+          <span class="tag-pill bg-blue-500/15 text-blue-300 border border-blue-500/30">MATLAB</span>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-[#F59E0B] transition-colors"></i>
         </div>
-        <h3 class="display text-lg font-bold mb-2" style="color:var(--fg)">ll-ACHRB</h3>
-        <p class="text-sm leading-relaxed mb-auto" style="color:var(--fg-muted)">Scalable algorithm for sampling the feasible solution space of metabolic networks.</p>
-        <div class="mt-5 pt-4 flex items-center justify-between" style="border-top:1px solid var(--border)">
-          <p class="mono text-[11px]" style="color:var(--fg-dim)">Saa &amp; Nielsen, 2016 — Bioinformatics</p>
-          <div class="flex items-center gap-3 mono text-[11px]" style="color:var(--fg-dim)">
+        <h3 class="text-white text-lg font-bold mb-2">ll-ACHRB</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mb-auto">Scalable algorithm for sampling the feasible solution space of metabolic networks.</p>
+        <div class="mt-5 pt-4 border-t border-slate-700 flex items-center justify-between">
+          <p class="text-slate-500 text-[11px] font-mono">Saa &amp; Nielsen, 2016 — Bioinformatics</p>
+          <div class="flex items-center gap-3 text-slate-500 text-[11px]">
             <span class="flex items-center gap-1"><i data-lucide="star" class="w-3 h-3"></i> —</span>
             <span class="flex items-center gap-1"><i data-lucide="git-fork" class="w-3 h-3"></i> —</span>
           </div>
         </div>
       </a>
 
-      <a href="https://github.com/SysBioengLab" target="_blank" rel="noopener noreferrer"
-         class="group flex flex-col min-h-[220px] rounded-2xl p-6 transition-all" style="background:var(--gold-dim);border:1px solid var(--gold)"
-         onmouseover="this.style.background='#32280e'" onmouseout="this.style.background='var(--gold-dim)'">
+      <!-- GitHub archive -->
+      <a href="https://github.com/SysBioengLab" target="_blank" rel="noopener noreferrer" class="group bg-[#F59E0B]/10 border border-[#F59E0B]/30 hover:bg-[#F59E0B]/20 rounded-2xl p-6 flex flex-col min-h-[220px] transition-all">
         <div class="flex items-center justify-between mb-4">
-          <span class="tag-pill border" style="background:var(--gold-dim);color:var(--gold-lt);border-color:var(--gold)">Repos</span>
-          <i data-lucide="arrow-up-right" class="w-4 h-4" style="color:var(--gold)"></i>
+          <span class="tag-pill bg-[#F59E0B]/15 text-[#F59E0B] border border-[#F59E0B]/30">Repositories</span>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-[#F59E0B]/60 group-hover:text-[#F59E0B] transition-colors"></i>
         </div>
-        <h3 class="display text-lg font-bold mb-2" style="color:var(--fg)">GitHub Lab</h3>
-        <p class="text-sm leading-relaxed mb-auto" style="color:var(--fg-muted)">Browse all open-source repositories, datasets, and supporting code released by the lab.</p>
-        <div class="mt-5 pt-4" style="border-top:1px solid var(--gold)">
-          <p class="mono text-[11px]" style="color:var(--gold)">github.com/SysBioengLab</p>
+        <h3 class="text-white text-lg font-bold mb-2">Group GitHub</h3>
+        <p class="text-slate-300 text-sm leading-relaxed mb-auto">Browse all open-source repositories, models, datasets, and supporting code released by the lab.</p>
+        <div class="mt-5 pt-4 border-t border-[#F59E0B]/20">
+          <p class="text-[#F59E0B]/70 text-[11px] font-mono">github.com/SysBioengLab</p>
         </div>
       </a>
 
@@ -721,98 +595,108 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     NEWS & MILESTONES
-     ══════════════════════════════════════════════════════════════════════════ -->
-<section id="news" class="py-24 px-6" style="background:var(--surface)">
+<!-- ═══ NEWS & MILESTONES ══════════════════════════════════════════════════════ -->
+<section id="news" class="py-24 px-6 bg-[#0a0f1e]">
   <div class="max-w-7xl mx-auto">
     <div class="grid lg:grid-cols-2 gap-16">
-
-      <!-- Timeline -->
       <div>
-        <span class="label text-[11px] font-semibold uppercase tracking-widest" style="color:var(--gold)">Updates</span>
-        <h2 class="display text-3xl font-bold mt-2 mb-10" style="color:var(--fg)">News &amp; Milestones</h2>
-        <div class="relative pl-8" style="border-left:2px solid var(--border)">
-
+        <span class="text-[#F59E0B] text-[11px] font-semibold uppercase tracking-widest font-head">Updates</span>
+        <h2 class="text-3xl font-bold text-blue-400 mt-2 mb-10">News &amp; Milestones</h2>
+        <div class="relative pl-8 border-l-2 border-slate-700/50">
+          <!-- timeline items -->
           <div class="relative mb-8">
-            <div class="tl-dot absolute" style="left:-33px"></div>
-            <span class="mono text-[11px] mb-1 block" style="color:var(--fg-dim)">2026</span>
-            <p class="text-sm font-semibold mb-1" style="color:var(--fg)">New FONDECYT Regular Grant Awarded</p>
-            <p class="text-sm" style="color:var(--fg-muted)">No. 1262500 — Scalable prediction of metabolic fluxes using modelling frameworks informed by enzyme kinetics and omics data (2026–2029).</p>
+            <div class="tl-dot absolute -left-[33px]"></div>
+            <span class="text-[11px] font-mono text-slate-500 mb-1 block">2026</span>
+            <p class="text-sm font-semibold text-slate-100">New FONDECYT Regular ANID Grant Awarded - Principal Investigator</p>
+            <p class="text-sm text-slate-400 mt-1">Grant No. 1262500 — Scalable prediction of metabolic fluxes using modelling frameworks informed by enzyme kinetics and omics data (2026-2029).</p>
           </div>
           <div class="relative mb-8">
-            <div class="tl-dot absolute" style="left:-33px"></div>
-            <span class="mono text-[11px] mb-1 block" style="color:var(--fg-dim)">2026</span>
-            <p class="text-sm font-semibold mb-1" style="color:var(--fg)">Paper: Beer Digital Twin</p>
-            <p class="text-sm" style="color:var(--fg-muted)">Dazzarola et al. published in <em>Journal of Food Engineering</em> — a digital model integrating industrial process data for beer quality control.</p>
+            <div class="tl-dot absolute -left-[33px]"></div>
+            <span class="text-[11px] font-mono text-slate-500 mb-1 block">2026</span>
+            <p class="text-sm font-semibold text-slate-100">New Paper: Beer Digital Twin</p>
+            <p class="text-sm text-slate-400 mt-1">Congrats Colomba! Our group recently published in <em>Journal of Food Engineering</em> — a digital model integrating industrial process data for beer quality control.</p>
           </div>
           <div class="relative mb-8">
-            <div class="tl-dot absolute" style="left:-33px"></div>
-            <span class="mono text-[11px] mb-1 block" style="color:var(--fg-dim)">2026</span>
-            <p class="text-sm font-semibold mb-1" style="color:var(--fg)">METACONE Released</p>
-            <p class="text-sm" style="color:var(--fg-muted)">Altamirano et al. published METACONE in <em>Computational Biology and Chemistry</em> — a scalable Julia framework for metabolic network conversions.</p>
+            <div class="tl-dot absolute -left-[33px]"></div>
+            <span class="text-[11px] font-mono text-slate-500 mb-1 block">2026</span>
+            <p class="text-sm font-semibold text-slate-100">New Paper: METACONE released</p>
+            <p class="text-sm text-slate-400 mt-1">Congrats Álvaro! Our group just published METACONE in <em>Computational Biology and Chemistry</em> — a scalable framework for computing metabolic conversions.</p>
           </div>
           <div class="relative mb-8">
-            <div class="tl-dot absolute" style="left:-33px"></div>
-            <span class="mono text-[11px] mb-1 block" style="color:var(--fg-dim)">2025</span>
-            <p class="text-sm font-semibold mb-1" style="color:var(--fg)">Avanza UC Grant — EPS Production from Mining Waste</p>
-            <p class="text-sm" style="color:var(--fg-muted)">Awarded AV25292 to optimize EPS production by metabolic engineering using <em>Sulfobacillus acidophilus</em>.</p>
+            <div class="tl-dot absolute -left-[33px]"></div>
+            <span class="text-[11px] font-mono text-slate-500 mb-1 block">2025</span>
+            <p class="text-sm font-semibold text-slate-100">New Avanza UC Grant Awarded - Principal Investigator</p>
+            <p class="text-sm text-slate-400 mt-1">Grant No. AV25292 for optimizing EPS production in <em>Sulfobacillus acidophilus</em> using metabolic engineering.</p>
           </div>
           <div class="relative mb-8">
-            <div class="tl-dot absolute" style="left:-33px"></div>
-            <span class="mono text-[11px] mb-1 block" style="color:var(--fg-dim)">2025</span>
-            <p class="text-sm font-semibold mb-1" style="color:var(--fg)">Center for VitiScience — Adjunct Investigator</p>
-            <p class="text-sm" style="color:var(--fg-muted)">Joined the Center for Research and Innovation VitiScience as Adjunct Investigator.</p>
+            <div class="tl-dot absolute -left-[33px]"></div>
+            <span class="text-[11px] font-mono text-slate-500 mb-1 block">2025</span>
+            <p class="text-sm font-semibold text-slate-100">New ANID Center for Applied Research established</p>
+            <p class="text-sm text-slate-400 mt-1">Joined the Center for Research and Innovation VitiScience as Adjunct Investigator.</p>
           </div>
           <div class="relative mb-8">
-            <div class="tl-dot absolute" style="left:-33px"></div>
-            <span class="mono text-[11px] mb-1 block" style="color:var(--fg-dim)">2025</span>
-            <p class="text-sm font-semibold mb-1" style="color:var(--fg)">Paper: β-carotene in Yeast</p>
-            <p class="text-sm" style="color:var(--fg-muted)">Elizondo &amp; Saa published complex kinetic models predicting β-carotene production in <em>ACS Synthetic Biology</em>.</p>
+            <div class="tl-dot absolute -left-[33px]"></div>
+            <span class="text-[11px] font-mono text-slate-500 mb-1 block">2025</span>
+            <p class="text-sm font-semibold text-slate-100">New Paper: Kinetic model of β-carotene in yeast</p>
+            <p class="text-sm text-slate-400 mt-1">Congrats Benjamín! We just published a detailed kinetic model predicting β-carotene production in <em>ACS Synthetic Biology</em>.</p>
           </div>
           <div class="relative">
-            <div class="tl-dot absolute" style="left:-33px"></div>
-            <span class="mono text-[11px] mb-1 block" style="color:var(--fg-dim)">2024</span>
-            <p class="text-sm font-semibold mb-1" style="color:var(--fg)">LooplessFluxSampler Published</p>
-            <p class="text-sm" style="color:var(--fg-muted)">Saa et al. published efficient loopless flux sampling algorithm in <em>BMC Bioinformatics</em>.</p>
+            <div class="tl-dot absolute -left-[33px]"></div>
+            <span class="text-[11px] font-mono text-slate-500 mb-1 block">2024</span>
+            <p class="text-sm font-semibold text-slate-100">New Paper: LooplessFluxSampler released</p>
+            <p class="text-sm text-slate-400 mt-1">We have recently published an efficient loopless flux sampling algorithm in <em>BMC Bioinformatics</em>.</p>
           </div>
         </div>
       </div>
 
-      <!-- Active Projects -->
+      <!-- Active Projects sidebar -->
       <div>
-        <span class="label text-[11px] font-semibold uppercase tracking-widest" style="color:var(--gold)">Funding</span>
-        <h2 class="display text-3xl font-bold mt-2 mb-10" style="color:var(--fg)">Active Projects</h2>
+        <span class="text-[#F59E0B] text-[11px] font-semibold uppercase tracking-widest font-head">Funding</span>
+        <h2 class="text-3xl font-bold text-blue-400 mt-2 mb-10">Active Projects</h2>
         <div class="space-y-3">
-          <div class="rounded-xl p-5" style="background:var(--bg);border:1px solid var(--border)">
-            <span class="tag-pill border mb-2 inline-flex" style="background:var(--raised);color:var(--gold);border-color:var(--gold)">Principal Investigator</span>
-            <p class="text-sm font-semibold leading-snug" style="color:var(--fg)">Basal Center for Artificial Intelligence Research</p>
-            <p class="mono text-xs mt-1" style="color:var(--fg-dim)">2021–ongoing</p>
+          <div class="bg-[#111827] border border-slate-700/50 rounded-xl p-5">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <span class="tag-pill bg-blue-900/40 text-blue-300 border border-blue-700/40 mb-2 inline-flex">Principal Investigator</span>
+                <p class="text-sm font-semibold text-slate-100 leading-snug">Basal Center for Artificial Intelligence Research</p>
+                <p class="text-xs text-slate-500 font-mono mt-1">2021–ongoing</p>
+              </div>
+            </div>
           </div>
-          <div class="rounded-xl p-5" style="background:var(--bg);border:1px solid var(--border)">
-            <span class="tag-pill border mb-2 inline-flex" style="background:var(--raised);color:var(--gold);border-color:var(--gold)">Principal Investigator</span>
-            <p class="text-sm font-semibold leading-snug" style="color:var(--fg)">FONDECYT Regular No. 1262500 — Scalable prediction of metabolic fluxes</p>
-            <p class="mono text-xs mt-1" style="color:var(--fg-dim)">2026–2029</p>
+          <div class="bg-[#111827] border border-slate-700/50 rounded-xl p-5">
+            <div>
+              <span class="tag-pill bg-blue-900/40 text-blue-300 border border-blue-700/40 mb-2 inline-flex">Principal Investigator</span>
+              <p class="text-sm font-semibold text-slate-100 leading-snug">FONDECYT Regular No. 1262500 — Scalable prediction of metabolic fluxes informed by enzyme kinetics and omics data.</p>
+              <p class="text-xs text-slate-500 font-mono mt-1">2026–2029</p>
+            </div>
           </div>
-          <div class="rounded-xl p-5" style="background:var(--bg);border:1px solid var(--border)">
-            <span class="tag-pill border mb-2 inline-flex" style="background:var(--raised);color:var(--fg-muted);border-color:var(--border-l)">Co-Investigator</span>
-            <p class="text-sm font-semibold leading-snug" style="color:var(--fg)">FONDECYT Exploración No. 13250023 — Impact of GABA-producing bacterial consortia in neuroprotection</p>
-            <p class="mono text-xs mt-1" style="color:var(--fg-dim)">2025–2029</p>
+          <div class="bg-[#111827] border border-slate-700/50 rounded-xl p-5">
+            <div>
+              <span class="tag-pill bg-amber-900/30 text-amber-300 border border-amber-700/40 mb-2 inline-flex">Co-Investigator</span>
+              <p class="text-sm font-semibold text-slate-100 leading-snug">FONDECYT Exploración No. 13250023 — Impact of GABA-producing bacterial consortia in neuroprotection</p>
+              <p class="text-xs text-slate-500 font-mono mt-1">2025–2029</p>
+            </div>
           </div>
-          <div class="rounded-xl p-5" style="background:var(--bg);border:1px solid var(--border)">
-            <span class="tag-pill border mb-2 inline-flex" style="background:var(--raised);color:var(--fg-muted);border-color:var(--border-l)">Co-Investigator</span>
-            <p class="text-sm font-semibold leading-snug" style="color:var(--fg)">FONDECYT Regular No. 1230764 — Model-guided analysis of microbial interactions in gut microbiota</p>
-            <p class="mono text-xs mt-1" style="color:var(--fg-dim)">2023–2027</p>
+          <div class="bg-[#111827] border border-slate-700/50 rounded-xl p-5">
+            <div>
+              <span class="tag-pill bg-amber-900/30 text-amber-300 border border-amber-700/40 mb-2 inline-flex">Co-Investigator</span>
+              <p class="text-sm font-semibold text-slate-100 leading-snug">FONDECYT Regular No. 1230764 — Model-guided analysis of microbial interactions in gut microbiota</p>
+              <p class="text-xs text-slate-500 font-mono mt-1">2023–2027</p>
+            </div>
           </div>
-          <div class="rounded-xl p-5" style="background:var(--bg);border:1px solid var(--border)">
-            <span class="tag-pill border mb-2 inline-flex" style="background:var(--raised);color:var(--gold);border-color:var(--gold)">Principal Investigator</span>
-            <p class="text-sm font-semibold leading-snug" style="color:var(--fg)">Avanza UC AV25292 — EPS production from mining waste via <em>S. acidophilus</em></p>
-            <p class="mono text-xs mt-1" style="color:var(--fg-dim)">2026–2027</p>
+          <div class="bg-[#111827] border border-slate-700/50 rounded-xl p-5">
+            <div>
+              <span class="tag-pill bg-blue-900/40 text-blue-300 border border-blue-700/40 mb-2 inline-flex">Principal Investigator</span>
+              <p class="text-sm font-semibold text-slate-100 leading-snug">Avanza UC AV25292 — EPS production from mining waste via <em>S. acidophilus</em></p>
+              <p class="text-xs text-slate-500 font-mono mt-1">2026–2027</p>
+            </div>
           </div>
-          <div class="rounded-xl p-5" style="background:var(--bg);border:1px solid var(--border)">
-            <span class="tag-pill border mb-2 inline-flex" style="background:var(--raised);color:var(--fg-muted);border-color:var(--border-l)">Adjunct Investigator</span>
-            <p class="text-sm font-semibold leading-snug" style="color:var(--fg)">Center for Research and Innovation VitiScience</p>
-            <p class="mono text-xs mt-1" style="color:var(--fg-dim)">2025–ongoing</p>
+          <div class="bg-[#111827] border border-slate-700/50 rounded-xl p-5">
+            <div>
+              <span class="tag-pill bg-blue-900/40 text-blue-300 border border-blue-700/40 mb-2 inline-flex">Adjunct Investigator</span>
+              <p class="text-sm font-semibold text-slate-100 leading-snug">Center for Research and Innovation VitiScience</p>
+              <p class="text-xs text-slate-500 font-mono mt-1">2025–ongoing</p>
+            </div>
           </div>
         </div>
       </div>
@@ -820,141 +704,83 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     JOIN US
-     ══════════════════════════════════════════════════════════════════════════ -->
-<section id="join" class="py-24 px-6 relative overflow-hidden dot-bg" style="background:var(--bg)">
-  <div class="max-w-7xl mx-auto">
+<!-- ═══ JOIN US ════════════════════════════════════════════════════════════════ -->
+<section id="join" class="py-24 px-6 bg-[#1E3A8A] dot-bg-dark relative overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-br from-[#1E3A8A] to-[#1e40af] opacity-95"></div>
+  <div class="relative max-w-7xl mx-auto">
     <div class="text-center mb-16">
-      <span class="label text-[11px] font-semibold uppercase tracking-widest" style="color:var(--gold)">Opportunities</span>
-      <h2 class="display text-4xl lg:text-5xl font-bold mt-3 mb-5" style="color:var(--fg)">
-        Join the <span style="color:var(--gold)">Lab</span>
-      </h2>
-      <p class="text-lg max-w-2xl mx-auto leading-relaxed font-light" style="color:var(--fg-muted)">We welcome motivated researchers who are excited about computational approaches to biological challenges. We have openings for domestic and international applicants at all levels.</p>
-    </div>
-
-    <div class="grid md:grid-cols-3 gap-6 mb-14">
-      <!-- PhD -->
-      <div class="rounded-2xl p-7" style="background:var(--surface);border:1px solid var(--border-l)">
-        <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4" style="background:var(--gold-dim)">
-          <i data-lucide="graduation-cap" class="w-5 h-5" style="color:var(--gold)"></i>
-        </div>
-        <h3 class="display text-lg font-bold mb-3" style="color:var(--fg)">PhD Students</h3>
-        <p class="text-sm leading-relaxed mb-5" style="color:var(--fg-muted)">Admission through the PUC Graduate School. We look for a strong quantitative background (engineering, mathematics, physics, or biology).</p>
-        <ul class="space-y-2 text-sm mb-6" style="color:var(--fg-muted)">
-          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 mt-0.5 flex-shrink-0" style="color:var(--gold)"></i>Send CV + transcript</li>
-          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 mt-0.5 flex-shrink-0" style="color:var(--gold)"></i>Brief statement of interest</li>
-          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 mt-0.5 flex-shrink-0" style="color:var(--gold)"></i>2 reference contacts</li>
-        </ul>
-        <a href="mailto:pnsaa@uc.cl?subject=PhD Application — SysBioEng Lab" class="label block text-center text-sm font-semibold px-4 py-2.5 rounded-lg transition-all"
-           style="background:var(--gold);color:#0c0f16"
-           onmouseover="this.style.background='var(--gold-lt)'" onmouseout="this.style.background='var(--gold)'">Apply via Email</a>
-      </div>
-
-      <!-- Postdoc -->
-      <div class="rounded-2xl p-7" style="background:var(--surface);border:1px solid var(--border-l)">
-        <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4" style="background:var(--gold-dim)">
-          <i data-lucide="flask-conical" class="w-5 h-5" style="color:var(--gold)"></i>
-        </div>
-        <h3 class="display text-lg font-bold mb-3" style="color:var(--fg)">Postdoctoral Researchers</h3>
-        <p class="text-sm leading-relaxed mb-5" style="color:var(--fg-muted)">We support strong candidates to apply for FONDECYT Postdoc and international fellowship schemes.</p>
-        <ul class="space-y-2 text-sm mb-6" style="color:var(--fg-muted)">
-          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 mt-0.5 flex-shrink-0" style="color:var(--gold)"></i>CV + publication list</li>
-          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 mt-0.5 flex-shrink-0" style="color:var(--gold)"></i>Research proposal outline</li>
-          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 mt-0.5 flex-shrink-0" style="color:var(--gold)"></i>3 references</li>
-        </ul>
-        <a href="mailto:pnsaa@uc.cl?subject=Postdoc Inquiry — SysBioEng Lab" class="label block text-center text-sm font-semibold px-4 py-2.5 rounded-lg transition-all border"
-           style="background:transparent;color:var(--fg-muted);border-color:var(--border-l)"
-           onmouseover="this.style.color='var(--fg)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--fg-muted)';this.style.borderColor='var(--border-l)'">Get in Touch</a>
-      </div>
-
-      <!-- MSc / Undergrad -->
-      <div class="rounded-2xl p-7" style="background:var(--surface);border:1px solid var(--border-l)">
-        <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4" style="background:var(--gold-dim)">
-          <i data-lucide="users" class="w-5 h-5" style="color:var(--gold)"></i>
-        </div>
-        <h3 class="display text-lg font-bold mb-3" style="color:var(--fg)">MSc &amp; Undergrads</h3>
-        <p class="text-sm leading-relaxed mb-5" style="color:var(--fg-muted)">PUC students are welcome to discuss thesis or project opportunities in metabolic modeling and computational biology.</p>
-        <ul class="space-y-2 text-sm mb-6" style="color:var(--fg-muted)">
-          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 mt-0.5 flex-shrink-0" style="color:var(--gold)"></i>Brief email introduction</li>
-          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 mt-0.5 flex-shrink-0" style="color:var(--gold)"></i>Transcript or grades</li>
-          <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 mt-0.5 flex-shrink-0" style="color:var(--gold)"></i>Area of interest</li>
-        </ul>
-        <a href="mailto:pnsaa@uc.cl?subject=Thesis Inquiry — SysBioEng Lab" class="label block text-center text-sm font-semibold px-4 py-2.5 rounded-lg transition-all border"
-           style="background:transparent;color:var(--fg-muted);border-color:var(--border-l)"
-           onmouseover="this.style.color='var(--fg)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--fg-muted)';this.style.borderColor='var(--border-l)'">Contact Us</a>
-      </div>
+      <span class="text-[#F59E0B] text-[11px] font-semibold uppercase tracking-widest font-head">Opportunities</span>
+      <h2 class="text-4xl lg:text-5xl font-extrabold text-white mt-3 mb-5">Join the Lab</h2>
+      <p class="text-blue-200 text-lg max-w-2xl mx-auto leading-relaxed">Our lab uses both wet and dry lab approaches to better understand biological systems. We welcome motivated students and researchers who are excited about developing new computational approaches for rediscovering biology. We have openings for domestic and international applicants at all levels.</p>
     </div>
 
     <div class="text-center">
-      <p class="text-sm" style="color:var(--fg-dim)">Contact Prof. Pedro Saa directly at
-        <a href="mailto:pnsaa@uc.cl" class="transition-colors" style="color:var(--gold)"
-           onmouseover="this.style.color='var(--gold-lt)'" onmouseout="this.style.color='var(--gold)'">pnsaa@uc.cl</a>
+      <p class="text-blue-200/70 text-sm">Contact Prof. Pedro Saa directly at
+        <a href="mailto:pnsaa@uc.cl" class="text-[#F59E0B] hover:text-amber-300 font-medium transition-colors">pnsaa@uc.cl</a>
         · +56 2 2354 9674
       </p>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     FOOTER
-     ══════════════════════════════════════════════════════════════════════════ -->
-<footer style="background:#07090e;color:var(--fg-muted)">
-  <div class="max-w-7xl mx-auto px-6 py-16">
+<!-- ═══ FOOTER ════════════════════════════════════════════════════════════════ -->
+<footer class="bg-slate-900 text-slate-400 px-6 py-16">
+  <div class="max-w-7xl mx-auto">
     <div class="grid md:grid-cols-3 gap-12 mb-12">
       <div>
         <div class="flex items-center gap-3 mb-4">
-          <svg width="28" height="28" viewBox="0 0 120 120" fill="none">
-            <circle cx="60" cy="60" r="50" fill="none" stroke="#b8924f" stroke-width="0.8" opacity="0.25"/>
-            <line x1="50" y1="30" x2="40" y2="56" stroke="#b8924f" stroke-width="1.2" opacity="0.6"/>
-            <line x1="40" y1="56" x2="64" y2="60" stroke="#b8924f" stroke-width="1.2" opacity="0.6"/>
-            <line x1="64" y1="60" x2="88" y2="64" stroke="#b8924f" stroke-width="1.2" opacity="0.6"/>
-            <circle cx="50" cy="30" r="4" fill="#b8924f" opacity="0.7"/>
-            <circle cx="80" cy="30" r="4" fill="#cba968"/>
-            <circle cx="40" cy="56" r="4" fill="#6e7aaa" opacity="0.7"/>
-            <circle cx="64" cy="60" r="4" fill="#b8924f"/>
-            <circle cx="30" cy="78" r="3.5" fill="#cba968" opacity="0.8"/>
+          <svg width="28" height="28" viewBox="0 0 100 100" fill="none">
+            <line x1="20" y1="14" x2="12" y2="54" stroke="white" stroke-width="8" stroke-linecap="round" opacity="0.45"/>
+            <line x1="20" y1="14" x2="80" y2="14" stroke="white" stroke-width="8" stroke-linecap="round" opacity="0.45"/>
+            <line x1="12" y1="54" x2="52" y2="60" stroke="white" stroke-width="8" stroke-linecap="round" opacity="0.45"/>
+            <line x1="52" y1="60" x2="88" y2="65" stroke="white" stroke-width="8" stroke-linecap="round" opacity="0.45"/>
+            <line x1="22" y1="83" x2="12" y2="54" stroke="white" stroke-width="8" stroke-linecap="round" opacity="0.45"/>
+            <line x1="80" y1="14" x2="52" y2="60" stroke="white" stroke-width="8" stroke-linecap="round" opacity="0.45"/>
+            <circle cx="20" cy="14" r="7" fill="#F59E0B" opacity="0.55"/>
+            <circle cx="80" cy="14" r="7" fill="#F59E0B" opacity="0.55"/>
+            <circle cx="12" cy="54" r="7" fill="#F59E0B" opacity="0.55"/>
+            <circle cx="52" cy="60" r="7" fill="#F59E0B" opacity="0.55"/>
+            <circle cx="88" cy="65" r="7" fill="#F59E0B" opacity="0.55"/>
+            <circle cx="22" cy="83" r="7" fill="#F59E0B" opacity="0.55"/>
           </svg>
-          <span class="label text-[15px] font-bold" style="color:var(--fg)">
-            Sys<span style="color:var(--gold)">Bio</span>Eng <span class="font-light" style="color:var(--fg-dim)">Lab</span>
+          <span class="font-head text-[15px] font-700 text-white" style="font-weight:700">
+            Sys<span style="color:#F59E0B">Bio</span>Eng <span class="font-300 text-slate-400" style="font-weight:300">Lab</span>
           </span>
         </div>
-        <p class="text-[13px] leading-relaxed opacity-50">Systems Bioengineering Laboratory<br/>Pontificia Universidad Católica de Chile</p>
+        <p class="text-[13px] leading-relaxed opacity-60">Systems Bioengineering Laboratory<br/>Pontificia Universidad Católica de Chile</p>
       </div>
       <div>
-        <p class="mono text-[11px] uppercase tracking-widest font-semibold mb-4 opacity-30">Contact</p>
+        <p class="text-[11px] uppercase tracking-widest font-semibold mb-4 opacity-40 font-head">Contact</p>
         <p class="text-[13px] leading-relaxed">
           Prof. Pedro Saa<br/>
-          <a href="mailto:pnsaa@uc.cl" class="transition-colors" style="color:var(--gold)"
-             onmouseover="this.style.color='var(--gold-lt)'" onmouseout="this.style.color='var(--gold)'">pnsaa@uc.cl</a><br/>
+          <a href="mailto:pnsaa@uc.cl" class="text-[#F59E0B] hover:text-amber-300 transition-colors">pnsaa@uc.cl</a><br/>
           +56 2 2354 9674
         </p>
       </div>
       <div>
-        <p class="mono text-[11px] uppercase tracking-widest font-semibold mb-4 opacity-30">Address</p>
-        <p class="text-[13px] leading-relaxed opacity-70">
+        <p class="text-[11px] uppercase tracking-widest font-semibold mb-4 opacity-40 font-head">Address</p>
+        <p class="text-[13px] leading-relaxed opacity-80">
           Departamento de Ingeniería Química y Bioprocesos<br/>
           Av. Vicuña Mackenna 4860<br/>
           Macul, Santiago, Chile
         </p>
       </div>
     </div>
-    <div class="pt-8 flex flex-wrap items-center justify-between gap-4" style="border-top:1px solid var(--border)">
-      <p class="mono text-[11px] opacity-25">© 2026 SysBioEng Lab, PUC Chile</p>
+    <div class="border-t border-slate-800 pt-8 flex flex-wrap items-center justify-between gap-4">
+      <p class="text-[11px] font-mono opacity-35">© 2026 SysBioEng Lab, PUC Chile</p>
       <div class="flex items-center gap-5">
-        <a href="https://scholar.google.com/citations?user=q38WulcAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="mono text-[11px] opacity-35 hover:opacity-90 transition-opacity">Google Scholar</a>
-        <a href="https://orcid.org/0000-0002-1659-9041" target="_blank" rel="noopener noreferrer" class="mono text-[11px] opacity-35 hover:opacity-90 transition-opacity">ORCID</a>
-        <a href="https://www.researchgate.net/profile/Pedro-Saa-2" target="_blank" rel="noopener noreferrer" class="mono text-[11px] opacity-35 hover:opacity-90 transition-opacity">ResearchGate</a>
-        <a href="https://github.com/SysBioengLab" target="_blank" rel="noopener noreferrer" class="mono text-[11px] opacity-35 hover:opacity-90 transition-opacity">GitHub</a>
+        <a href="https://scholar.google.com/citations?user=q38WulcAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="text-[11px] font-mono opacity-45 hover:opacity-100 transition-opacity">Google Scholar</a>
+        <a href="https://orcid.org/0000-0002-1659-9041" target="_blank" rel="noopener noreferrer" class="text-[11px] font-mono opacity-45 hover:opacity-100 transition-opacity">ORCID</a>
+        <a href="https://www.researchgate.net/profile/Pedro-Saa-2" target="_blank" rel="noopener noreferrer" class="text-[11px] font-mono opacity-45 hover:opacity-100 transition-opacity">ResearchGate</a>
+        <a href="https://github.com/SysBioengLab" target="_blank" rel="noopener noreferrer" class="text-[11px] font-mono opacity-45 hover:opacity-100 transition-opacity">GitHub</a>
       </div>
     </div>
   </div>
 </footer>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     SCRIPTS
-     ══════════════════════════════════════════════════════════════════════════ -->
+<!-- ═══ SCRIPTS ═══════════════════════════════════════════════════════════════ -->
 <script>
+// ── Lucide icons init ────────────────────────────────────────────────────────
 lucide.createIcons();
 
 // ── Publications data ────────────────────────────────────────────────────────
@@ -998,33 +824,31 @@ const PUBS = [
   { year:2011, authors:"Sacher J, Saa P, Cárcamo M et al.", title:"Improved calibration of a solid substrate fermentation model", journal:"Electronic Journal of Biotechnology", vol:"14: 5", doi:"http://dx.doi.org/10.2225/vol14-issue5-fulltext-7", featured:false },
 ];
 
-// ── Members ──────────────────────────────────────────────────────────────────
+// ── Members data ──────────────────────────────────────────────────────────────
 const MEMBERS = {
   phd: [
-    { name:"Reinier Rizo",         years:"2024–ongoing", prog:"PhD — Chemical & Bioprocess Eng.", initials:"RR", bg:"#1a2340" },
-    { name:"Francisca Villanueva", years:"2024–ongoing", prog:"PhD — Chemical & Bioprocess Eng.", initials:"FV", bg:"#2a1a18" },
-    { name:"Jorge Garay",          years:"2023–ongoing", prog:"PhD — Chemical & Bioprocess Eng.", initials:"JG", bg:"#1a2340" },
-    { name:"Álvaro Altamirano",    years:"2019–ongoing", prog:"PhD — Chemical & Bioprocess Eng.", initials:"AA", bg:"#1e2a20" },
+    { name:"Reinier Rizo", years:"2024–ongoing", prog:"PhD — Chemical & Bioprocess Eng.", initials:"RR", color:"#1E3A8A" },
+    { name:"Francisca Villanueva", years:"2024–ongoing", prog:"PhD — Chemical & Bioprocess Eng.", initials:"FV", color:"#1d4ed8" },
+    { name:"Jorge Garay", years:"2023–ongoing", prog:"PhD — Chemical & Bioprocess Eng.", initials:"JG", color:"#1E3A8A" },
+    { name:"Álvaro Altamirano", years:"2019–ongoing", prog:"PhD — Chemical & Bioprocess Eng.", initials:"AA", color:"#164e8a" },
   ],
   msc: [
-    { name:"Gabriel Miranda", years:"2025–ongoing", prog:"MSc — Chemical & Bioprocess Eng.", initials:"GM", bg:"#251d10" },
-    { name:"Gabriel Díaz",    years:"2024–ongoing", prog:"MSc — Chemical & Bioprocess Eng.", initials:"GD", bg:"#251d10" },
-    { name:"Celeste Vargas",  years:"2024–ongoing", prog:"MSc — Chemical & Bioprocess Eng.", initials:"CV", bg:"#251d10" },
-    { name:"Ignacio Tapia",   years:"2024–ongoing", prog:"MSc — Chemical & Bioprocess Eng.", initials:"IT", bg:"#251d10" },
+    { name:"Gabriel Miranda", years:"2025–ongoing", prog:"MSc — Chemical & Bioprocess Eng.", initials:"GM", color:"#0f766e" },
+    { name:"Gabriel Díaz", years:"2024–ongoing", prog:"MSc — Chemical & Bioprocess Eng.", initials:"GD", color:"#0f766e" },
+    { name:"Celeste Vargas", years:"2024–ongoing", prog:"MSc — Chemical & Bioprocess Eng.", initials:"CV", color:"#0f766e" },
+    { name:"Ignacio Tapia", years:"2024–ongoing", prog:"MSc — Chemical & Bioprocess Eng.", initials:"IT", color:"#0f766e" },
   ]
 };
 
 function memberCard(m) {
   return `
-  <div class="mc rounded-2xl p-5 shadow-sm cursor-default select-none relative overflow-hidden" style="background:var(--surface);border:1px solid var(--border)">
-    <div class="mem-avatar mb-3" style="background:${m.bg};border:1.5px solid var(--border-l);color:var(--gold)">${m.initials}</div>
-    <p class="font-semibold text-sm leading-snug mb-1" style="color:var(--fg)">${m.name}</p>
-    <p class="mono text-[11px] mb-2" style="color:var(--gold)">${m.years}</p>
-    <p class="text-[11px] leading-snug" style="color:var(--fg-dim)">${m.prog}</p>
-    <div class="mc-overlay absolute inset-0 rounded-2xl flex items-center justify-center gap-4" style="background:rgba(12,15,22,0.92)">
-      <a href="mailto:pnsaa@uc.cl" style="color:var(--fg-muted)" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--fg-muted)'" title="Email lab">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-      </a>
+  <div class="mc bg-[#111827] border border-slate-700/50 rounded-2xl p-5 shadow-sm cursor-default select-none relative overflow-hidden">
+    <div class="mem-avatar mb-3" style="background:${m.color}">${m.initials}</div>
+    <p class="font-semibold text-slate-100 text-sm leading-snug mb-1">${m.name}</p>
+    <p class="font-mono text-[11px] text-[#F59E0B] mb-2">${m.years}</p>
+    <p class="text-[11px] text-slate-500 leading-snug">${m.prog}</p>
+    <div class="mc-overlay absolute inset-0 bg-[#1E3A8A]/90 rounded-2xl flex items-center justify-center gap-4">
+      <a href="mailto:pnsaa@uc.cl" class="text-white hover:text-[#F59E0B] transition-colors" title="Email lab"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a>
     </div>
   </div>`;
 }
@@ -1032,6 +856,7 @@ function memberCard(m) {
 function buildMembers() {
   document.getElementById('phd-grid').innerHTML = MEMBERS.phd.map(memberCard).join('');
   document.getElementById('msc-grid').innerHTML = MEMBERS.msc.map(memberCard).join('');
+  lucide.createIcons();
 }
 
 function filterMembers(role) {
@@ -1039,59 +864,52 @@ function filterMembers(role) {
   document.querySelector(`[data-filter="${role}"]`).classList.add('active-filter');
   const phd = document.getElementById('phd-section');
   const msc = document.getElementById('msc-section');
-  phd.style.display = (role === 'all' || role === 'phd') ? '' : 'none';
-  msc.style.display = (role === 'all' || role === 'msc') ? '' : 'none';
+  if (role === 'all') { phd.style.display=''; msc.style.display=''; }
+  else if (role === 'phd') { phd.style.display=''; msc.style.display='none'; }
+  else { phd.style.display='none'; msc.style.display=''; }
 }
 
 // ── Year filters ──────────────────────────────────────────────────────────────
+let activeYear = 'all';
 function buildYearFilters() {
   const years = [...new Set(PUBS.map(p => p.year))].sort((a,b) => b-a);
   const c = document.getElementById('year-filters');
-  const mk = (label, val, active) => {
+  const makeBtn = (label, val) => {
     const b = document.createElement('button');
     b.textContent = label;
-    const base = 'mono text-[11px] px-3 py-1 rounded-full border transition-all cursor-pointer';
-    b.className = base;
-    const setStyle = (isActive) => {
-      if (isActive) {
-        b.style.background = 'var(--gold)'; b.style.borderColor = 'var(--gold)'; b.style.color = '#0c0f16';
-      } else {
-        b.style.background = 'transparent'; b.style.borderColor = 'var(--border)'; b.style.color = 'var(--fg-dim)';
-      }
-    };
-    setStyle(active);
-    b.onmouseover = () => { if (b.dataset.active !== '1') { b.style.borderColor='var(--gold)'; b.style.color='var(--gold)'; } };
-    b.onmouseout  = () => { if (b.dataset.active !== '1') { setStyle(false); } };
+    b.className = 'text-[11px] px-3 py-1 rounded-full border font-mono transition-all ' + (val === 'all' ? 'bg-[#1E3A8A] border-[#1E3A8A] text-white' : 'bg-[#1e293b] border-slate-700 text-slate-400 hover:border-blue-500 hover:text-blue-300');
     b.onclick = () => {
-      document.querySelectorAll('#year-filters button').forEach(x => { x.dataset.active='0'; setStyle.call(x, false); x.style.background='transparent'; x.style.borderColor='var(--border)'; x.style.color='var(--fg-dim)'; });
-      b.dataset.active='1'; setStyle(true); renderPubs(val);
+      activeYear = val;
+      document.querySelectorAll('#year-filters button').forEach(x => {
+        x.className = 'text-[11px] px-3 py-1 rounded-full border font-mono transition-all bg-[#1e293b] border-slate-700 text-slate-400 hover:border-blue-500 hover:text-blue-300';
+      });
+      b.className = 'text-[11px] px-3 py-1 rounded-full border font-mono transition-all bg-[#1E3A8A] border-[#1E3A8A] text-white';
+      renderPubs(val);
     };
-    if (active) b.dataset.active = '1';
     return b;
   };
-  c.appendChild(mk('All', 'all', true));
-  years.forEach(y => c.appendChild(mk(String(y), y, false)));
+  c.appendChild(makeBtn('All', 'all'));
+  years.forEach(y => c.appendChild(makeBtn(String(y), y)));
 }
 
 function renderPubs(yearFilter) {
-  const list     = document.getElementById('pub-list');
+  const list = document.getElementById('pub-list');
   const featured = document.getElementById('featured-list');
   const filtered = yearFilter === 'all' ? PUBS : PUBS.filter(p => p.year === yearFilter);
-  const sorted   = [...filtered].sort((a,b) => b.year - a.year);
+  const sorted = [...filtered].sort((a,b) => b.year - a.year);
 
+  // Featured works (only show when "All" selected)
   if (yearFilter === 'all') {
     const fp = PUBS.filter(p => p.featured).sort((a,b) => b.year - a.year);
     featured.innerHTML = fp.map(p => `
-      <a href="${p.doi}" target="_blank" rel="noopener noreferrer" class="group block rounded-xl p-5 transition-all" style="background:var(--raised);border:1px solid var(--border-l)"
-         onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border-l)'">
+      <a href="${p.doi}" target="_blank" rel="noopener noreferrer" class="group bg-blue-900/20 border border-blue-800/30 hover:border-blue-500 rounded-xl p-5 transition-all block">
         <div class="flex items-start gap-2 mb-2">
           <span class="featured-badge flex-shrink-0 mt-0.5">Featured</span>
-          <span class="mono text-[11px]" style="color:var(--fg-dim)">${p.year}</span>
+          <span class="font-mono text-[11px] text-slate-500">${p.year}</span>
         </div>
-        <p class="mono text-[10px] mb-1" style="color:var(--fg-dim)">${p.authors}</p>
-        <p class="text-sm font-semibold leading-snug mb-2 transition-colors" style="color:var(--fg)"
-           onmouseover="this.parentElement.style.color='var(--gold-lt)'" >${p.title}</p>
-        <p class="text-[11px] italic" style="color:var(--fg-muted)">${p.journal}. ${p.vol}</p>
+        <p class="font-mono text-[10px] text-slate-500 mb-1">${p.authors}</p>
+        <p class="text-sm font-semibold text-slate-100 group-hover:text-blue-400 leading-snug mb-2 transition-colors">${p.title}</p>
+        <p class="text-[11px] text-slate-400 italic">${p.journal}. ${p.vol}</p>
       </a>`).join('');
     featured.parentElement.style.display = '';
   } else {
@@ -1099,13 +917,12 @@ function renderPubs(yearFilter) {
   }
 
   list.innerHTML = sorted.map(p => `
-    <div class="pub-row grid grid-cols-[56px_1fr] transition-colors" style="border-bottom:1px solid var(--border)">
-      <div class="py-5 pl-4 mono text-[11px] flex-shrink-0" style="color:var(--fg-dim)">${p.year}</div>
+    <div class="pub-row grid grid-cols-[56px_1fr] border-b border-slate-700/50 last:border-0">
+      <div class="py-5 pl-4 font-mono text-[11px] text-slate-500 flex-shrink-0">${p.year}</div>
       <div class="py-4 pr-5">
-        <p class="mono text-[10px] mb-1" style="color:var(--fg-dim)">${p.authors}</p>
-        <a href="${p.doi}" target="_blank" rel="noopener noreferrer" class="text-sm block mb-1 leading-snug transition-colors" style="color:var(--fg)"
-           onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--fg)'">${p.title}</a>
-        <p class="text-[11px] italic" style="color:var(--fg-muted)">${p.journal}. ${p.vol}</p>
+        <p class="font-mono text-[10px] text-slate-500 mb-1">${p.authors}</p>
+        <a href="${p.doi}" target="_blank" rel="noopener noreferrer" class="text-sm text-slate-200 hover:text-blue-400 transition-colors block mb-1 leading-snug">${p.title}</a>
+        <p class="text-[11px] text-slate-400 italic">${p.journal}. ${p.vol}</p>
       </div>
     </div>`).join('');
 }
@@ -1118,17 +935,19 @@ function switchPubTab(name, btn) {
   document.getElementById('panel-' + name).classList.add('active');
 }
 
-// ── Nav scroll + active links ─────────────────────────────────────────────────
+// ── Nav scroll ────────────────────────────────────────────────────────────────
 window.addEventListener('scroll', () => {
   document.getElementById('main-nav').classList.toggle('scrolled', scrollY > 50);
-  const ids = ['hero','pillars','people','publications','resources','news','join'];
-  let cur = 'hero';
-  ids.forEach(id => {
+  // active link
+  const sections = ['hero','pillars','people','publications','resources','news','join'];
+  let current = 'hero';
+  sections.forEach(id => {
     const el = document.getElementById(id);
-    if (el && el.getBoundingClientRect().top < 120) cur = id;
+    if (el && el.getBoundingClientRect().top < 120) current = id;
   });
   document.querySelectorAll('.nav-link').forEach(a => {
-    a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+    const href = a.getAttribute('href')?.slice(1);
+    a.classList.toggle('active', href === current);
   });
 });
 
