@@ -15,15 +15,13 @@ The SysBioEng Lab develops computational tools rooted in advanced optimization a
 - **Bioprocess Optimization** — Advanced optimization frameworks for bioreactor design, control, and scale-up strategies.
 - **Machine Learning** — Computational statistics and ML techniques to infer, predict, and design biological behavior.
 
-Prof. Saa holds a PhD from The University of Queensland (2017) and is a faculty member at the Department of Chemical and Bioprocess Engineering and the Institute for Mathematical and Computational Engineering at PUC Chile.
-
 🔗 [Google Scholar](https://scholar.google.com/citations?user=q38WulcAAAAJ&hl=en) · [ORCID](https://orcid.org/0000-0002-1659-9041) · [ResearchGate](https://www.researchgate.net/profile/Pedro-Saa-2)
 
 ---
 
 ## Open-Source Software
 
-Tools and frameworks developed by the lab:
+Tools and frameworks developed in our lab:
 
 | Tool | Language | Description | Reference |
 |------|----------|-------------|-----------|
