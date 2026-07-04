@@ -42,8 +42,6 @@ Department of Chemical and Bioprocess Engineering &
 Institute for Mathematical and Computational Engineering, PUC Chile
 
 📧 [pnsaa@uc.cl](mailto:pnsaa@uc.cl)
-📞 +56 2 2354 9674
-📍 Av. Vicuña Mackenna 4860, Macul, Santiago, Chile
 
 > The lab welcomes applications from domestic and international students. Get in touch for research opportunities.
 
