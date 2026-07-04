@@ -762,7 +762,8 @@ buildYears();renderPubs('all');
 
 /* Carousel — populated from the last 4 Recent News items */
 const carNews = [
-  ...NEWS.slice(-4, -1),
+  NEWS.find(n => n.txt.includes('β-carotene')),
+  ...NEWS.slice(-3, -1),
   NEWS.find(n => n.txt.includes('FONDECYT Regular ANID grant'))
 ];
 document.getElementById('car-track').innerHTML = carNews.map((n,i)=>{
