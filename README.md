@@ -8,7 +8,7 @@ Website of the **Systems Bioengineering Lab** at the Pontificia Universidad Cat�
 
 ## About the Lab
 
-The SysBioEng Lab develops computational tools rooted in advanced optimization and machine learning models to redesign and understand biological systems. Research spans four main areas:
+The SysBioEng Lab develops computational tools rooted in advanced optimization and machine learning techniques to redesign and understand biological systems. Research spans four main areas:
 
 - **Metabolic Modeling** — Genome-scale network reconstruction, kinetic and stoichiometric models of cellular metabolism.
 - **Systems Biotechnology** — Engineering biological systems for sustainable production of chemicals, fuels, and pharmaceuticals.
