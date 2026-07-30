@@ -380,6 +380,9 @@
       </div>
     </div>
 
+    <h3 class="sub-head">PostDocs</h3>
+    <div class="people-grid" id="postdoc-grid"></div>
+
     <h3 class="sub-head">PhD Students</h3>
     <div class="people-grid" id="phd-grid"></div>
 
@@ -642,15 +645,18 @@ const NEWS = [
 ];
 
 const MEMBERS = {
+  postdoc:[
+    {name:"Luz Yáñez",years:"2026–2027",prog:"PhD — Universidad de los Andes, Chile",initials:"LY",color:"#2a7ab0"},
+  ],
   phd:[
-    {name:"Reinier Rizo",years:"2024–ongoing",prog:"PhD — Chemical & Bioprocess Eng.",initials:"RR",color:"#2a7ab0"},
+    {name:"Reinier Rizo",years:"2024–ongoing",prog:"PhD — Chemical & Bioprocess Eng.",initials:"RR",color:"#2a7ab0",img:"images/team/reinier-rizo.jpeg"},
     {name:"Francisca Villanueva",years:"2024–ongoing",prog:"PhD — Chemical & Bioprocess Eng.",initials:"FV",color:"#31859c",img:"images/team/francisca-villanueva-web.jpg"},
-    {name:"Jorge Garay",years:"2023–ongoing",prog:"PhD — Chemical & Bioprocess Eng.",initials:"JG",color:"#3d6f9e"},
-    {name:"Álvaro Altamirano",years:"2019–ongoing",prog:"PhD — Chemical & Bioprocess Eng.",initials:"AA",color:"#2f7f8f"},
+    {name:"Jorge Garay",years:"2023–ongoing",prog:"PhD — Chemical & Bioprocess Eng.",initials:"JG",color:"#3d6f9e",img:"images/team/jorge-garay.jpg"},
+    {name:"Álvaro Altamirano",years:"2019–ongoing",prog:"PhD — Chemical & Bioprocess Eng.",initials:"AA",color:"#2f7f8f",img:"images/team/alvaro-altamirano.jpg"},
   ],
   msc:[
     {name:"Gabriel Miranda",years:"2025–ongoing",prog:"MSc — Chemical & Bioprocess Eng.",initials:"GM",color:"#2a7ab0"},
-    {name:"Gabriel Díaz",years:"2024–ongoing",prog:"MSc — Chemical & Bioprocess Eng.",initials:"GD",color:"#31859c"},
+    {name:"Gabriel Díaz",years:"2024–ongoing",prog:"MSc — Chemical & Bioprocess Eng.",initials:"GD",color:"#31859c",img:"images/team/gabriel-diaz.jpg"},
     {name:"Celeste Vargas",years:"2024–ongoing",prog:"MSc — Chemical & Bioprocess Eng.",initials:"CV",color:"#3d6f9e",img:"images/team/celeste-vargas-web.jpg"},
     {name:"Ignacio Tapia",years:"2024–ongoing",prog:"MSc — Chemical & Bioprocess Eng.",initials:"IT",color:"#2f7f8f",img:"images/team/ignacio-tapia-web.jpg"},
   ]
@@ -724,6 +730,7 @@ function personCard(m){
     <p class="p-prog">${m.prog}</p>
   </div>`;
 }
+document.getElementById('postdoc-grid').innerHTML = MEMBERS.postdoc.map(personCard).join('');
 document.getElementById('phd-grid').innerHTML = MEMBERS.phd.map(personCard).join('');
 document.getElementById('msc-grid').innerHTML = MEMBERS.msc.map(personCard).join('');
 document.getElementById('alumni-list').innerHTML = ALUMNI.map(a=>
