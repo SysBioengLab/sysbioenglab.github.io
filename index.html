@@ -737,12 +737,12 @@ document.getElementById('alumni-list').innerHTML = ALUMNI.map(a=>
   `<li><span class="a-name">${a.name}</span><span class="a-years">${a.years}</span><span class="a-pos">→ ${a.pos}</span></li>`).join('');
 
 /* Publications */
-let activeYear='all';
+let activeYear=2026;
 function buildYears(){
   const years=[...new Set(PUBS.map(p=>p.year))].sort((a,b)=>b-a);
   const c=document.getElementById('yrs');
   const mk=(label,val)=>{const b=document.createElement('button');b.textContent=label;
-    b.className='yr'+(val==='all'?' on':'');
+    b.className='yr'+(val===2026?' on':'');
     b.onclick=()=>{activeYear=val;document.querySelectorAll('.yr').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderPubs(val);};
     return b;};
   c.appendChild(mk('All','all'));years.forEach(y=>c.appendChild(mk(String(y),y)));
@@ -771,7 +771,7 @@ function switchTab(name,btn){
   btn.classList.add('active');
   document.getElementById('panel-'+name).classList.add('active');
 }
-buildYears();renderPubs('all');
+buildYears();renderPubs(2026);
 
 /* Carousel — populated from the last 4 Recent News items */
 const carNews = [
