@@ -628,7 +628,7 @@
 <script>
 /* ══ DATA ══════════════════════════════════════════════════════════════ */
 const NEWS = [
-  {date:"2026", txt:"<strong>New paper</strong> — a novel framework for the systematic transfer of bioprocess models across scales, published in <em>Journal of Food Engineering</em>.", img:"images/carousel/model-transfer-web.jpg", imgFit:"cover", imgBg:"#ffffff"},
+  {date:"2026", txt:"<strong>New paper</strong> — a novel framework for the systematic transfer of bioprocess models across scales, published in <em>Journal of Food Engineering</em>.", img:"images/carousel/model-transfer-web.jpg", imgFit:"contain", imgBg:"#ffffff"},
   {date:"2026", txt:"<strong>New paper</strong> — a new kinetic model of <em>L. brevis</em> growth during malolactic fermentation, published in <em>Food Bioscience</em>. Congrats Ignacio!", img:"images/carousel/bioscience-web.jpg", imgFit:"contain", imgBg:"#ffffff"},
   {date:"2026", txt:"<strong>New paper</strong> — a detailed dynamic model of β-ionone production in yeast, published in <em>Bioprocess and Biosystems Engineering</em>. Kudos Alejandro!", img:"images/carousel/beta-ionone-web.jpg", imgFit:"contain", imgBg:"#ffffff"},
   {date:"2026", txt:"Our group leader took part in the official launch of <strong>VitiScience</strong> at the Center for Research and Innovation of Viña Concha y Toro in Pencahue, Talca."},
@@ -776,7 +776,7 @@ buildYears();renderPubs(2026);
 
 /* Carousel — populated from the last 4 Recent News items */
 const carNews = [
-  NEWS.find(n => n.txt.includes('transfer')),
+  NEWS.find(n => n.txt.includes('across')),
   NEWS.find(n => n.txt.includes('brevis')),
   NEWS.find(n => n.txt.includes('β-ionone')),
   NEWS.find(n => n.txt.includes('CIA250013')),  
